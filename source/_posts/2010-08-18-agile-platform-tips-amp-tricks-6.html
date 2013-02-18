@@ -1,0 +1,15 @@
+---
+layout: post
+title: "Agile Platform Tips & Tricks #6"
+comments: true
+---
+<h4>
+	Calling Screen Actions from custom JavaScript events</h4>
+<p>
+	Imagine you&rsquo;re using the Tabs_ClientSide from RichWidgets and you&rsquo;re showing a list in each tab. Instead of loading all the lists when the screen is loaded, you want to only populate each list when the corresponding tab is activated. The Tabs_ClientSide already provides a way to call custom JavaScript code on tab activation, so if we could call a Screen Action from JavaScript code, we could make that Screen Action refresh the table on the corresponding tab. So, how can we do that?</p>
+<p>
+	The AJAX capabilities of the Agile Platform already allow you to trigger the execution of Screen Actions when some standard JavaScript events are raised. For example, if you specify a Screen Action in the OnChange property of an Input widget, when the end-user types in something in the correspondent input displayed by the browser, that Screen Action will be called at the server. To do this, the Agile Platform generates custom JavaScript code that will send an AJAX request to the server when the native onchange event of that input HTML element is triggered. So, if we add an hidden Input widget to the page and on the OnTabActivation parameter of the Tabs_ClientSide we put some JavaScript code to trigger that onchange event manually, we know that the platform will take care of calling the Screen Action specified in the OnChange of that Input widget. This way we can put there the logic to refresh the list inside the tab that was activated in that Screen Action. Unfortunately, we have no way of telling to pass the tab which was activated as a parameter of that Screen Action, and that forces us to have to an hidden Input for each tab, and decide which hidden Input to trigger in JavaScript.</p>
+<p>
+	Fortunately, there&rsquo;s a simpler way to do this. It involves using the OnNotify property of a Web Block widget, call it by using OsNotifyWidget JavaScript function,&nbsp; and in the associated Screen Action using the NotifyWidgetGetMessage built-in action to get the tab that was activated. Instead of explaining it in detail, I&rsquo;ve made a sample eSpace that exemplifies this scenario. Here it is:</p>
+<p>
+	<a href="/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>

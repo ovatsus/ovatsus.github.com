@@ -1,0 +1,30 @@
+---
+layout: post
+title: "Migrating from SubText to BlogEngine.NET"
+comments: true
+---
+<p>
+	My blog was running in <a href="http://subtextproject.com">SubText</a>, but I&rsquo;ve recently changed to <a href="http://www.dotnetblogengine.net/">BlogEngine.NET</a>. The main reason for the change was that BlogEngine.NET supports storing the data in plain XML files, without having any dependency to a database. This makes it really easy to customize, as I can develop everything in my local machine, and then just send the files to the server. With SubText this was harder to do, so I ended up doing fewer tweaks, and doing them directly in production, which I didn&rsquo;t like.</p>
+<p>
+	The migration wasn&rsquo;t as smooth as I though it would be, so here are the steps I took, in case someone needs to go through a similar process:</p>
+<ul>
+	<li>
+		Exporting to BlogML and then importing didn&rsquo;t work correctly. After exporting, I had to <a href="http://garfoot.com/blog/2010/08/importing-blogml-into-wordpress/">convert the content from Base64</a>, replace the &amp;amp;&rsquo;s in the titles with &amp;, and then manually set the author in all post. I also had to set the tags manually in all posts, as in SubText they weren&rsquo;t a separate field but instead were part of the content of the posts. Having the posts on xml files on disk rather than on a database eased this job a lot.</li>
+	<li>
+		The TinyMCE bundled in BlogEngine.NET doesn&rsquo;t support images, so I had to <a href="http://jerryhuang.net/post/Replace-TinyMCE-with-CKEditor-and-CKFinder-in-BlogEngine-20.aspx">replace it with CKEditor and CKFinder</a>.</li>
+	<li>
+		The SubText post URL&#39;s have the format /archive/year/month/day/name-of-the-post.aspx, while BlogEngine.NET post URL&#39;s have the format /server/post/year/month/day/name-of-the-post.aspx. I had to set up redirection so the old links would keep working. To do that I&rsquo;ve taken the source code from <a href="http://www.blogenginewall.com/post/2011/04/01/BlogEngine-SEO-Permanent-Redirection-From-Old-URL-To-New-URL.aspx">BlogEngine SEO Redirection extension</a> and changed the comparison to only check prefixes (source code <a href="https://github.com/ovatsus/Blog/commit/a8c8c3f0984507182b2a0139aa2fcbdcb5a51358">here</a>).</li>
+	<li>
+		Several of the extensions available out there don&rsquo;t work out of the box with the latest version of BlogEngine.NET (2.5):
+		<ul>
+			<li>
+				For the AddThis extension I had to <a href="http://www.mbaldinger.com/post/AddThisNET-Social-Bookmarking-Buttons-for-Blogengine-v5.aspx#id_7b41fd26-f300-4029-b606-60b0cc2f0e6d">add some missing using&rsquo;s to the code</a>, and disable the form validation of the settings page (source code <a href="https://github.com/ovatsus/Blog/commit/931e4f13c76f8505ea65cd6d154fd29354526fbb">here</a>).</li>
+			<li>
+				To be able to configure widgets in the AllTuts theme, I had to make a small bug fix (as described in Janier Davila comment <a href="http://www.pravesh.me/alltuts-theme-blogenginenet-updated-v25/">here</a>)</li>
+		</ul>
+	</li>
+</ul>
+<p>
+	After all that work, now I have a setup that allows me to tweak the blog very easily. I have it on GitHub, cloned into my local machine and into the server. I can play around locally, and when I&rsquo;m glad with the results I just need to do a git push locally and then remote desktop to the server to do a git pull and force a reload of the application by touching the web.config.</p>
+<p>
+	Of course, to protect my passwords and keys, I have to tell git to ignore users.xml, akismetfilter.xml and recaptcha.xml, using <a href="http://blog.pagebakers.nl/2009/01/29/git-ignoring-changes-in-tracked-files/">this procedure</a>. And I also must take care with the email settings that are stored on the global settings.xml file, which forces me to always have that file uncommitted at the server, but other than that, it&rsquo;s orders of magnitude better than editing directly on production.</p>

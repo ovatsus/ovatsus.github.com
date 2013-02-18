@@ -1,0 +1,56 @@
+---
+layout: post
+title: "How to change Word 2007 citation style to use square brackets"
+comments: true
+---
+<p>
+	This one was not easy to discover, so I&rsquo;m going to post it here for future reference.</p>
+<p>
+	In C:\Program Files\Microsoft Office\Office12\Bibliography\Style\Iso690Nmerical.xsl change the following lines:</p>
+<pre>
+  <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:template </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;templ_prop_OpenBracket&quot;</span><span style="color: #ff0000"> </span><span style="color: #0000ff">&gt;</span>    
+    <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:param </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;LCID&quot;</span><span style="color: #ff0000"> </span><span style="color: #0000ff">/&gt;</span>
+    <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:variable </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;_LCID&quot;</span><span style="color: #0000ff">&gt;</span>
+      <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:call-template </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;localLCID&quot;</span><span style="color: #0000ff">&gt;</span>
+        <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:with-param </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;LCID&quot;</span><span style="color: #ff0000"> select</span><span style="color: #0000ff">=&quot;$LCID&quot;</span><span style="color: #0000ff">/&gt;</span>
+      <span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:call-template</span><span style="color: #0000ff">&gt;</span>
+    <span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:variable</span><span style="color: #0000ff">&gt;</span>
+    <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:value-of </span><span style="color: #ff0000">select</span><span style="color: #0000ff">=&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:OpenBracket&quot;</span><span style="color: #0000ff">/&gt;</span>
+    <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:text</span><span style="color: #0000ff">&gt;</span>[<span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:text</span><span style="color: #0000ff">&gt;</span>
+  <span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:template</span><span style="color: #0000ff">&gt;</span>
+
+  
+  <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:template </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;templ_prop_CloseBracket&quot;</span><span style="color: #ff0000"> </span><span style="color: #0000ff">&gt;</span>    
+    <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:param </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;LCID&quot;</span><span style="color: #ff0000"> </span><span style="color: #0000ff">/&gt;</span>
+    <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:variable </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;_LCID&quot;</span><span style="color: #0000ff">&gt;</span>
+      <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:call-template </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;localLCID&quot;</span><span style="color: #0000ff">&gt;</span>
+        <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:with-param </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;LCID&quot;</span><span style="color: #ff0000"> select</span><span style="color: #0000ff">=&quot;$LCID&quot;</span><span style="color: #0000ff">/&gt;</span>
+      <span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:call-template</span><span style="color: #0000ff">&gt;</span>
+    <span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:variable</span><span style="color: #0000ff">&gt;</span>
+    <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:value-of </span><span style="color: #ff0000">select</span><span style="color: #0000ff">=&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:CloseBracket&quot;</span><span style="color: #0000ff">/&gt;</span>
+  <span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:template</span><span style="color: #0000ff">&gt;</span></pre>
+<p>
+	to this:</p>
+<pre>
+  <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:template </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;templ_prop_OpenBracket&quot;</span><span style="color: #ff0000"> </span><span style="color: #0000ff">&gt;</span>    
+    <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:param </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;LCID&quot;</span><span style="color: #ff0000"> </span><span style="color: #0000ff">/&gt;</span>
+    <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:variable </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;_LCID&quot;</span><span style="color: #0000ff">&gt;</span>
+      <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:call-template </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;localLCID&quot;</span><span style="color: #0000ff">&gt;</span>
+        <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:with-param </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;LCID&quot;</span><span style="color: #ff0000"> select</span><span style="color: #0000ff">=&quot;$LCID&quot;</span><span style="color: #0000ff">/&gt;</span>
+      <span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:call-template</span><span style="color: #0000ff">&gt;</span>
+    <span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:variable</span><span style="color: #0000ff">&gt;</span>
+    <span style="color: #008000">&lt;!--&lt;xsl:value-of select=&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:OpenBracket&quot;/&gt;--&gt;</span>
+    <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:text</span><span style="color: #0000ff">&gt;</span>[<span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:text</span><span style="color: #0000ff">&gt;</span>
+  <span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:template</span><span style="color: #0000ff">&gt;</span>
+
+  
+  <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:template </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;templ_prop_CloseBracket&quot;</span><span style="color: #ff0000"> </span><span style="color: #0000ff">&gt;</span>    
+    <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:param </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;LCID&quot;</span><span style="color: #ff0000"> </span><span style="color: #0000ff">/&gt;</span>
+    <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:variable </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;_LCID&quot;</span><span style="color: #0000ff">&gt;</span>
+      <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:call-template </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;localLCID&quot;</span><span style="color: #0000ff">&gt;</span>
+        <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:with-param </span><span style="color: #ff0000">name</span><span style="color: #0000ff">=&quot;LCID&quot;</span><span style="color: #ff0000"> select</span><span style="color: #0000ff">=&quot;$LCID&quot;</span><span style="color: #0000ff">/&gt;</span>
+      <span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:call-template</span><span style="color: #0000ff">&gt;</span>
+    <span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:variable</span><span style="color: #0000ff">&gt;</span>
+    <span style="color: #008000">&lt;!--&lt;xsl:value-of select=&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:CloseBracket&quot;/&gt;--&gt;</span>
+    <span style="color: #0000ff">&lt;</span><span style="color: #800000">xsl:text</span><span style="color: #0000ff">&gt;</span>]<span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:text</span><span style="color: #0000ff">&gt;</span>
+  <span style="color: #0000ff">&lt;/</span><span style="color: #800000">xsl:template</span><span style="color: #0000ff">&gt;</span></pre>

@@ -1,0 +1,39 @@
+---
+layout: post
+title: "Agile Platform Tips & Tricks #7"
+comments: true
+---
+<h4>
+	How to change the page styles dynamically at runtime</h4>
+<p>
+	<em>[Edit 01/09/2001: Updated the sample to also override the colors in the popups]</em></p>
+<p>
+	Service Studio gives you a few good options to define style sheets for you pages and emails. Besides the global style sheet that applies to the whole eSpace, you can add a custom style sheet to each web screen and email, and you can even define a custom style sheet for each web block. The platform will take care of including all the style sheets in the html of the page/email according to the following order:</p>
+<ol>
+	<li>
+		The style sheet of all the web blocks directly or indirectly included in the page/email (including referenced ones), from the inner most blocks to the outermost blocks in case of nesting</li>
+	<li>
+		The eSpace style sheet</li>
+	<li>
+		The style sheet of the web screen or email.</li>
+</ol>
+<p>
+	In web screens, all those style sheets are deployed to separate files and referenced by the page, while in emails, their content is merged together and included inline in the html for optimal display in the majority of email clients. The platform also applies some post processing to the content of the style sheets to optimize their usage in content delivery networks.</p>
+<p>
+	All these style sheets are statically defined at design time and can&rsquo;t be dynamically changed at runtime, but it&rsquo;s possible to include more style sheets at runtime that override the static ones. That allows us to do cool things like giving a specific user a different style sheet, changing the color scheme to red when some critical situation is happening, or even letting the user choose the style sheet of his preference, like this:</p>
+<p>
+	&nbsp;<a href="/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
+<p>
+	To accomplish this, we need to do two things:</p>
+<ol>
+	<li>
+		Make sure the extra style sheets are deployed together with the application</li>
+	<li>
+		Manipulate the html returned to the browser to include a &lt;link rel=&rdquo;stylesheet&rdquo;&gt; tag in the &lt;head&gt; section</li>
+</ol>
+<p>
+	For #1, we can create the .css text files outside Service Studio and then import them as resources by using the Import Resource operation available in the eSpace tree context menu. However, that&rsquo;s not a very manageable solution. An alternative way is to create a set of web blocks that we don&rsquo;t use in any page, and use them just to define these style sheets. The platform will still deploy their style sheet files, even if the blocks themselves aren&rsquo;t used, and we can then reference those files in the page.</p>
+<p>
+	For #2, the AddStyleSheetTag action from the HTTPRequestHandler extension seems an obvious choice, but that will put the &lt;link&gt; tag at the beginning of the &lt;head&gt; section. As we want our dynamic style sheets to override the static style sheets, we must include them at the end, so this option doesn&rsquo;t work for us. Fortunately, we can also do this easily by using a little bit of JavaScript. For a complete example, take a look at this eSpace:</p>
+<p>
+	<a href="/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>

@@ -1,0 +1,59 @@
+---
+layout: post
+title: "StaticStringDictionary - Fast Switching with LINQ revisited"
+comments: true
+---
+<p>
+	Expression trees are one of the more powerful features of C#. They let you manipulate code in ways that almost remind you of LISP macros (but at runtime instead of compile time). Since I discovered them, I managed to eliminate almost completely the usage of reflection in my code, replacing it with much faster code using techniques similar to what Roger Alsing described in <a href="http://rogeralsing.com/2008/02/28/linq-expressions-creating-objects/">Linq Expressions - Creating objects</a>. Expression trees also made possible something that I find myself using a lot these days: what Jomo Fisher described in <a href="http://blogs.msdn.com/jomo_fisher/archive/2007/03/28/fast-switching-with-linq.aspx">Fast Switching with LINQ</a>. It&#39;s a great example of the powerful things C# allows you to do with a little creativity. As I used it more and more, I collected a few modifications to the original code, so I though in sharing them here. I named it StaticStringDictionary.</p>
+<p>
+	The main difference of this version from the original code is that I don&#39;t assume that the key being looked up is in the dictionary. That forces me to call string.Equals at the end to check if the key is the correct one. If string.Equals returns false, a fallback function is used. This also invalidates the optimization in the original code that took advantage of different keys with the same value. I also made StaticStringDictionary&lt;T&gt; implement IDictionary&lt;string, T&gt; so it would be easier to adapt existing code.</p>
+<p>
+	Unfortunately I also stumbled over some problems with certain dictionaries, similar to the ones that Raptor-75 wrote about in the comments of the original article. After a few hours of debugging together with Rui Eug&eacute;nio (and also with the help of <a href="http://blogs.msdn.com/charlie/archive/2008/01/31/expression-tree-basics.aspx">Expression Tree Visualizer</a> and <a href="http://www.manuelabadia.com/blog/PermaLink,guid,9160035f-490f-46bd-ab55-516b5c7545af.aspx">StructsViz DebuggerVisualizer</a>), we managed to fix all the problems we found. The comparer was changed to ensure the characters of indices already tested are ignored for the ordering, and in some situations the algorithm has to some backtracking.</p>
+<p>
+	Without further due, here&#39;s the code:</p>
+<script src="https://gist.github.com/1225796.js"></script>
+<p>
+	And here&#39;s the test case for Raptor-75&#39;s problem:</p>
+<div>
+	<pre style="BORDER-BOTTOM-STYLE: none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; BORDER-RIGHT-STYLE: none; BACKGROUND-COLOR: #f4f4f4; MARGIN: 0em; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; BORDER-TOP-STYLE: none; COLOR: black; FONT-SIZE: 8pt; BORDER-LEFT-STYLE: none; OVERFLOW: visible; PADDING-TOP: 0px">
+<span style="COLOR: #0000ff">public</span> <span style="COLOR: #0000ff">static</span> <span style="COLOR: #0000ff">void</span> Main() {
+
+   var dict = StaticStringDictionary.Create(
+       <span style="COLOR: #0000ff">new</span> Dictionary&lt;<span style="COLOR: #0000ff">string</span>, <span style="COLOR: #0000ff">int</span>&gt; {
+           {<span style="COLOR: #006080">&quot;Ado&quot;</span>, 0},
+           {<span style="COLOR: #006080">&quot;A2o&quot;</span>, 1},
+           {<span style="COLOR: #006080">&quot;A2i&quot;</span>, 2},
+           {<span style="COLOR: #006080">&quot;B2o&quot;</span>, 3},
+           {<span style="COLOR: #006080">&quot;AdoX&quot;</span>, 4},
+           {<span style="COLOR: #006080">&quot;AdPX&quot;</span>, 5}
+       },
+       key =&gt; -1);
+
+    Test(<span style="COLOR: #006080">&quot;Ado&quot;</span>, dict);
+    Test(<span style="COLOR: #006080">&quot;A2o&quot;</span>, dict);
+    Test(<span style="COLOR: #006080">&quot;A2i&quot;</span>, dict);
+    Test(<span style="COLOR: #006080">&quot;B2o&quot;</span>, dict);
+    Test(<span style="COLOR: #006080">&quot;AdoX&quot;</span>, dict);
+    Test(<span style="COLOR: #006080">&quot;AdPX&quot;</span>, dict);
+    Test(<span style="COLOR: #006080">&quot;xpto&quot;</span>, dict);
+}
+
+<span style="COLOR: #0000ff">private</span> <span style="COLOR: #0000ff">static</span> <span style="COLOR: #0000ff">void</span> Test(<span style="COLOR: #0000ff">string</span> key, IDictionary&lt;<span style="COLOR: #0000ff">string</span>, <span style="COLOR: #0000ff">int</span>&gt; dict) {
+    Console.WriteLine(key + <span style="COLOR: #006080">&quot;: &quot;</span> + dict[key]);
+}</pre>
+</div>
+<p>
+	It should produce this output when run:</p>
+<div>
+	<pre style="BORDER-BOTTOM-STYLE: none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; BORDER-RIGHT-STYLE: none; BACKGROUND-COLOR: #f4f4f4; MARGIN: 0em; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; BORDER-TOP-STYLE: none; COLOR: black; FONT-SIZE: 8pt; BORDER-LEFT-STYLE: none; OVERFLOW: visible; PADDING-TOP: 0px">
+Ado: 0
+A2o: 1
+A2i: 2
+B2o: 3
+AdoX: 4
+AdPX: 5
+xpto: -1</pre>
+</div>
+<p>
+	I also found useful to define this variation when I also need to do reverse lookups:</p>
+<script src="https://gist.github.com/1225797.js"></script>

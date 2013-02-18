@@ -1,0 +1,49 @@
+---
+layout: post
+title: "Counting the number of messages in a Message Queue in .NET"
+comments: true
+---
+<p>
+	.NET includes a managed MSMQ API (System.Messaging) to send and receive messages, but unfortunately there&#39;s a key functionality missing: obtaining the number of messages currently in the queue. Yoel Arnon talks about this problem with more detail <a href="http://msmq.spaces.live.com/Blog/cns!1pGjsZEQBluYM9y4YjJoNkTg!113.entry" title="Counting the number of messages in a queue">here</a> and <a href="http://msmq.spaces.live.com/blog/cns!393534E869CE55B7!121.entry" title="Counting messages in Queue - the .NET version">here</a>. After reading that, we learn that there are three ways to overcome this limitation: using the MSMQ performance counters (with the .NET Performance Counter API or via WMI), using the MSMQ COM wrapper, or using the MSMQ Admin API directly. The first option is not very reliable and the second one is not available on all versions of MSMQ, so the third one is the preferable way. It&#39;s also the most complex. Jared Evans has explained how to do it using a C++ Managed wrapper <a href="http://www.jaredlog.com/?p=101">here</a>, but that approach adds some complexity to the deployment of your application. It forces you to redistribute the Microsoft Visual C++ Redistributable Package, and if you want to support the x64 versions of Windows, you have to build the C++ wrapper for both x86 and x64 and have additional logic in the application installer to know which version of your assembly to install (and the same for the Visual C++ Redistributable which also has two versions). Some months ago, I upgraded my home PC to Windows Vista x64, so at the time I decided to develop a C# only solution for this, as there wasn&#39;t any publicly available on the net.</p>
+<p>
+	The first approach I tried was to look at the mq.h file and translate all the required structures to C#. This proved to be a nightmare, as at the time the <a href="http://www.codeplex.com/clrinterop">P/Invoke Interop Assistant</a> hadn&#39;t been created yet and the structures proved to be a little complex. So instead of trying to translate the whole structures correctly, I turned on the debugger and started examining the fields that were really needed, defining dummy spacer fields for the rest. This took a while, but it was worth it. Here&#39;s the code:</p>
+<script src="https://gist.github.com/1225789.js"></script>
+<p>
+	Note that you&#39;ll have to go to the project properties and check the &quot;Allow unsafe code&quot; option for this to build.</p>
+<p>
+	After building and running, it should give you the following output:</p>
+<div>
+	<pre style="BORDER-BOTTOM-STYLE: none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; BORDER-RIGHT-STYLE: none; BACKGROUND-COLOR: #f4f4f4; MARGIN: 0em; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; BORDER-TOP-STYLE: none; COLOR: black; FONT-SIZE: 8pt; BORDER-LEFT-STYLE: none; OVERFLOW: visible; PADDING-TOP: 0px">
+Count should be 0: 0
+Count should be 1: 1
+Count should be 2: 2
+Count should be 1: 1
+Count should be 2: 2
+Count should be 0: 0</pre>
+</div>
+<style type="text/css">
+<![CDATA[csharpcode, .csharpcode pre
+{
+	font-size: small;
+	color: black;
+	font-family: consolas, "Courier New", courier, monospace;
+	background-color: #ffffff;
+	/*white-space: pre;*/
+}
+.csharpcode pre { margin: 0em; }
+.csharpcode .rem { color: #008000; }
+.csharpcode .kwrd { color: #0000ff; }
+.csharpcode .str { color: #006080; }
+.csharpcode .op { color: #0000c0; }
+.csharpcode .preproc { color: #cc6633; }
+.csharpcode .asp { background-color: #ffff00; }
+.csharpcode .html { color: #800000; }
+.csharpcode .attr { color: #ff0000; }
+.csharpcode .alt 
+{
+	background-color: #f4f4f4;
+	width: 100%;
+	margin: 0em;
+}
+.csharpcode .lnum { color: #606060; }
+]]
