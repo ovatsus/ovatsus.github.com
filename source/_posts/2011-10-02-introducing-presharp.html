@@ -3,50 +3,57 @@ layout: post
 title: "Introducing PreSharp"
 comments: true
 ---
-<h3>Background</h3>  <p>Back in 2004, I was doing some code-generation work as part of the <a href="http://www.gsd.inesc-id.pt/project-pages/past-projects/obiwan">OBIWAN</a> project. When I started, CodeDom was being used to do the work, but I really didn’t like it because it made the generator code very hard to read and modify. Realistically, I would not need to support any other language than C#, so I started looking for alternatives. <a href="http://www.codesmithtools.com/product/generator">CodeSmith</a> was very popular at the time for generating type-safe collections (.NET 2.0 generics didn’t exist yet), but it was targeted at one-shot generations, and not at creating code generation code. Then I found a very simple tool named <a href="http://web.archive.org/web/20060726075638/http://www.inmetrix.com/">CodeGen</a> that appealed to me. I had been playing around with the <a href="http://www.boost.org/doc/libs/?view=category_Preprocessor">Boost Preprocessor library</a> recently, so I really liked the idea of using the preprocessor. I did a few tweaks to it and was able to use it for my needs at the time. Later on, around mid-2007, I needed to do code-generation again, so I took this tool and added a good amount of more power to it. At this time, it was very far apart from the original code, so I re-baptized it as PreSharp and published it to CodePlex. I never got around to do any documentation for it, so I’m making this post to try to compensate for that. I also moved the project recently from CodePlex to <a href="https://github.com/ovatsus/PreSharp">GitHub</a>.</p><h3>PreSharp as a C# Preprocessor</h3>  <p>Let’s say we’re using .NET 2.0 which doesn’t have the Func&lt;&gt; delegates and we want to define our own: </p>  <pre class="brush: csharp;">public delegate TResult Func&lt;TResult&gt;();
-public delegate TResult Func&lt;T1, TResult&gt;(T1 arg1);
-public delegate TResult Func&lt;T1, T2, TResult&gt;(T1 arg1, T2 arg2);
-public delegate TResult Func&lt;T1, T2, T3, TResult&gt;(T1 arg1, T2 arg2, T3 arg3);</pre>
+<h3>Background</h3>  <p>Back in 2004, I was doing some code-generation work as part of the <a href="http://www.gsd.inesc-id.pt/project-pages/past-projects/obiwan">OBIWAN</a> project. When I started, CodeDom was being used to do the work, but I really didn’t like it because it made the generator code very hard to read and modify. Realistically, I would not need to support any other language than C#, so I started looking for alternatives. <a href="http://www.codesmithtools.com/product/generator">CodeSmith</a> was very popular at the time for generating type-safe collections (.NET 2.0 generics didn’t exist yet), but it was targeted at one-shot generations, and not at creating code generation code. Then I found a very simple tool named <a href="http://web.archive.org/web/20060726075638/http://www.inmetrix.com/">CodeGen</a> that appealed to me. I had been playing around with the <a href="http://www.boost.org/doc/libs/?view=category_Preprocessor">Boost Preprocessor library</a> recently, so I really liked the idea of using the preprocessor. I did a few tweaks to it and was able to use it for my needs at the time. Later on, around mid-2007, I needed to do code-generation again, so I took this tool and added a good amount of more power to it. At this time, it was very far apart from the original code, so I re-baptized it as PreSharp and published it to CodePlex. I never got around to do any documentation for it, so I’m making this post to try to compensate for that. I also moved the project recently from CodePlex to <a href="https://github.com/ovatsus/PreSharp">GitHub</a>.</p><h3>PreSharp as a C# Preprocessor</h3>  <p>Let’s say we’re using .NET 2.0 which doesn’t have the Func&lt;&gt; delegates and we want to define our own: </p>
+{% codeblock lang:csharp %}
+public delegate TResult Func<TResult>();
+public delegate TResult Func<T1, TResult>(T1 arg1);
+public delegate TResult Func<T1, T2, TResult>(T1 arg1, T2 arg2);
+public delegate TResult Func<T1, T2, T3, TResult>(T1 arg1, T2 arg2, T3 arg3);
+{% endcodeblock %}
 
 <p>This gets tedious really quickly, so let’s use PreSharp to generate this for us:</p>
 
-<pre class="brush: csharp;">#if PRESHARP_TEMPLATE
-&lt;% for (int i = 0; i &lt;= 10; ++i) { %&gt;
-public delegate TResult Func&lt;&lt;%
-       for (int j = 1; j &lt;= i; ++j) { %&gt;T&lt;%= j %&gt;, &lt;% }
-                                 %&gt;TResult&gt;(&lt;%
-       for (int j = 1; j &lt;= i; ++j) { %&gt;&lt;%= j == 1 ? string.Empty : &quot;, &quot; %&gt;T&lt;%= j %&gt; arg&lt;%= j %&gt;&lt;% }
-                                                %&gt;);
-&lt;% } %&gt;
-#endif</pre>
+{% codeblock lang:csharp %}
+#if PRESHARP_TEMPLATE
+<% for (int i = 0; i <= 10; ++i) { %>
+public delegate TResult Func<<%
+       for (int j = 1; j <= i; ++j) { %>T<%= j %>, <% }
+                                 %>TResult>(<%
+       for (int j = 1; j <= i; ++j) { %><%= j == 1 ? string.Empty : ", " %>T<%= j %> arg<%= j %><% }
+                                                %>);
+<% } %>
+#endif
+{% endcodeblock %}
 
 <p align="left">Now if we run <a href="https://github.com/downloads/ovatsus/PreSharp/PreSharp.exe">PreSharp.exe</a> &lt;file.cs&gt;, that region of code will be turned into this:</p>
 
-<pre class="brush: csharp;">#if PRESHARP_TEMPLATE
-&lt;% for (int i = 0; i &lt;= 5; ++i) { %&gt;
-public delegate TResult Func&lt;&lt;%
-       for (int j = 1; j &lt;= i; ++j) { %&gt;T&lt;%= j %&gt;, &lt;% }
-                                 %&gt;TResult&gt;(&lt;%
-       for (int j = 1; j &lt;= i; ++j) { %&gt;&lt;%= j == 1 ? string.Empty : &quot;, &quot; %&gt;T&lt;%= j %&gt; arg&lt;%= j %&gt;&lt;% }
-                                                %&gt;);
-&lt;% } %&gt;
+{% codeblock lang:csharp %}
+#if PRESHARP_TEMPLATE
+<% for (int i = 0; i <= 5; ++i) { %>
+public delegate TResult Func<<%
+       for (int j = 1; j <= i; ++j) { %>T<%= j %>, <% }
+                                 %>TResult>(<%
+       for (int j = 1; j <= i; ++j) { %><%= j == 1 ? string.Empty : ", " %>T<%= j %> arg<%= j %><% }
+                                                %>);
+<% } %>
 #else
 #region PreSharp Generated
 
-public delegate TResult Func&lt;TResult&gt;();
+public delegate TResult Func<TResult>();
 
-public delegate TResult Func&lt;T1, TResult&gt;(T1 arg1);
+public delegate TResult Func<T1, TResult>(T1 arg1);
 
-public delegate TResult Func&lt;T1, T2, TResult&gt;(T1 arg1, T2 arg2);
+public delegate TResult Func<T1, T2, TResult>(T1 arg1, T2 arg2);
 
-public delegate TResult Func&lt;T1, T2, T3, TResult&gt;(T1 arg1, T2 arg2, T3 arg3);
+public delegate TResult Func<T1, T2, T3, TResult>(T1 arg1, T2 arg2, T3 arg3);
 
-public delegate TResult Func&lt;T1, T2, T3, T4, TResult&gt;(T1 arg1, T2 arg2, T3 arg3, T4 arg4);
+public delegate TResult Func<T1, T2, T3, T4, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4);
 
-public delegate TResult Func&lt;T1, T2, T3, T4, T5, TResult&gt;(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
+public delegate TResult Func<T1, T2, T3, T4, T5, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
 
 #endregion
-#endif</pre>
+#endif
+{% endcodeblock %}
 
 <p>So, the syntax is similar to ASP.NET, similarly to most template based code generators: code between &lt;% and %&gt; is executed; code between &lt;%= and %&gt; is evaluated as an expression; and the rest of the code is dumped to the output directly.</p>
 
@@ -54,25 +61,27 @@ public delegate TResult Func&lt;T1, T2, T3, T4, T5, TResult&gt;(T1 arg1, T2 arg2
 
 <p>The real power of PreSharp comes when instead of PRESHARP_TEMPLATE we use PRESHARP_TEMPLATE_LIBRARY. In this case the output after running PreSharp will be the following:</p>
 
-<pre class="brush: csharp;">#if PRESHARP_TEMPLATE_LIBRARY
-&lt;% for (int i = 0; i &lt;= 10; ++i) { %&gt;
-public delegate TResult Func&lt;&lt;%
-       for (int j = 1; j &lt;= i; ++j) { %&gt;T&lt;%= j %&gt;, &lt;% }
-                                 %&gt;TResult&gt;(&lt;%
-       for (int j = 1; j &lt;= i; ++j) { %&gt;&lt;%= j == 1 ? string.Empty : &quot;, &quot; %&gt;T&lt;%= j %&gt; arg&lt;%= j %&gt;&lt;% }
-                                                %&gt;);
-&lt;% } %&gt;
+{% codeblock lang:csharp %}
+#if PRESHARP_TEMPLATE_LIBRARY
+<% for (int i = 0; i <= 10; ++i) { %>
+public delegate TResult Func<<%
+       for (int j = 1; j <= i; ++j) { %>T<%= j %>, <% }
+                                 %>TResult>(<%
+       for (int j = 1; j <= i; ++j) { %><%= j == 1 ? string.Empty : ", " %>T<%= j %> arg<%= j %><% }
+                                                %>);
+<% } %>
 #else
 #region PreSharp Generated
-   for (int i = 0; i &lt;= 10; ++i) {     writer.Write(&quot;\r\n&quot;);
-  writer.Write(&quot;public delegate TResult Func&lt;&quot;);
-       for (int j = 1; j &lt;= i; ++j) {         writer.Write(&quot;T&quot;);writer.Write( j );  writer.Write(&quot;, &quot;); }
-                                   writer.Write(&quot;TResult&gt;(&quot;);
-       for (int j = 1; j &lt;= i; ++j) {         writer.Write( j == 1 ? string.Empty : &quot;, &quot; );writer.Write(&quot;T&quot;);writer.Write( j );writer.Write(&quot; arg&quot;);writer.Write( j );   }
-                                                    writer.Write(&quot;);\r\n&quot;);
-   } writer.Write(&quot;\r\n&quot;);
+   for (int i = 0; i <= 10; ++i) {     writer.Write("\r\n");
+  writer.Write("public delegate TResult Func<");
+       for (int j = 1; j <= i; ++j) {         writer.Write("T");writer.Write( j );  writer.Write(", "); }
+                                   writer.Write("TResult>(");
+       for (int j = 1; j <= i; ++j) {         writer.Write( j == 1 ? string.Empty : ", " );writer.Write("T");writer.Write( j );writer.Write(" arg");writer.Write( j );   }
+                                                    writer.Write(");\r\n");
+   } writer.Write("\r\n");
 #endregion
-#endif</pre>
+#endif
+{% endcodeblock %}
 
 <p>So if we use this in a context were we have an object named <strong>writer</strong> with a method <strong>Write</strong> that accepts a string, it will generate the code for generating the code at runtime. It’s ugly code, but it does the job, and we can collapse all the #region PreSharp Generated blocks. If instead of <strong>writer</strong>, we have a variable named something else, we can suffix the #if directive with _variableName. For example, if we want <strong>output</strong> as the variable name, we’ll use PRESHARP_TEMPLATE_LIBRARY_output.</p>
 
@@ -92,12 +101,13 @@ public delegate TResult Func&lt;&lt;%
 
 <p>Let’s rewrite our example to take advantage of these features. We’ll add a file StringUtils.cs with the build action set to <strong>PreSharpTemplateLibrary</strong>:</p>
 
-<pre class="brush: csharp;">using System.Collections.Generic;
+{% codeblock lang:csharp %}
+using System.Collections.Generic;
 using System.Text;
 
 public static class StringUtils {
 
-    public static string StrCat(this IEnumerable&lt;string&gt; source, string separator) {
+    public static string StrCat(this IEnumerable<string> source, string separator) {
         var sb = new StringBuilder();
         bool first = true;
         foreach (string elem in source) {
@@ -110,20 +120,23 @@ public static class StringUtils {
         }
         return sb.ToString();
     }
-}</pre>
+}
+{% endcodeblock %}
 
 <p>And then change the original PreSharp block to this:</p>
 
-<pre class="brush: csharp;">#if PRESHARP_TEMPLATE
-&lt;%@ Assembly Name=&quot;System.Core&quot; %&gt;
-&lt;%@ Import Namespace=&quot;System.Linq&quot; %&gt;
-&lt;% for (int i = 0; i &lt;= 5; ++i) { 
-    var range = Enumerable.Range(1, i); %&gt;
-public delegate TResult Func&lt;&lt;%= range.Select(ii =&gt; &quot;T&quot; + ii + &quot;, &quot;)
-                                      .StrCat(&quot;&quot;) %&gt;TResult&gt;(&lt;%= range.Select(ii =&gt; &quot;T&quot; + ii + &quot; arg&quot; + ii)
-                                                                      .StrCat(&quot;, &quot;) %&gt;);
-&lt;% } %&gt;
-#endif</pre>
+{% codeblock lang:csharp %}
+#if PRESHARP_TEMPLATE
+<%@ Assembly Name="System.Core" %>
+<%@ Import Namespace="System.Linq" %>
+<% for (int i = 0; i <= 5; ++i) { 
+    var range = Enumerable.Range(1, i); %>
+public delegate TResult Func<<%= range.Select(ii => "T" + ii + ", ")
+                                      .StrCat("") %>TResult>(<%= range.Select(ii => "T" + ii + " arg" + ii)
+                                                                      .StrCat(", ") %>);
+<% } %>
+#endif
+{% endcodeblock %}
 
 <p>In the <strong>Assembly</strong> directive you can specify the full path of an assembly (and in that case don’t forget to include the .dll at the end), or if that assembly is referenced by the Visual Studio project you can just specify the assembly name. PreSharp takes advantage of part of the MSBuild processing to find the file path.</p>
 
@@ -135,13 +148,14 @@ public delegate TResult Func&lt;&lt;%= range.Select(ii =&gt; &quot;T&quot; + ii 
 
 <p>File ViewModelGenerator.cst with build action set to <strong>PreSharpTemplate</strong>:</p>
 
-<pre class="brush: csharp;">#if PRESHARP_TEMPLATE
-&lt;%@ CodeTemplate Language=&quot;C#&quot; TargetLanguage=&quot;C#&quot; %&gt;
-&lt;%@ Assembly Name=&quot;System.Core&quot; %&gt;
-&lt;%@ Assembly Name=&quot;System.Xml&quot; %&gt;
-&lt;%@ Assembly Name=&quot;System.Xml.Linq&quot; %&gt;
-&lt;%@ Include Path=&quot;ViewModelDefinition.cst&quot; %&gt;
-&lt;%@ EntryPoint Statement=&quot;CodeGeneration.ViewModelGenerator.Generate();&quot; %&gt;
+{% codeblock lang:csharp %}
+#if PRESHARP_TEMPLATE
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Assembly Name="System.Xml" %>
+<%@ Assembly Name="System.Xml.Linq" %>
+<%@ Include Path="ViewModelDefinition.cst" %>
+<%@ EntryPoint Statement="CodeGeneration.ViewModelGenerator.Generate();" %>
 #endif
 
 using System.Xml.Linq;
@@ -151,38 +165,42 @@ namespace CodeGeneration {
     class ViewModelGenerator {
 
         public static void Generate() {
-            foreach (var viewXml in XElement.Load(&quot;ViewModel.xml&quot;).Elements(&quot;view&quot;)) {
+            foreach (var viewXml in XElement.Load("ViewModel.xml").Elements("view")) {
                 var view = new View { 
-                    Name = viewXml.Attribute(&quot;name&quot;).Value,
+                    Name = viewXml.Attribute("name").Value,
                 };
-                foreach (var propertyXml in viewXml.Elements(&quot;property&quot;)) {
+                foreach (var propertyXml in viewXml.Elements("property")) {
                     view.Properties.Add(new Property {
-                        PropertyName = propertyXml.Attribute(&quot;name&quot;).Value,
-                        Type = propertyXml.Attribute(&quot;type&quot;).Value,
+                        PropertyName = propertyXml.Attribute("name").Value,
+                        Type = propertyXml.Attribute("type").Value,
                     });
                 }
                 view.Dump();
             }
         }
     }
-}</pre>
+}
+{% endcodeblock %}
 
 <p>File ViewModel.xml with build action set to <strong>PreSharpInput</strong>:</p>
 
-<pre class="brush: xml;">&lt;viewModel&gt;
-    &lt;view name=&quot;View1&quot;&gt;
-        &lt;property name=&quot;Property1&quot; type=&quot;string&quot; /&gt;
-        &lt;property name=&quot;Property2&quot; type=&quot;int&quot; /&gt;
-    &lt;/view&gt;
-    &lt;view name=&quot;View2&quot;&gt;
-        &lt;property name=&quot;Property&quot; type=&quot;bool&quot; /&gt;
-    &lt;/view&gt;
-&lt;/viewModel&gt;</pre>
+{% codeblock lang:xml %}
+<viewModel>
+    <view name="View1">
+        <property name="Property1" type="string" />
+        <property name="Property2" type="int" />
+    </view>
+    <view name="View2">
+        <property name="Property" type="bool" />
+    </view>
+</viewModel>
+{% endcodeblock %}
 
 <p>File ViewModelDefinition.cst with build action set to <strong>PreSharpTemplateInclude</strong>:</p>
 
-<pre class="brush: csharp;">#if PRESHARP_TEMPLATE
-&lt;%@ Import Namespace=&quot;System.Collections.Generic&quot; %&gt;
+{% codeblock lang:csharp %}
+#if PRESHARP_TEMPLATE
+<%@ Import Namespace="System.Collections.Generic" %>
 #endif
 
 namespace CodeGeneration {
@@ -195,22 +213,22 @@ namespace CodeGeneration {
 
     class View {
         public string Name { get; set; }
-        public List&lt;Property&gt; Properties = new List&lt;Property&gt;();
+        public List<Property> Properties = new List<Property>();
 
         public void Dump() {
 #if PRESHARP_TEMPLATE
-&lt;% PreSharp.SetOutput(Name + &quot;.Generated.cs&quot;, PreSharp.OutputType.Compile); %&gt;
+<% PreSharp.SetOutput(Name + ".Generated.cs", PreSharp.OutputType.Compile); %>
 
-public class &lt;%= Name %&gt; : ViewModelBase {
+public class <%= Name %> : ViewModelBase {
 
 #endif
             foreach (var p in Properties) {
 #if PRESHARP_TEMPLATE
 
-    private &lt;%= p.Type %&gt; &lt;%= p.FieldName %&gt;;
-    public &lt;%= p.Type %&gt; &lt;%= p.PropertyName %&gt; {
-        get { return &lt;%= p.FieldName %&gt;; }
-        set { if (&lt;%= p.FieldName %&gt; != value) { &lt;%= p.FieldName %&gt; = value; RaiseNotify(&quot;&lt;%= p.PropertyName %&gt;&quot;); } }
+    private <%= p.Type %> <%= p.FieldName %>;
+    public <%= p.Type %> <%= p.PropertyName %> {
+        get { return <%= p.FieldName %>; }
+        set { if (<%= p.FieldName %> != value) { <%= p.FieldName %> = value; RaiseNotify("<%= p.PropertyName %>"); } }
     }
 
 #endif
@@ -222,7 +240,8 @@ public class &lt;%= Name %&gt; : ViewModelBase {
 #endif
         }
     }
-}</pre>
+}
+{% endcodeblock %}
 
 <p>Let me explain how this works:</p>
 
