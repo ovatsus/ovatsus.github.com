@@ -2,6 +2,7 @@
 layout: post
 title: "StaticStringDictionary - Fast Switching with LINQ revisited"
 comments: true
+categories: [LINQ]
 ---
 <p>
 	Expression trees are one of the more powerful features of C#. They let you manipulate code in ways that almost remind you of LISP macros (but at runtime instead of compile time). Since I discovered them, I managed to eliminate almost completely the usage of reflection in my code, replacing it with much faster code using techniques similar to what Roger Alsing described in <a href="http://rogeralsing.com/2008/02/28/linq-expressions-creating-objects/">Linq Expressions - Creating objects</a>. Expression trees also made possible something that I find myself using a lot these days: what Jomo Fisher described in <a href="http://blogs.msdn.com/jomo_fisher/archive/2007/03/28/fast-switching-with-linq.aspx">Fast Switching with LINQ</a>. It&#39;s a great example of the powerful things C# allows you to do with a little creativity. As I used it more and more, I collected a few modifications to the original code, so I though in sharing them here. I named it StaticStringDictionary.</p>
