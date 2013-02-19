@@ -14,42 +14,25 @@ comments: true
 	Fortunately, Ralf L&auml;mmel proposed such an API in <a href="http://homepages.cwi.nl/~ralf/api-streaming-xml/">API-based XML streaming with FLWOR power and functional updates</a>. I contacted him too ask if he could publicly release the code of his prototype, but he said he couldn&#39;t do it. Nevertheless, he kindly offered to help me develop a similar library myself, so with his help I implemented a small subset of the functionality he described in the paper. It took a while to get the corner cases right, but this is being used in a real-world scenario for some months now, so I think it&#39;s stable enough.</p>
 <p>
 	The interface is the following:</p>
-<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; BACKGROUND: #f4f4f4; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-XElementReader(<span style="COLOR: blue">string</span> path);</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-XElementReader(<span style="COLOR: #2b91af">TextReader</span> reader);</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-XElementReader(<span style="COLOR: #2b91af">XmlReader</span> reader);</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-XElementReader(<span style="COLOR: #2b91af">Stream</span> stream);</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-&nbsp;</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-<span style="COLOR: #2b91af">XName</span> Name { <span style="COLOR: blue">get</span>; }</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-<span style="COLOR: blue">string</span> Value { <span style="COLOR: blue">get</span>; }</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-&nbsp;</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-<span style="COLOR: #2b91af">XAttribute</span> Attribute(<span style="COLOR: #2b91af">XName</span> name);</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-<span style="COLOR: #2b91af">IEnumerable</span>&lt;<span style="COLOR: #2b91af">XAttribute</span>&gt; Attributes();</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-&nbsp;</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-<span style="COLOR: #2b91af">XElementReader</span> FirstElement();</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-<span style="COLOR: #2b91af">XElementReader</span> Element(<span style="COLOR: #2b91af">XName</span> name);</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-<span style="COLOR: #2b91af">IEnumerable</span>&lt;<span style="COLOR: #2b91af">XElementReader</span>&gt; Elements();</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-<span style="COLOR: #2b91af">IEnumerable</span>&lt;<span style="COLOR: #2b91af">XElementReader</span>&gt; Elements(<span style="COLOR: #2b91af">XName</span> name);</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-&nbsp;</div>
-	<div style="BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; PADDING-BOTTOM: 0px; LINE-HEIGHT: 12pt; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 100%; PADDING-RIGHT: 0px; FONT-FAMILY: consolas, &quot;Courier New&quot;, courier, monospace; COLOR: black; FONT-SIZE: 8pt; OVERFLOW: visible; BORDER-TOP: medium none; BORDER-RIGHT: medium none; PADDING-TOP: 0px">
-<span style="COLOR: #2b91af">XElement</span> ToXElement();</div>
-</div>
+{% codeblock lang:csharp %}
+XElementReader(string path);
+XElementReader(TextReader reader);
+XElementReader(XmlReader reader);
+XElementReader(Stream stream);
+ 
+XName Name { get; }
+string Value { get; }
+ 
+XAttribute Attribute(XName name);
+IEnumerable<XAttribute> Attributes();
+ 
+XElementReader FirstElement();
+XElementReader Element(XName name);
+IEnumerable<XElementReader> Elements();
+IEnumerable<XElementReader> Elements(XName name);
+ 
+XElement ToXElement();
+{% endcodeblock %}
 <p></p>
 <p>
 	Although XElementReader looks a lot like a subset of XElement, you still have to remember that it&#39;s using a XmlReader underneath, so after you try to get to any child element, you have changed the reader position.</p>
