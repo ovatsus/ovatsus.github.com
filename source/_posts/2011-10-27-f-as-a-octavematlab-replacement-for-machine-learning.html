@@ -2,6 +2,7 @@
 layout: post
 title: "F# as a Octave/Matlab replacement for Machine Learning"
 comments: true
+alias: [/post/2011/10/27/F-as-a-OctaveMatlab-replacement-for-Machine-Learning.aspx]
 ---
 <p>
 	<strong>EDIT</strong>: As another version of the ml-class course has started, I&#39;ve made the repository private</p>
@@ -11,7 +12,7 @@ comments: true
 	The programming exercises of this class are supposed to be done in Octave or Matlab, and while I understand the advantages of these tools, my past experience (where all the exercises and projects were done either with SAS or with Matlab) shows me that not using a general purpose programming languages doesn&rsquo;t help a lot in turning academic exercises into real world programs. As professor Andrew Ng said in the introduction, one of the goals of the class is for us to put machine learning into practice in real world problems we care about, so I decided that I&rsquo;ll implement all the algorithms and exercises in F#.</p>
 <p>
 	I&rsquo;m using <a href="http://numerics.mathdotnet.com/">Math.NET Numerics</a> for the linear algebra and statistics, and while some operations are not as simple as in Octave, being able to use higher order functions instead of for loops compensates for it. As an example, look at the code for feature normalization in Octave:</p>
-<pre class="brush: pascal;">
+{% codeblock lang:matlab %}
 function [X_norm, mu, sigma] = featureNormalize(X)
 
 X_norm = X;
@@ -24,34 +25,38 @@ for i = 1:m
     X_norm(i,:) = (X(i,:) - mu) ./ sigma;
 end
 
-end</pre>
+end
+{% endcodeblock %}
 <p>
 	And here&rsquo;s the equivalent F# code:</p>
-<pre class="brush: fsharp;">
-let featureNormalize (X: #Matrix&lt;float&gt;) =    
+{% codeblock lang:fsharp %}
+let featureNormalize (X: #Matrix<float>) =    
     
-    let &mu; = 
+    let μ = 
         X.ColumnEnumerator() 
-        |&gt; Seq.map (fun (j, col) -&gt; col.Mean()) 
-        |&gt; DenseVector.ofSeq
+        |> Seq.map (fun (j, col) -> col.Mean()) 
+        |> DenseVector.ofSeq
     
-    let &sigma; = 
+    let σ = 
         X.ColumnEnumerator() 
-        |&gt; Seq.map (fun (j, col) -&gt; col.StandardDeviation()) 
-        |&gt; DenseVector.ofSeq    
+        |> Seq.map (fun (j, col) -> col.StandardDeviation()) 
+        |> DenseVector.ofSeq    
     
     let X = 
-        X |&gt; Matrix.mapRows (fun i row -&gt; (row - &mu;) ./ &sigma;)
+        X |> Matrix.mapRows (fun i row -> (row - μ) ./ σ)
     
-    (X, &mu;, &sigma;)</pre>
+    (X, μ, σ)
+{% endcodeblock %}
 <p>
 	Even though calculating the mean and standard deviation is a little more elaborate than using just a built-in function call, the actual normalization code is more straightforward, so we&rsquo;re not really loosing any productivity by using F#, considering that we have the same kind of development interactivity thanks to F# Interactive. Other nice touches in F# are the ability to use greek letters and the possibility of separating the data from the algorithm parameters by means of the pipelining operator (|&gt;). By leaving all the data parameters at the end and aggregating them into a tuple, we can turn this code:</p>
-<pre class="brush: fsharp;">
-LinearRegression.plotGradientDescentIterations &alpha; num_iters XNorm y</pre>
+{% codeblock lang:fsharp %}
+LinearRegression.plotGradientDescentIterations α num_iters XNorm y
+{% endcodeblock %}
 <p>
 	into this:</p>
-<pre class="brush: fsharp;">
-(XNorm, y) |&gt; LinearRegression.plotGradientDescentIterations &alpha; num_iters</pre>
+{% codeblock lang:fsharp %}
+(XNorm, y) |> LinearRegression.plotGradientDescentIterations α num_iters
+{% endcodeblock %}
 <p>
 	which I think is clearer.</p>
 <p>
@@ -72,7 +77,7 @@ LinearRegression.plotGradientDescentIterations &alpha; num_iters XNorm y</pre>
 	<strong>Edit:</strong></p>
 <p>
 	As some people have pointed out in the comments, the Octave version of feature normalization could also be done without iteration:</p>
-<pre class="brush: pas;">
+{% codeblock lang:matlab %}
 function [X_norm, mu, sigma] = featureNormalize(X)
 
 mu = mean(X);
@@ -80,25 +85,27 @@ sigma = std(X);
 m = size(X, 1);
 X_norm = (X - repmat(mu, m, 1)) / diag(sigma);
 
-end</pre>
+end
+{% endcodeblock %}
 <p>
 	In this case the corresponding F# code would be:</p>
-<pre class="brush: fsharp;">
-let featureNormalize (X: Matrix&lt;float&gt;) =
+{% codeblock lang:fsharp %}
+let featureNormalize (X: Matrix<float>) =
     
-    let &mu; = 
+    let μ = 
         X.ColumnEnumerator() 
-        |&gt; Seq.map (fun (j, col) -&gt; col.Mean()) 
-        |&gt; DenseVector.ofSeq
+        |> Seq.map (fun (j, col) -> col.Mean()) 
+        |> DenseVector.ofSeq
     
-    let &sigma; = 
+    let σ = 
         X.ColumnEnumerator() 
-        |&gt; Seq.map (fun (j, col) -&gt; col.StandardDeviation()) 
-        |&gt; DenseVector.ofSeq    
+        |> Seq.map (fun (j, col) -> col.StandardDeviation()) 
+        |> DenseVector.ofSeq    
 
-    let &mu;Expanded = DenseMatrix.initRow X.RowCount X.ColumnCount (fun _ -&gt; &mu;)
-    let &sigma;Diag = DenseMatrix.diag &sigma;
+    let μExpanded = DenseMatrix.initRow X.RowCount X.ColumnCount (fun _ -> μ)
+    let σDiag = DenseMatrix.diag σ
 
-    let X = (X - &mu;Expanded) * &sigma;Diag.Inverse()
+    let X = (X - μExpanded) * σDiag.Inverse()
 
-    (X, &mu;, &sigma;)</pre>
+    (X, μ, σ)
+{% endcodeblock %}
