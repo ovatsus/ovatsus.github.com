@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: LINQ | Code Beside]]></title>
+  <link href="http://ovatsus.github.com/blog/tags/linq/atom.xml" rel="self"/>
+  <link href="http://ovatsus.github.com/"/>
+  <updated>2013-02-20T01:23:20+00:00</updated>
+  <id>http://ovatsus.github.com/</id>
+  <author>
+    <name><![CDATA[Gustavo Guerra]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Streaming XML input with XElementReader]]></title>
+    <link href="http://ovatsus.github.com/blog/2008/09/08/streaming-xml-input-with-xelementreader"/>
+    <updated>2008-09-08T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2008/09/08/streaming-xml-input-with-xelementreader</id>
+    <content type="html"><![CDATA[<p>
+    <strong>Updated on 2008/09/17</strong>: Fixed problem when skipping elements.<br />
+    <strong>Updated on 2008/09/15</strong>: Fixed problem when trying to read missing attributes.</p>
+
+
+<p>
+    One of new features introduced in .NET 3.5 that I welcomed the most was LINQ to XML. The old DOM API was a bit clumsy to use, and the simple fact that you don&#39;t need owner documents any more makes the new XElement much more flexible and pleasant to work with than the old XmlElement.</p>
+
+
+<p>
+    Also new is an API for streaming XML output, XStreamingElement, that by using deferred execution gives you SAX-like performance on a DOM-like API. There&#39;s no streaming XML input API, though, so although you can now get away with not having to use XmlWriter any more, you&#39;ll still need to use XmlReader when you want good performance on large documents. During the LINQ to XML development, the XML Team considered such an API, but they decided not to do it for Orcas.</p>
+
+
+<p>
+    Fortunately, Ralf L&auml;mmel proposed such an API in <a href="http://homepages.cwi.nl/~ralf/api-streaming-xml/">API-based XML streaming with FLWOR power and functional updates</a>. I contacted him too ask if he could publicly release the code of his prototype, but he said he couldn&#39;t do it. Nevertheless, he kindly offered to help me develop a similar library myself, so with his help I implemented a small subset of the functionality he described in the paper. It took a while to get the corner cases right, but this is being used in a real-world scenario for some months now, so I think it&#39;s stable enough.</p>
+
+
+<p>
+    The interface is the following:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="kt">string</span> <span class="n">path</span><span class="p">);</span>
+</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">TextReader</span> <span class="n">reader</span><span class="p">);</span>
+</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">XmlReader</span> <span class="n">reader</span><span class="p">);</span>
+</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">Stream</span> <span class="n">stream</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="n">XName</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="kt">string</span> <span class="n">Value</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="n">XAttribute</span> <span class="n">Attribute</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XAttribute</span><span class="p">&gt;</span> <span class="n">Attributes</span><span class="p">();&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="n">XElementReader</span> <span class="n">FirstElement</span><span class="p">();</span>
+</span><span class='line'><span class="n">XElementReader</span> <span class="nf">Element</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XElementReader</span><span class="p">&gt;</span> <span class="n">Elements</span><span class="p">();</span>
+</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XElementReader</span><span class="p">&gt;</span> <span class="n">Elements</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="n">XElement</span> <span class="n">ToXElement</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p></p>
+
+
+<p>
+    Although XElementReader looks a lot like a subset of XElement, you still have to remember that it&#39;s using a XmlReader underneath, so after you try to get to any child element, you have changed the reader position.</p>
+
+
+<p>
+    For example, if you have an element like &lt;Root&gt;&lt;A/&gt;&lt;B/&gt;&lt;A/&gt;&lt;B/&gt;&lt;/Root&gt; and call .Element(&quot;A&quot;) twice and then .Element(&quot;B&quot;) twice, the second call for B will return null. If you instead call .Elements(&quot;A&quot;) and then .Elements(&quot;B&quot;), you&#39;ll get two A elements, but no B elements at all. So to do this right, you have iterate on .Elements() and check the .Name property to see if you&#39;re in an A or in a B element.</p>
+
+
+<p>
+    This read once nature sometimes also complicates debugging. To help with that, you can define XML_DEBUG_MODE to force XElementReader to use a XElement behind the covers instead of a XmlReader, so you can add watches freely without worrying about side effects. But remember to fully test with this conditional compilation symbol off.</p>
+
+
+<p>
+    Here&#39;s the full code:</p>
+
+
+<script src="https://gist.github.com/1225799.js"></script>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[StaticStringDictionary - Fast Switching with LINQ revisited]]></title>
+    <link href="http://ovatsus.github.com/blog/2008/08/28/staticstringdictionary-fast-switching-with-linq-revisited"/>
+    <updated>2008-08-28T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2008/08/28/staticstringdictionary-fast-switching-with-linq-revisited</id>
+    <content type="html"><![CDATA[<p>
+    Expression trees are one of the more powerful features of C#. They let you manipulate code in ways that almost remind you of LISP macros (but at runtime instead of compile time). Since I discovered them, I managed to eliminate almost completely the usage of reflection in my code, replacing it with much faster code using techniques similar to what Roger Alsing described in <a href="http://rogeralsing.com/2008/02/28/linq-expressions-creating-objects/">Linq Expressions - Creating objects</a>. Expression trees also made possible something that I find myself using a lot these days: what Jomo Fisher described in <a href="http://blogs.msdn.com/jomo_fisher/archive/2007/03/28/fast-switching-with-linq.aspx">Fast Switching with LINQ</a>. It&#39;s a great example of the powerful things C# allows you to do with a little creativity. As I used it more and more, I collected a few modifications to the original code, so I though in sharing them here. I named it StaticStringDictionary.</p>
+
+
+<p>
+    The main difference of this version from the original code is that I don&#39;t assume that the key being looked up is in the dictionary. That forces me to call string.Equals at the end to check if the key is the correct one. If string.Equals returns false, a fallback function is used. This also invalidates the optimization in the original code that took advantage of different keys with the same value. I also made StaticStringDictionary&lt;T&gt; implement IDictionary&lt;string, T&gt; so it would be easier to adapt existing code.</p>
+
+
+<p>
+    Unfortunately I also stumbled over some problems with certain dictionaries, similar to the ones that Raptor-75 wrote about in the comments of the original article. After a few hours of debugging together with Rui Eug&eacute;nio (and also with the help of <a href="http://blogs.msdn.com/charlie/archive/2008/01/31/expression-tree-basics.aspx">Expression Tree Visualizer</a> and <a href="http://www.manuelabadia.com/blog/PermaLink,guid,9160035f-490f-46bd-ab55-516b5c7545af.aspx">StructsViz DebuggerVisualizer</a>), we managed to fix all the problems we found. The comparer was changed to ensure the characters of indices already tested are ignored for the ordering, and in some situations the algorithm has to some backtracking.</p>
+
+
+<p>
+    Without further due, here&#39;s the code:</p>
+
+
+<script src="https://gist.github.com/1225796.js"></script>
+
+
+<p>
+    And here&#39;s the test case for Raptor-75&#39;s problem:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">()</span> <span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>   <span class="kt">var</span> <span class="n">dict</span> <span class="p">=</span> <span class="n">StaticStringDictionary</span><span class="p">.</span><span class="n">Create</span><span class="p">(&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>   <span class="k">new</span> <span class="n">Dictionary</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="kt">string</span><span class="p">,</span> <span class="kt">int</span><span class="p">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="p">{</span>
+</span><span class='line'>       <span class="p">{</span><span class="s">&quot;Ado&quot;</span><span class="p">,</span> <span class="m">0</span><span class="p">},</span>
+</span><span class='line'>       <span class="p">{</span><span class="s">&quot;A2o&quot;</span><span class="p">,</span> <span class="m">1</span><span class="p">},</span>
+</span><span class='line'>       <span class="p">{</span><span class="s">&quot;A2i&quot;</span><span class="p">,</span> <span class="m">2</span><span class="p">},</span>
+</span><span class='line'>       <span class="p">{</span><span class="s">&quot;B2o&quot;</span><span class="p">,</span> <span class="m">3</span><span class="p">},</span>
+</span><span class='line'>       <span class="p">{</span><span class="s">&quot;AdoX&quot;</span><span class="p">,</span> <span class="m">4</span><span class="p">},</span>
+</span><span class='line'>       <span class="p">{</span><span class="s">&quot;AdPX&quot;</span><span class="p">,</span> <span class="m">5</span><span class="p">}</span>
+</span><span class='line'>   <span class="p">},</span>
+</span><span class='line'>   <span class="n">key</span> <span class="p">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="p">-</span><span class="m">1</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;Ado&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;A2o&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;A2i&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;B2o&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;AdoX&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;AdPX&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;xpto&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="n">Test</span><span class="p">(</span><span class="kt">string</span> <span class="n">key</span><span class="p">,</span> <span class="n">IDictionary</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="kt">string</span><span class="p">,</span> <span class="kt">int</span><span class="p">&gt;</span> <span class="n">dict</span><span class="p">)</span> <span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">key</span> <span class="p">+</span> <span class="s">&quot;: &quot;</span> <span class="p">+</span> <span class="n">dict</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>
+    It should produce this output when run:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Ado: 0
+</span><span class='line'>A2o: 1
+</span><span class='line'>A2i: 2
+</span><span class='line'>B2o: 3
+</span><span class='line'>AdoX: 4
+</span><span class='line'>AdPX: 5
+</span><span class='line'>xpto: -1</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>
+    I also found useful to define this variation when I also need to do reverse lookups:</p>
+
+
+<script src="https://gist.github.com/1225797.js"></script>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Expression CodeDom Visualizer]]></title>
+    <link href="http://ovatsus.github.com/blog/2008/08/28/expression-codedom-visualizer"/>
+    <updated>2008-08-28T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2008/08/28/expression-codedom-visualizer</id>
+    <content type="html"><![CDATA[<p>
+    Can Erten created a very useful expression tree to CodeDom converter. He wrote about it here: <a href="http://www.canerten.com/meta-programming-with-expression-trees-lambdas-to-codedom-conversion/">Expression Trees-Lambdas to CodeDom Conversion</a>. I created a visual studio debugger visualizer based on it. You can find it in attachment. Just copy the assembly to My Documents\Visual Studio 2008\Visualizers and you&#39;re set. I also attached the full source code.</p>
+
+
+<p>
+    <a href="http://ovatsus.github.com/userfiles/ExpressionCodeDomVisualizer.dll">ExpressionCodeDomVisualizer.dll</a>&nbsp;<a href="http://ovatsus.github.com/userfiles/ExpressionCodeDomVisualizerSourceCode.zip">ExpressionCodeDomVisualizerSourceCode.zip</a></p>
+
+]]></content>
+  </entry>
+  
+</feed>

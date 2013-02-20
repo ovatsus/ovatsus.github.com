@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Agile Platform Tips & Tricks #6 - Code Beside</title>
+  <meta name="author" content="Gustavo Guerra">
+
+  
+  <meta name="description" content="Calling Screen Actions from custom JavaScript events Imagine you&rsquo;re using the Tabs_ClientSide from RichWidgets and you&rsquo;re showing a list &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-6">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="http://feeds.feedburner.com/CodeBeside" rel="alternate" title="Code Beside" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-5385973-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Code Beside</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://feeds.feedburner.com/CodeBeside" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ovatsus.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Agile Platform Tips & Tricks #6</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-18T00:00:00+01:00" pubdate data-updated="true">Aug 18<span>th</span>, 2010</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h4>
+	Calling Screen Actions from custom JavaScript events</h4>
+<p>
+	Imagine you&rsquo;re using the Tabs_ClientSide from RichWidgets and you&rsquo;re showing a list in each tab. Instead of loading all the lists when the screen is loaded, you want to only populate each list when the corresponding tab is activated. The Tabs_ClientSide already provides a way to call custom JavaScript code on tab activation, so if we could call a Screen Action from JavaScript code, we could make that Screen Action refresh the table on the corresponding tab. So, how can we do that?</p>
+<p>
+	The AJAX capabilities of the Agile Platform already allow you to trigger the execution of Screen Actions when some standard JavaScript events are raised. For example, if you specify a Screen Action in the OnChange property of an Input widget, when the end-user types in something in the correspondent input displayed by the browser, that Screen Action will be called at the server. To do this, the Agile Platform generates custom JavaScript code that will send an AJAX request to the server when the native onchange event of that input HTML element is triggered. So, if we add an hidden Input widget to the page and on the OnTabActivation parameter of the Tabs_ClientSide we put some JavaScript code to trigger that onchange event manually, we know that the platform will take care of calling the Screen Action specified in the OnChange of that Input widget. This way we can put there the logic to refresh the list inside the tab that was activated in that Screen Action. Unfortunately, we have no way of telling to pass the tab which was activated as a parameter of that Screen Action, and that forces us to have to an hidden Input for each tab, and decide which hidden Input to trigger in JavaScript.</p>
+<p>
+	Fortunately, there&rsquo;s a simpler way to do this. It involves using the OnNotify property of a Web Block widget, call it by using OsNotifyWidget JavaScript function,&nbsp; and in the associated Screen Action using the NotifyWidgetGetMessage built-in action to get the tab that was activated. Instead of explaining it in detail, I&rsquo;ve made a sample eSpace that exemplifies this scenario. Here it is:</p>
+<p>
+	<a href="/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Gustavo Guerra</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-18T00:00:00+01:00" pubdate data-updated="true">Aug 18<span>th</span>, 2010</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/tags/ajax/'>AJAX</a>, <a class='category' href='/blog/tags/outsystems/'>OutSystems</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-6" data-via="ovatsus" data-counturl="http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-6" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2010/08/18/agile-platform-tips-amp-tricks-5" title="Previous Post: Agile Platform Tips & Tricks #5">&laquo; Agile Platform Tips & Tricks #5</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2010/08/23/agile-platform-tips-amp-tricks-7" title="Next Post: Agile Platform Tips & Tricks #7">Agile Platform Tips & Tricks #7 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning">F# as a Octave/Matlab replacement for Machine Learning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/02/introducing-presharp">Introducing PreSharp</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food">Microsoft: please eat some more of your WPF-flavored dog food</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/25/migrating-from-subtext-to-blogenginenet">Migrating from SubText to BlogEngine.NET</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1">Replacing Visual Studio 2010 with SharpDevelop 4.1</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Tags</h1>
+  <span id="tag-cloud">
+    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 113.33333333333333%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
+  </span>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("ovatsus", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/ovatsus" class="twitter-follow-button" data-show-count="true">Follow @ovatsus</a>
+  
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Gustavo Guerra -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'codebesideblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-6';
+        var disqus_url = 'http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-6';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: PreSharp | Code Beside]]></title>
+  <link href="http://ovatsus.github.com/blog/tags/presharp/atom.xml" rel="self"/>
+  <link href="http://ovatsus.github.com/"/>
+  <updated>2013-02-20T01:23:20+00:00</updated>
+  <id>http://ovatsus.github.com/</id>
+  <author>
+    <name><![CDATA[Gustavo Guerra]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Introducing PreSharp]]></title>
+    <link href="http://ovatsus.github.com/blog/2011/10/02/introducing-presharp"/>
+    <updated>2011-10-02T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2011/10/02/introducing-presharp</id>
+    <content type="html"><![CDATA[<h3>Background</h3>
+
+
+<p>  <p>Back in 2004, I was doing some code-generation work as part of the <a href="http://www.gsd.inesc-id.pt/project-pages/past-projects/obiwan">OBIWAN</a> project. When I started, CodeDom was being used to do the work, but I really didn’t like it because it made the generator code very hard to read and modify. Realistically, I would not need to support any other language than C#, so I started looking for alternatives. <a href="http://www.codesmithtools.com/product/generator">CodeSmith</a> was very popular at the time for generating type-safe collections (.NET 2.0 generics didn’t exist yet), but it was targeted at one-shot generations, and not at creating code generation code. Then I found a very simple tool named <a href="http://web.archive.org/web/20060726075638/http://www.inmetrix.com/">CodeGen</a> that appealed to me. I had been playing around with the <a href="http://www.boost.org/doc/libs/?view=category_Preprocessor">Boost Preprocessor library</a> recently, so I really liked the idea of using the preprocessor. I did a few tweaks to it and was able to use it for my needs at the time. Later on, around mid-2007, I needed to do code-generation again, so I took this tool and added a good amount of more power to it. At this time, it was very far apart from the original code, so I re-baptized it as PreSharp and published it to CodePlex. I never got around to do any documentation for it, so I’m making this post to try to compensate for that. I also moved the project recently from CodePlex to <a href="https://github.com/ovatsus/PreSharp">GitHub</a>.</p></p>
+
+<!-- more -->
+
+
+<h3>PreSharp as a C# Preprocessor</h3>
+
+
+<p>  <p>Let’s say we’re using .NET 2.0 which doesn’t have the Func&lt;&gt; delegates and we want to define our own: </p>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">TResult</span><span class="p">&gt;();</span>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">T1</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">);</span>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">T2</span> <span class="n">arg2</span><span class="p">);</span>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">T2</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">T3</span> <span class="n">arg3</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This gets tedious really quickly, so let’s use PreSharp to generate this for us:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="k">if</span> <span class="n">PRESHARP_TEMPLATE</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;=</span> <span class="m">10</span><span class="p">;</span> <span class="p">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;&amp;</span><span class="n">lt</span><span class="p">;%&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>   <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">T</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">j</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;,</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="p">}</span>
+</span><span class='line'>                             <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">TResult</span><span class="p">&amp;</span><span class="n">gt</span><span class="p">;(&amp;</span><span class="n">lt</span><span class="p">;%</span>
+</span><span class='line'>   <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">j</span> <span class="p">==</span> <span class="m">1</span> <span class="p">?</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span> <span class="p">:</span> <span class="s">&quot;, &quot;</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">T</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">j</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">arg</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">j</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="p">}</span>
+</span><span class='line'>                                            <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;);</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="p">}</span> <span class="p">%&gt;&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="n">endif</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p align="left">Now if we run <a href="https://github.com/downloads/ovatsus/PreSharp/PreSharp.exe">PreSharp.exe</a> &lt;file.cs&gt;, that region of code will be turned into this:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="k">if</span> <span class="n">PRESHARP_TEMPLATE</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;=</span> <span class="m">5</span><span class="p">;</span> <span class="p">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;&amp;</span><span class="n">lt</span><span class="p">;%&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>   <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">T</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">j</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;,</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="p">}</span>
+</span><span class='line'>                             <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">TResult</span><span class="p">&amp;</span><span class="n">gt</span><span class="p">;(&amp;</span><span class="n">lt</span><span class="p">;%</span>
+</span><span class='line'>   <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">j</span> <span class="p">==</span> <span class="m">1</span> <span class="p">?</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span> <span class="p">:</span> <span class="s">&quot;, &quot;</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">T</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">j</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">arg</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">j</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="p">}</span>
+</span><span class='line'>                                            <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;);</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="p">}</span> <span class="p">%&gt;&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="k">else</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="n">region</span> <span class="n">PreSharp</span> <span class="n">Generated</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">TResult</span><span class="p">&gt;();&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">T1</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">T2</span> <span class="n">arg2</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">T2</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">T3</span> <span class="n">arg3</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">T4</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">T2</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">T3</span> <span class="n">arg3</span><span class="p">,</span> <span class="n">T4</span> <span class="n">arg4</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">T4</span><span class="p">,</span> <span class="n">T5</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">T2</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">T3</span> <span class="n">arg3</span><span class="p">,</span> <span class="n">T4</span> <span class="n">arg4</span><span class="p">,</span> <span class="n">T5</span> <span class="n">arg5</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="n">endregion</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="n">endif</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>So, the syntax is similar to ASP.NET, similarly to most template based code generators: code between &lt;% and %&gt; is executed; code between &lt;%= and %&gt; is evaluated as an expression; and the rest of the code is dumped to the output directly.</p>
+
+
+
+
+<h3>PreSharp as a Source Code Generator Generator</h3>
+
+
+
+
+<p>The real power of PreSharp comes when instead of PRESHARP_TEMPLATE we use PRESHARP_TEMPLATE_LIBRARY. In this case the output after running PreSharp will be the following:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="k">if</span> <span class="n">PRESHARP_TEMPLATE_LIBRARY</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;=</span> <span class="m">10</span><span class="p">;</span> <span class="p">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;&amp;</span><span class="n">lt</span><span class="p">;%&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>   <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">T</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">j</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;,</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="p">}</span>
+</span><span class='line'>                             <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">TResult</span><span class="p">&amp;</span><span class="n">gt</span><span class="p">;(&amp;</span><span class="n">lt</span><span class="p">;%</span>
+</span><span class='line'>   <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">j</span> <span class="p">==</span> <span class="m">1</span> <span class="p">?</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span> <span class="p">:</span> <span class="s">&quot;, &quot;</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">T</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">j</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">arg</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">j</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="p">}</span>
+</span><span class='line'>                                            <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;);</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="p">}</span> <span class="p">%&gt;&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="k">else</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="n">region</span> <span class="n">PreSharp</span> <span class="n">Generated</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>   <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;=</span> <span class="m">10</span><span class="p">;</span> <span class="p">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>     <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;\r\n&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;public delegate TResult Func&amp;lt;&quot;</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>   <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>         <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;T&quot;</span><span class="p">);</span><span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span> <span class="n">j</span> <span class="p">);</span>  <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;, &quot;</span><span class="p">);</span> <span class="p">}</span>
+</span><span class='line'>                               <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;TResult&amp;gt;(&quot;</span><span class="p">);</span>
+</span><span class='line'>   <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>         <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span> <span class="n">j</span> <span class="p">==</span> <span class="m">1</span> <span class="p">?</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span> <span class="p">:</span> <span class="s">&quot;, &quot;</span> <span class="p">);</span><span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;T&quot;</span><span class="p">);</span><span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span> <span class="n">j</span> <span class="p">);</span><span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot; arg&quot;</span><span class="p">);</span><span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span> <span class="n">j</span> <span class="p">);</span>   <span class="p">}</span>
+</span><span class='line'>                                                <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;);\r\n&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>   <span class="p">}</span> <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;\r\n&quot;</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="n">endregion</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="n">endif</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>So if we use this in a context were we have an object named <strong>writer</strong> with a method <strong>Write</strong> that accepts a string, it will generate the code for generating the code at runtime. It’s ugly code, but it does the job, and we can collapse all the #region PreSharp Generated blocks. If instead of <strong>writer</strong>, we have a variable named something else, we can suffix the #if directive with _variableName. For example, if we want <strong>output</strong> as the variable name, we’ll use PRESHARP_TEMPLATE_LIBRARY_output.</p>
+
+
+
+
+<h3>Visual Studio Integration</h3>
+
+
+
+
+<p>To setup the Visual Studio integration of PreSharp we just need to run it once without parameters. It will copy itself to C:\Program Files (x86)\PreSharp, customize MSBuild Custom.After.Microsoft.Common.targets and set some Visual Studio settings in the registry.</p>
+
+
+
+
+<p>After this is setup, instead of running PreSharp.exe manually, we can just change the build action of the relevant files in Visual Studio from Compile to <strong>PreSharpInplace</strong>. This will make sure PreSharp is run before the compilation phase.</p>
+
+
+
+
+<p>When there is any error in the code inside a PreSharp block, the errors will be displayed in the Visual Studio errors pane, next to the compilation errors, and we can double click them to go to the correct location. In some cases PreSharp fails the column number by a few characters, but the line number is always right.</p>
+
+
+
+
+<p>As this is implemented through MSBuild tasks, it will also work in command line builds. Some other tools use Custom Tools that only work inside Visual Studio (but which have other advantages, like&#160; being able to display generated files below the source file in Solution Explorer).</p>
+
+
+
+
+<h3>Reusing code</h3>
+
+
+
+
+<p>Each PreSharp block is compiled independently of each other. If we need to share code, we must put it in separate files and set the build action to <strong>PreSharpTemplateLibrary</strong>. Then all public classes of those files will be available inside normal PreSharp template blocks. Additionally, you can also use directives inside template blocks to import namespaces and to reference assemblies, by using <strong>&lt;%@ Import Namespace=&quot;NamespaceToImport&quot; %&gt;</strong> and <strong>&lt;%@ Assembly Name=&quot;AssemblyToReference&quot; %&gt;</strong>.</p>
+
+
+
+
+<p>Let’s rewrite our example to take advantage of these features. We’ll add a file StringUtils.cs with the build action set to <strong>PreSharpTemplateLibrary</strong>:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+</span><span class='line'><span class="k">using</span> <span class="nn">System.Text</span><span class="p">;&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">StringUtils</span> <span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="n">StrCat</span><span class="p">(</span><span class="k">this</span> <span class="n">IEnumerable</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="kt">string</span><span class="p">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">source</span><span class="p">,</span> <span class="kt">string</span> <span class="n">separator</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kt">var</span> <span class="n">sb</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="p">();</span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">first</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="kt">string</span> <span class="n">elem</span> <span class="k">in</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">first</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">first</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">sb</span><span class="p">.</span><span class="n">Append</span><span class="p">(</span><span class="n">separator</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="n">sb</span><span class="p">.</span><span class="n">Append</span><span class="p">(</span><span class="n">elem</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">sb</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>And then change the original PreSharp block to this:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="k">if</span> <span class="n">PRESHARP_TEMPLATE</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;&amp;</span><span class="n">lt</span><span class="p">;%</span><span class="err">@</span> <span class="n">Assembly</span> <span class="n">Name</span><span class="p">=</span><span class="s">&quot;System.Core&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%</span><span class="err">@</span> <span class="n">Import</span> <span class="n">Namespace</span><span class="p">=</span><span class="s">&quot;System.Linq&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;=</span> <span class="m">5</span><span class="p">;</span> <span class="p">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="kt">var</span> <span class="n">range</span> <span class="p">=</span> <span class="n">Enumerable</span><span class="p">.</span><span class="n">Range</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">range</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">ii</span> <span class="p">=&gt;</span> <span class="s">&quot;T&quot;</span> <span class="p">+</span> <span class="n">ii</span> <span class="p">+</span> <span class="s">&quot;, &quot;</span><span class="p">)&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>                                  <span class="p">.</span><span class="n">StrCat</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">TResult</span><span class="p">&amp;</span><span class="n">gt</span><span class="p">;(&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">range</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">ii</span> <span class="p">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="s">&quot;T&quot;</span> <span class="p">+</span> <span class="n">ii</span> <span class="p">+</span> <span class="s">&quot; arg&quot;</span> <span class="p">+</span> <span class="n">ii</span><span class="p">)</span>
+</span><span class='line'>                                                                  <span class="p">.</span><span class="n">StrCat</span><span class="p">(</span><span class="s">&quot;, &quot;</span><span class="p">)</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;);</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="p">}</span> <span class="p">%&gt;&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="n">endif</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>In the <strong>Assembly</strong> directive you can specify the full path of an assembly (and in that case don’t forget to include the .dll at the end), or if that assembly is referenced by the Visual Studio project you can just specify the assembly name. PreSharp takes advantage of part of the MSBuild processing to find the file path.</p>
+
+
+
+
+<p>In order for Visual Studio IntelliSense to work properly, StringUtils will be compiled into your assembly in debug builds, but it release builds it won’t, as this code is only meant to be used in your PreSharp blocks.</p>
+
+
+
+
+<h3>Generating files</h3>
+
+
+
+
+<p>Instead of generating code in-place in a C# file, PreSharp can also be used to define code that will be called at compile time to output additional files to the project. For that, we will use a new build action - <strong>PreSharpTemplate</strong>. Here’s an example:</p>
+
+
+
+
+<p>File ViewModelGenerator.cst with build action set to <strong>PreSharpTemplate</strong>:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="k">if</span> <span class="n">PRESHARP_TEMPLATE</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;&amp;</span><span class="n">lt</span><span class="p">;%</span><span class="err">@</span> <span class="n">CodeTemplate</span> <span class="n">Language</span><span class="p">=</span><span class="s">&quot;C#&quot;</span> <span class="n">TargetLanguage</span><span class="p">=</span><span class="s">&quot;C#&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%</span><span class="err">@</span> <span class="n">Assembly</span> <span class="n">Name</span><span class="p">=</span><span class="s">&quot;System.Core&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%</span><span class="err">@</span> <span class="n">Assembly</span> <span class="n">Name</span><span class="p">=</span><span class="s">&quot;System.Xml&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%</span><span class="err">@</span> <span class="n">Assembly</span> <span class="n">Name</span><span class="p">=</span><span class="s">&quot;System.Xml.Linq&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%</span><span class="err">@</span> <span class="n">Include</span> <span class="n">Path</span><span class="p">=</span><span class="s">&quot;ViewModelDefinition.cst&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&amp;</span><span class="n">lt</span><span class="p">;%</span><span class="err">@</span> <span class="n">EntryPoint</span> <span class="n">Statement</span><span class="p">=</span><span class="s">&quot;CodeGeneration.ViewModelGenerator.Generate();&quot;</span> <span class="p">%&gt;&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="n">endif</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">using</span> <span class="nn">System.Xml.Linq</span><span class="p">;&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">namespace</span> <span class="nn">CodeGeneration</span> <span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="k">class</span> <span class="nc">ViewModelGenerator</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Generate</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">viewXml</span> <span class="k">in</span> <span class="n">XElement</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="s">&quot;ViewModel.xml&quot;</span><span class="p">).</span><span class="n">Elements</span><span class="p">(</span><span class="s">&quot;view&quot;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>            <span class="kt">var</span> <span class="n">view</span> <span class="p">=</span> <span class="k">new</span> <span class="n">View</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">Name</span> <span class="p">=</span> <span class="n">viewXml</span><span class="p">.</span><span class="n">Attribute</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">).</span><span class="n">Value</span><span class="p">,</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>            <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">propertyXml</span> <span class="k">in</span> <span class="n">viewXml</span><span class="p">.</span><span class="n">Elements</span><span class="p">(</span><span class="s">&quot;property&quot;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">view</span><span class="p">.</span><span class="n">Properties</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">Property</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="n">PropertyName</span> <span class="p">=</span> <span class="n">propertyXml</span><span class="p">.</span><span class="n">Attribute</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">).</span><span class="n">Value</span><span class="p">,</span>
+</span><span class='line'>                    <span class="n">Type</span> <span class="p">=</span> <span class="n">propertyXml</span><span class="p">.</span><span class="n">Attribute</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">).</span><span class="n">Value</span><span class="p">,</span>
+</span><span class='line'>                <span class="p">});</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>            <span class="n">view</span><span class="p">.</span><span class="n">Dump</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>File ViewModel.xml with build action set to <strong>PreSharpInput</strong>:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;viewModel&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>view name=&quot;View1&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>property name=&quot;Property1&quot; type=&quot;string&quot; /<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>property name=&quot;Property2&quot; type=&quot;int&quot; /<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>/view<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>view name=&quot;View2&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>property name=&quot;Property&quot; type=&quot;bool&quot; /<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>/view<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;/viewModel&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>File ViewModelDefinition.cst with build action set to <strong>PreSharpTemplateInclude</strong>:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="k">if</span> <span class="n">PRESHARP_TEMPLATE</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;&amp;</span><span class="n">lt</span><span class="p">;%</span><span class="err">@</span> <span class="n">Import</span> <span class="n">Namespace</span><span class="p">=</span><span class="s">&quot;System.Collections.Generic&quot;</span> <span class="p">%&gt;&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="n">endif</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">namespace</span> <span class="nn">CodeGeneration</span> <span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="k">class</span> <span class="nc">Property</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">PropertyName</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">FieldName</span> <span class="p">{</span> <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">PropertyName</span><span class="p">.</span><span class="n">ToLower</span><span class="p">();</span> <span class="p">}</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Type</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">View</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">public</span> <span class="n">List</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">Property</span><span class="p">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">Properties</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">Property</span><span class="p">&amp;</span><span class="n">gt</span><span class="p">;();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">void</span> <span class="nf">Dump</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="k">if</span> <span class="n">PRESHARP_TEMPLATE</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;&amp;</span><span class="n">lt</span><span class="p">;%</span> <span class="n">PreSharp</span><span class="p">.</span><span class="n">SetOutput</span><span class="p">(</span><span class="n">Name</span> <span class="p">+</span> <span class="s">&quot;.Generated.cs&quot;</span><span class="p">,</span> <span class="n">PreSharp</span><span class="p">.</span><span class="n">OutputType</span><span class="p">.</span><span class="n">Compile</span><span class="p">);</span> <span class="p">%&gt;&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">public</span> <span class="k">class</span> <span class="err">&amp;</span><span class="nc">lt</span><span class="p">;%=</span> <span class="n">Name</span> <span class="p">%&gt;</span> <span class="p">:</span> <span class="n">ViewModelBase</span> <span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="n">endif</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">p</span> <span class="k">in</span> <span class="n">Properties</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="k">if</span> <span class="n">PRESHARP_TEMPLATE</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="k">private</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">Type</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">FieldName</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;;</span>
+</span><span class='line'><span class="k">public</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">Type</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">PropertyName</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">FieldName</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">set</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">FieldName</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="p">!=</span> <span class="k">value</span><span class="p">)</span> <span class="p">{</span> <span class="p">&amp;</span><span class="n">lt</span><span class="p">;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">FieldName</span> <span class="p">%&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span> <span class="n">RaiseNotify</span><span class="p">(</span><span class="s">&quot;&amp;lt;%= p.PropertyName %&amp;gt;&quot;</span><span class="p">);</span> <span class="p">}</span> <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="n">endif</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>        <span class="p">}</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="k">if</span> <span class="n">PRESHARP_TEMPLATE</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">h1</span><span class="p">&gt;</span><span class="n">endif</span><span class="p">&lt;/</span><span class="n">h1</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Let me explain how this works:</p>
+
+
+
+
+<ul>
+  <li>The file with the build action set to <strong>PreSharpTemplate</strong> must specify directive with the format <strong>&lt;%@ EntryPoint Statement=&quot;codeToExecute();&quot; %&gt;</strong> to tell PreSharp what code to execute at compile time. That code can call PreSharp.SetOutput(string filename, PreSharp.OutputType outputType) inside the blocks to set the output file (OutputType is an enum with the values <strong>Compile</strong>, <strong>EmbeddedResource</strong>, and <strong>None</strong>). From that point on, the code generated by the PreSharp blocks will be written to that file, and that file will be added to the Visual Studio project with the corresponding build action. </li>
+
+  <li>The build action <strong>PreSharpTemplateInclude</strong> and the associated <strong>&lt;%@ Include Path=&quot;path&quot; %&gt;</strong> directive allow you to split generators in multiple files. If you just have multiple files with PreSharpTemplate build action they will all be handled independently.</li>
+
+  <li>In the examples I uses the extension .cst but in reality it could be anything. When PreSharp is installed it registers .cst in Visual Studio as a c# file, so you can use that extension and still have syntax highlighting. </li>
+
+  <li>The build action <strong>PreSharpInput</strong> informs PreSharp that whenever that file is changed, it should regenerate the target files. </li>
+
+  <li>The <strong>&lt;%@ CodeTemplate Language=&quot;C#&quot; TargetLanguage=&quot;C#&quot; %&gt; </strong>directive is ignored, and it’s only supported to allow compatibility with CodeSmith so you can edit these files in its editor and have syntax highlighting.</li>
+</ul>
+
+
+
+
+<h3>Debugging</h3>
+
+
+
+
+<p>When PreSharp executes the templates in the previous example, it generates a file named ViewModelGenerator.cst.PreSharpDebug.cs. If you want to debug the template execution, you can create a new C# project that includes this file, references C:\Program Files (x86)\PreSharp\PreSharp.exe as an assembly, and then put the contents of the Entry directive as the Main method. When running this project you can step by step the execution of the template.</p>
+
+
+
+
+<h3>Known Problems</h3>
+
+
+
+
+<p>I’ve been using PreSharp for a few years in real-life production software, so it’s pretty stable and efficient by now. But there is still one very annoying problem with it. If you have a generated file open and then build the project and that file is changed, Visual Studio will wrongly use the cache of the previous content of the file in the compilation, and your build output will be wrong. At OutSystems we call this the “double build syndrome”. If you don’t have that file open, or if you’re building directly with MSBuild on a command shell or on a build server, it all works correctly, so it’s really a Visual Studio bug.</p>
+
+
+
+
+<p>Aside from this post (which I should have done three years ago when I first created the blog), there is currently no other documentation for PreSharp, so feel free to ask any question through a comment here or through the GitHub project page.</p>
+
+]]></content>
+  </entry>
+  
+</feed>

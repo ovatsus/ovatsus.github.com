@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Migrating from SubText to BlogEngine.NET - Code Beside</title>
+  <meta name="author" content="Gustavo Guerra">
+
+  
+  <meta name="description" content="My blog was running in SubText, but I&rsquo;ve recently changed to BlogEngine.NET. The main reason for the change was that BlogEngine.NET supports &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ovatsus.github.com/blog/2011/09/25/migrating-from-subtext-to-blogenginenet">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="http://feeds.feedburner.com/CodeBeside" rel="alternate" title="Code Beside" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-5385973-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Code Beside</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://feeds.feedburner.com/CodeBeside" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ovatsus.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Migrating From SubText to BlogEngine.NET</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-25T00:00:00+01:00" pubdate data-updated="true">Sep 25<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>
+	My blog was running in <a href="http://subtextproject.com">SubText</a>, but I&rsquo;ve recently changed to <a href="http://www.dotnetblogengine.net/">BlogEngine.NET</a>. The main reason for the change was that BlogEngine.NET supports storing the data in plain XML files, without having any dependency to a database. This makes it really easy to customize, as I can develop everything in my local machine, and then just send the files to the server. With SubText this was harder to do, so I ended up doing fewer tweaks, and doing them directly in production, which I didn&rsquo;t like.</p>
+<p>
+	The migration wasn&rsquo;t as smooth as I though it would be, so here are the steps I took, in case someone needs to go through a similar process:</p>
+<ul>
+	<li>
+		Exporting to BlogML and then importing didn&rsquo;t work correctly. After exporting, I had to <a href="http://garfoot.com/blog/2010/08/importing-blogml-into-wordpress/">convert the content from Base64</a>, replace the &amp;amp;&rsquo;s in the titles with &amp;, and then manually set the author in all post. I also had to set the tags manually in all posts, as in SubText they weren&rsquo;t a separate field but instead were part of the content of the posts. Having the posts on xml files on disk rather than on a database eased this job a lot.</li>
+	<li>
+		The TinyMCE bundled in BlogEngine.NET doesn&rsquo;t support images, so I had to <a href="http://jerryhuang.net/post/Replace-TinyMCE-with-CKEditor-and-CKFinder-in-BlogEngine-20.aspx">replace it with CKEditor and CKFinder</a>.</li>
+	<li>
+		The SubText post URL&#39;s have the format /archive/year/month/day/name-of-the-post.aspx, while BlogEngine.NET post URL&#39;s have the format /server/post/year/month/day/name-of-the-post.aspx. I had to set up redirection so the old links would keep working. To do that I&rsquo;ve taken the source code from <a href="http://www.blogenginewall.com/post/2011/04/01/BlogEngine-SEO-Permanent-Redirection-From-Old-URL-To-New-URL.aspx">BlogEngine SEO Redirection extension</a> and changed the comparison to only check prefixes (source code <a href="https://github.com/ovatsus/Blog/commit/a8c8c3f0984507182b2a0139aa2fcbdcb5a51358">here</a>).</li>
+	<li>
+		Several of the extensions available out there don&rsquo;t work out of the box with the latest version of BlogEngine.NET (2.5):
+		<ul>
+			<li>
+				For the AddThis extension I had to <a href="http://www.mbaldinger.com/post/AddThisNET-Social-Bookmarking-Buttons-for-Blogengine-v5.aspx#id_7b41fd26-f300-4029-b606-60b0cc2f0e6d">add some missing using&rsquo;s to the code</a>, and disable the form validation of the settings page (source code <a href="https://github.com/ovatsus/Blog/commit/931e4f13c76f8505ea65cd6d154fd29354526fbb">here</a>).</li>
+			<li>
+				To be able to configure widgets in the AllTuts theme, I had to make a small bug fix (as described in Janier Davila comment <a href="http://www.pravesh.me/alltuts-theme-blogenginenet-updated-v25/">here</a>)</li>
+		</ul>
+	</li>
+</ul>
+<p>
+	After all that work, now I have a setup that allows me to tweak the blog very easily. I have it on GitHub, cloned into my local machine and into the server. I can play around locally, and when I&rsquo;m glad with the results I just need to do a git push locally and then remote desktop to the server to do a git pull and force a reload of the application by touching the web.config.</p>
+<p>
+	Of course, to protect my passwords and keys, I have to tell git to ignore users.xml, akismetfilter.xml and recaptcha.xml, using <a href="http://blog.pagebakers.nl/2009/01/29/git-ignoring-changes-in-tracked-files/">this procedure</a>. And I also must take care with the email settings that are stored on the global settings.xml file, which forces me to always have that file uncommitted at the server, but other than that, it&rsquo;s orders of magnitude better than editing directly on production.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Gustavo Guerra</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-25T00:00:00+01:00" pubdate data-updated="true">Sep 25<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/tags/blogging/'>Blogging</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ovatsus.github.com/blog/2011/09/25/migrating-from-subtext-to-blogenginenet" data-via="ovatsus" data-counturl="http://ovatsus.github.com/blog/2011/09/25/migrating-from-subtext-to-blogenginenet" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1" title="Previous Post: Replacing Visual Studio 2010 with SharpDevelop 4.1">&laquo; Replacing Visual Studio 2010 with SharpDevelop 4.1</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food" title="Next Post: Microsoft: please eat some more of your WPF-flavored dog food">Microsoft: please eat some more of your WPF-flavored dog food &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning">F# as a Octave/Matlab replacement for Machine Learning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/02/introducing-presharp">Introducing PreSharp</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food">Microsoft: please eat some more of your WPF-flavored dog food</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/25/migrating-from-subtext-to-blogenginenet">Migrating from SubText to BlogEngine.NET</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1">Replacing Visual Studio 2010 with SharpDevelop 4.1</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Tags</h1>
+  <span id="tag-cloud">
+    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 113.33333333333333%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
+  </span>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("ovatsus", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/ovatsus" class="twitter-follow-button" data-show-count="true">Follow @ovatsus</a>
+  
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Gustavo Guerra -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'codebesideblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ovatsus.github.com/blog/2011/09/25/migrating-from-subtext-to-blogenginenet';
+        var disqus_url = 'http://ovatsus.github.com/blog/2011/09/25/migrating-from-subtext-to-blogenginenet';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

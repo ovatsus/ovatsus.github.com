@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: Machine Learning | Code Beside]]></title>
+  <link href="http://ovatsus.github.com/blog/tags/machine-learning/atom.xml" rel="self"/>
+  <link href="http://ovatsus.github.com/"/>
+  <updated>2013-02-20T01:23:20+00:00</updated>
+  <id>http://ovatsus.github.com/</id>
+  <author>
+    <name><![CDATA[Gustavo Guerra]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[F# as a Octave/Matlab replacement for Machine Learning]]></title>
+    <link href="http://ovatsus.github.com/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning"/>
+    <updated>2011-10-27T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning</id>
+    <content type="html"><![CDATA[<p>
+    <strong>EDIT</strong>: As another version of the ml-class course has started, I&#39;ve made the repository private</p>
+
+
+<p>
+    Back when I was in college, I took three different courses that dealt with subjects related to machine learning and data mining. Although I didn&rsquo;t lose interest on those matters, my work has led me in a totally unrelated direction, so I haven&rsquo;t exercised any of that knowledge in about eight years or so. A few weeks ago, I stumbled upon Stanford&rsquo;s online class on <a href="http://www.ml-class.org">Machine Learning</a> and decided to enroll. I want to revive many of the things I have forgotten and try to put them into practice, as nowadays it&rsquo;s very easy to access large amounts of interesting data from all kinds of online sources.</p>
+
+
+<p>
+    The programming exercises of this class are supposed to be done in Octave or Matlab, and while I understand the advantages of these tools, my past experience (where all the exercises and projects were done either with SAS or with Matlab) shows me that not using a general purpose programming languages doesn&rsquo;t help a lot in turning academic exercises into real world programs. As professor Andrew Ng said in the introduction, one of the goals of the class is for us to put machine learning into practice in real world problems we care about, so I decided that I&rsquo;ll implement all the algorithms and exercises in F#.</p>
+
+
+<pre><code>&lt;!-- more --&gt;
+</code></pre>
+
+<p>
+    I&rsquo;m using <a href="http://numerics.mathdotnet.com/">Math.NET Numerics</a> for the linear algebra and statistics, and while some operations are not as simple as in Octave, being able to use higher order functions instead of for loops compensates for it. As an example, look at the code for feature normalization in Octave:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='matlab'><span class='line'><span class="k">function</span><span class="w"> </span>[X_norm, mu, sigma] <span class="p">=</span><span class="w"> </span><span class="nf">featureNormalize</span><span class="p">(</span>X<span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">X_norm</span> <span class="p">=</span> <span class="n">X</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">mu</span> <span class="p">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+</span><span class='line'><span class="n">sigma</span> <span class="p">=</span> <span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">);</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">m</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> 1<span class="p">);</span>
+</span><span class='line'><span class="k">for</span> <span class="nb">i</span> <span class="p">=</span> 1<span class="p">:</span><span class="n">m</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">X_norm</span><span class="p">(</span><span class="nb">i</span><span class="p">,:)</span> <span class="p">=</span> <span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="p">,:)</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">./</span> <span class="n">sigma</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>
+    And here&rsquo;s the equivalent F# code:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">let</span> <span class="n">featureNormalize</span> <span class="o">(</span><span class="nc">X</span><span class="o">:</span> <span class="o">#</span><span class="nc">Matrix</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;)</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">let</span> <span class="err">μ</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnEnumerator</span><span class="bp">()</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="n">col</span><span class="o">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">col</span><span class="o">.</span><span class="nc">Mean</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">DenseVector</span><span class="p">.</span><span class="n">ofSeq</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="err">σ</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnEnumerator</span><span class="bp">()</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="n">col</span><span class="o">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">col</span><span class="o">.</span><span class="nc">StandardDeviation</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">DenseVector</span><span class="p">.</span><span class="n">ofSeq</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="nc">X</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nc">X</span> <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Matrix</span><span class="p">.</span><span class="n">mapRows</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="n">row</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">(</span><span class="n">row</span> <span class="o">-</span> <span class="err">μ</span><span class="o">)</span> <span class="o">./</span> <span class="err">σ</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">(</span><span class="nc">X</span><span class="o">,</span> <span class="err">μ</span><span class="o">,</span> <span class="err">σ</span><span class="o">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>
+    Even though calculating the mean and standard deviation is a little more elaborate than using just a built-in function call, the actual normalization code is more straightforward, so we&rsquo;re not really loosing any productivity by using F#, considering that we have the same kind of development interactivity thanks to F# Interactive. Other nice touches in F# are the ability to use greek letters and the possibility of separating the data from the algorithm parameters by means of the pipelining operator (|&gt;). By leaving all the data parameters at the end and aggregating them into a tuple, we can turn this code:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="nn">LinearRegression</span><span class="p">.</span><span class="n">plotGradientDescentIterations</span> <span class="err">α</span> <span class="n">num_iters</span> <span class="nc">XNorm</span> <span class="n">y</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>
+    into this:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="o">(</span><span class="nc">XNorm</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="o">|&gt;</span> <span class="nn">LinearRegression</span><span class="p">.</span><span class="n">plotGradientDescentIterations</span> <span class="err">α</span> <span class="n">num_iters</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>
+    which I think is clearer.</p>
+
+
+<p>
+    I also like the fact that Math.NET Numerics has a separate type for vectors instead of using one-column or one-row matrices for that, allowing us not to worry about transposing the vectors when multiplying.</p>
+
+
+<p>
+    Mimicking Matlab charting capabilities was a bit more tricky. For the majority of charting I&rsquo;m using <a href="http://code.msdn.microsoft.com/FSharpChart-b59073f5">FSharpChart</a>, but the Microsoft Chart Controls that it wraps don&rsquo;t support contour nor surface plots. For contour plots I ended up using <a href="http://dynamicdatadisplay.codeplex.com/">WPF Dynamic Data Display</a>, and for surface plots I adapted a <a href="http://www.codeproject.com/KB/WPF/WPFChart3D.aspx">sample from CodeProject</a>. I&rsquo;m not really happy with the surface plot, as it&rsquo;s really very basic, so I&rsquo;ll definitely try to improve it in the future. Here&rsquo;s a sample of charts from Matlab:</p>
+
+
+<p>
+    <a href="http://ovatsus.github.com/images/image.png"><img alt="image" border="0" height="217" src="http://ovatsus.github.com/images/image_thumb.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_1.png"><img alt="image" border="0" height="217" src="http://ovatsus.github.com/images/image_thumb_1.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_2.png"><img alt="image" border="0" height="217" src="http://ovatsus.github.com/images/image_thumb_2.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_3.png"><img alt="image" border="0" height="217" src="http://ovatsus.github.com/images/image_thumb_3.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
+
+
+<p>
+    And here are the equivalent ones I was able to produce in F#:</p>
+
+
+<p>
+    <a href="http://ovatsus.github.com/images/image_4.png"><img alt="image" border="0" height="244" src="http://ovatsus.github.com/images/image_thumb_4.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_5.png"><img alt="image" border="0" height="244" src="http://ovatsus.github.com/images/image_thumb_5.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_6.png"><img alt="image" border="0" height="244" src="http://ovatsus.github.com/images/image_thumb_6.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_7.png"><img alt="image" border="0" height="244" src="http://ovatsus.github.com/images/image_thumb_7.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
+
+
+<p>
+    I&rsquo;m putting this available at <a href="https://github.com/ovatsus/MLClass">https://github.com/ovatsus/MLClass</a>. I&rsquo;m only going to push the commits weekly after the class exercise deadlines expire, so at the time of this post only the implementation of the Linear Regression exercises is available.</p>
+
+
+<p>
+    So far this has been a very rewarding experience, as besides preparing the way so I can reuse this code in the future, I&#39;ve been submitting patches both to Math.NET Numerics and to FSharpChart.</p>
+
+
+<p>
+    <strong>Edit:</strong></p>
+
+
+<p>
+    As some people have pointed out in the comments, the Octave version of feature normalization could also be done without iteration:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='matlab'><span class='line'><span class="k">function</span><span class="w"> </span>[X_norm, mu, sigma] <span class="p">=</span><span class="w"> </span><span class="nf">featureNormalize</span><span class="p">(</span>X<span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">mu</span> <span class="p">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+</span><span class='line'><span class="n">sigma</span> <span class="p">=</span> <span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+</span><span class='line'><span class="n">m</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> 1<span class="p">);</span>
+</span><span class='line'><span class="n">X_norm</span> <span class="p">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="nb">repmat</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> 1<span class="p">))</span> <span class="o">/</span> <span class="nb">diag</span><span class="p">(</span><span class="n">sigma</span><span class="p">);</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>
+    In this case the corresponding F# code would be:</p>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">let</span> <span class="n">featureNormalize</span> <span class="o">(</span><span class="nc">X</span><span class="o">:</span> <span class="nc">Matrix</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;)</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">let</span> <span class="err">μ</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnEnumerator</span><span class="bp">()</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="n">col</span><span class="o">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">col</span><span class="o">.</span><span class="nc">Mean</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">DenseVector</span><span class="p">.</span><span class="n">ofSeq</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="err">σ</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnEnumerator</span><span class="bp">()</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="n">col</span><span class="o">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">col</span><span class="o">.</span><span class="nc">StandardDeviation</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">DenseVector</span><span class="p">.</span><span class="n">ofSeq</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="err">μ</span><span class="nc">Expanded</span> <span class="o">=</span> <span class="nn">DenseMatrix</span><span class="p">.</span><span class="n">initRow</span> <span class="nn">X</span><span class="p">.</span><span class="nc">RowCount</span> <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnCount</span> <span class="o">(</span><span class="k">fun</span> <span class="o">_</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="err">μ</span><span class="o">)</span>
+</span><span class='line'><span class="k">let</span> <span class="err">σ</span><span class="nc">Diag</span> <span class="o">=</span> <span class="nn">DenseMatrix</span><span class="p">.</span><span class="n">diag</span> <span class="err">σ</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="nc">X</span> <span class="o">=</span> <span class="o">(</span><span class="nc">X</span> <span class="o">-</span> <span class="err">μ</span><span class="nc">Expanded</span><span class="o">)</span> <span class="o">*</span> <span class="err">σ</span><span class="nn">Diag</span><span class="p">.</span><span class="nc">Inverse</span><span class="bp">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">(</span><span class="nc">X</span><span class="o">,</span> <span class="err">μ</span><span class="o">,</span> <span class="err">σ</span><span class="o">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+</feed>

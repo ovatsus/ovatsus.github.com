@@ -1,0 +1,820 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Code Beside</title>
+  <meta name="author" content="Gustavo Guerra">
+
+  
+  <meta name="description" content="EDIT: As another version of the ml-class course has started, I&#39;ve made the repository private Back when I was in college, I took three different &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ovatsus.github.com/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="http://feeds.feedburner.com/CodeBeside" rel="alternate" title="Code Beside" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-5385973-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Code Beside</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://feeds.feedburner.com/CodeBeside" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ovatsus.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning">F# as a Octave/Matlab Replacement for Machine Learning</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-27T00:00:00+01:00" pubdate data-updated="true">Oct 27<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+	<strong>EDIT</strong>: As another version of the ml-class course has started, I&#39;ve made the repository private</p>
+<p>
+	Back when I was in college, I took three different courses that dealt with subjects related to machine learning and data mining. Although I didn&rsquo;t lose interest on those matters, my work has led me in a totally unrelated direction, so I haven&rsquo;t exercised any of that knowledge in about eight years or so. A few weeks ago, I stumbled upon Stanford&rsquo;s online class on <a href="http://www.ml-class.org">Machine Learning</a> and decided to enroll. I want to revive many of the things I have forgotten and try to put them into practice, as nowadays it&rsquo;s very easy to access large amounts of interesting data from all kinds of online sources.</p>
+<p>
+	The programming exercises of this class are supposed to be done in Octave or Matlab, and while I understand the advantages of these tools, my past experience (where all the exercises and projects were done either with SAS or with Matlab) shows me that not using a general purpose programming languages doesn&rsquo;t help a lot in turning academic exercises into real world programs. As professor Andrew Ng said in the introduction, one of the goals of the class is for us to put machine learning into practice in real world problems we care about, so I decided that I&rsquo;ll implement all the algorithms and exercises in F#.</p>
+    </div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/10/02/introducing-presharp">Introducing PreSharp</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-10-02T00:00:00+01:00" pubdate data-updated="true">Oct 2<span>nd</span>, 2011</time>
+        
+         | <a href="/blog/2011/10/02/introducing-presharp#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Background</h3>  <p>Back in 2004, I was doing some code-generation work as part of the <a href="http://www.gsd.inesc-id.pt/project-pages/past-projects/obiwan">OBIWAN</a> project. When I started, CodeDom was being used to do the work, but I really didn’t like it because it made the generator code very hard to read and modify. Realistically, I would not need to support any other language than C#, so I started looking for alternatives. <a href="http://www.codesmithtools.com/product/generator">CodeSmith</a> was very popular at the time for generating type-safe collections (.NET 2.0 generics didn’t exist yet), but it was targeted at one-shot generations, and not at creating code generation code. Then I found a very simple tool named <a href="http://web.archive.org/web/20060726075638/http://www.inmetrix.com/">CodeGen</a> that appealed to me. I had been playing around with the <a href="http://www.boost.org/doc/libs/?view=category_Preprocessor">Boost Preprocessor library</a> recently, so I really liked the idea of using the preprocessor. I did a few tweaks to it and was able to use it for my needs at the time. Later on, around mid-2007, I needed to do code-generation again, so I took this tool and added a good amount of more power to it. At this time, it was very far apart from the original code, so I re-baptized it as PreSharp and published it to CodePlex. I never got around to do any documentation for it, so I’m making this post to try to compensate for that. I also moved the project recently from CodePlex to <a href="https://github.com/ovatsus/PreSharp">GitHub</a>.</p>
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011/10/02/introducing-presharp">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food">Microsoft: Please Eat Some More of Your WPF-flavored Dog Food</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-27T00:00:00+01:00" pubdate data-updated="true">Sep 27<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+	I have&nbsp; a love-hate relationship with WPF.</p>
+<p>
+	I think it is several orders of magnitude better than Windows Forms and gives developers a tremendous expressive power to materialize their ideas into good user interfaces. I wouldn&rsquo;t dream of doing many of the things I was able to do in just a few weeks in the <a href="http://www.outsystems.com/agile-platform/">Agile Platform IDE</a> in any other UI framework, even if I was given months. It&rsquo;s like going from plain C to C# 4.</p>
+<p>
+	But even though the concept is really good, the quality and completeness of the concrete implementation are really not there. There are just too many quirks, weird limitations, parts that don&rsquo;t play nice with others, performance problems, memory leaks, etc&#8230; And when things don&rsquo;t work as they should, many times you really have to go out of your way to be able to fix things.</p>
+<p>
+	I understand deadlines and priorities, and I know that probably Microsoft just had to ship something at some point, but it really seems that there was a big lack of dogfooding in the WPF case.</p>
+<p>
+	There&rsquo;s a striking example of this: what was the number one complaint that developers had about WPF since 2006?&hellip; Blurry text and images. And when did Microsoft fix it?&hellip; Only in 2010, when they started using WPF for Visual Studio.</p>
+<p>
+	Another issue that has been bugging me since I started using WPF was the airspace limitation. It seems that <a href="http://www.jonathanantoine.com/2011/09/24/wpf-4-5-%E2%80%93-part-8-no-more-airspace-problems-integrating-wpf-with-win32/">it&rsquo;s finally going to be fixed in 4.5</a>. Why do I think it&rsquo;s being solved now? Because they probably needed some native WinRT component to play nice with WPF&hellip;</p>
+<p>
+	I think eating you own dog food is really important. At <a href="http://www.outsystems.com">OutSystems</a> we use our product to build all web applications: the R&amp;D apps (bug tracking, project management, continuous integration&hellip;), the HR apps (directory, vacations, recruiting&hellip;), the sales apps, the marketing apps, the corporate site, the community forums, etc&hellip; And I can say with a great deal of confidence that if we didn&rsquo;t do that, our product wouldn&rsquo;t be half of what it is today.</p>
+<p>
+	Bottom line: we as developers should always try to eat our own dog food as much as we can. In fact, I think it&rsquo;s so important that it should have been item 13 in the <a href="http://www.joelonsoftware.com/articles/fog0000000043.html">Joel Test</a>.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/09/25/migrating-from-subtext-to-blogenginenet">Migrating From SubText to BlogEngine.NET</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-09-25T00:00:00+01:00" pubdate data-updated="true">Sep 25<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011/09/25/migrating-from-subtext-to-blogenginenet#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+	My blog was running in <a href="http://subtextproject.com">SubText</a>, but I&rsquo;ve recently changed to <a href="http://www.dotnetblogengine.net/">BlogEngine.NET</a>. The main reason for the change was that BlogEngine.NET supports storing the data in plain XML files, without having any dependency to a database. This makes it really easy to customize, as I can develop everything in my local machine, and then just send the files to the server. With SubText this was harder to do, so I ended up doing fewer tweaks, and doing them directly in production, which I didn&rsquo;t like.</p>
+<p>
+	The migration wasn&rsquo;t as smooth as I though it would be, so here are the steps I took, in case someone needs to go through a similar process:</p>
+<ul>
+	<li>
+		Exporting to BlogML and then importing didn&rsquo;t work correctly. After exporting, I had to <a href="http://garfoot.com/blog/2010/08/importing-blogml-into-wordpress/">convert the content from Base64</a>, replace the &amp;amp;&rsquo;s in the titles with &amp;, and then manually set the author in all post. I also had to set the tags manually in all posts, as in SubText they weren&rsquo;t a separate field but instead were part of the content of the posts. Having the posts on xml files on disk rather than on a database eased this job a lot.</li>
+	<li>
+		The TinyMCE bundled in BlogEngine.NET doesn&rsquo;t support images, so I had to <a href="http://jerryhuang.net/post/Replace-TinyMCE-with-CKEditor-and-CKFinder-in-BlogEngine-20.aspx">replace it with CKEditor and CKFinder</a>.</li>
+	<li>
+		The SubText post URL&#39;s have the format /archive/year/month/day/name-of-the-post.aspx, while BlogEngine.NET post URL&#39;s have the format /server/post/year/month/day/name-of-the-post.aspx. I had to set up redirection so the old links would keep working. To do that I&rsquo;ve taken the source code from <a href="http://www.blogenginewall.com/post/2011/04/01/BlogEngine-SEO-Permanent-Redirection-From-Old-URL-To-New-URL.aspx">BlogEngine SEO Redirection extension</a> and changed the comparison to only check prefixes (source code <a href="https://github.com/ovatsus/Blog/commit/a8c8c3f0984507182b2a0139aa2fcbdcb5a51358">here</a>).</li>
+	<li>
+		Several of the extensions available out there don&rsquo;t work out of the box with the latest version of BlogEngine.NET (2.5):
+		<ul>
+			<li>
+				For the AddThis extension I had to <a href="http://www.mbaldinger.com/post/AddThisNET-Social-Bookmarking-Buttons-for-Blogengine-v5.aspx#id_7b41fd26-f300-4029-b606-60b0cc2f0e6d">add some missing using&rsquo;s to the code</a>, and disable the form validation of the settings page (source code <a href="https://github.com/ovatsus/Blog/commit/931e4f13c76f8505ea65cd6d154fd29354526fbb">here</a>).</li>
+			<li>
+				To be able to configure widgets in the AllTuts theme, I had to make a small bug fix (as described in Janier Davila comment <a href="http://www.pravesh.me/alltuts-theme-blogenginenet-updated-v25/">here</a>)</li>
+		</ul>
+	</li>
+</ul>
+<p>
+	After all that work, now I have a setup that allows me to tweak the blog very easily. I have it on GitHub, cloned into my local machine and into the server. I can play around locally, and when I&rsquo;m glad with the results I just need to do a git push locally and then remote desktop to the server to do a git pull and force a reload of the application by touching the web.config.</p>
+<p>
+	Of course, to protect my passwords and keys, I have to tell git to ignore users.xml, akismetfilter.xml and recaptcha.xml, using <a href="http://blog.pagebakers.nl/2009/01/29/git-ignoring-changes-in-tracked-files/">this procedure</a>. And I also must take care with the email settings that are stored on the global settings.xml file, which forces me to always have that file uncommitted at the server, but other than that, it&rsquo;s orders of magnitude better than editing directly on production.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1">Replacing Visual Studio 2010 With SharpDevelop 4.1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-19T00:00:00+01:00" pubdate data-updated="true">Apr 19<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+	I use Visual Studio 2010 on a daily basis, and I must say that the overall experience is far from good:</p>
+<ul>
+	<li>
+		The find dialog has some really weird and annoying resizing issues.</li>
+	<li>
+		Sometimes find text simply stops working, never returning any result. Even worst, sometimes it starts returning only the first hit on each file, which of course you only notice the next day because of the bug you introduced in the code base because of that.</li>
+	<li>
+		It has the habit of recompiling more projects than it really needs to.</li>
+	<li>
+		Sometimes the simple action of clicking on a text editor to change the caret position stops working, and we can only use the keyboard for that until you restart Visual Studio.</li>
+	<li>
+		It takes forever to open XAML files (even with the option to always open in full XAML view, not design mode).</li>
+	<li>
+		It has some serious file cache problems when using custom MSBuild build steps that generate files for compilation. If during a build a generated file is changed while it&rsquo;s opened, the result of the compilation will be as if the file hadn&rsquo;t been changed. If that file is not opened, or we use the MSBuild command line, it works correctly. Just imagine going through a huge list of steps to reproduce some problem only to find out that you&rsquo;re debugging outdated code. It&rsquo;s a real nightmare.</li>
+</ul>
+<p>
+	So I decided to give SharpDeveloper a try, and I was pleasantly surprised:</p>
+<ul>
+	<li>
+		It&rsquo;s pretty fast and responsive, even with big solutions, as long as you turn off source control integration.</li>
+	<li>
+		I can open .xaml files as fast as .cs files, and the xaml auto complete works sufficiently good.</li>
+	<li>
+		It builds the big solution I use daily in <strong>half</strong> the time (literally)</li>
+	<li>
+		It doesn&rsquo;t have the file cache problem</li>
+	<li>
+		It has an option for building modified projects only, ignoring the dependencies</li>
+	<li>
+		The latest 4.1 alpha builds allow to see the <a href="http://community.sharpdevelop.net/blogs/marcueusebiu/archive/2011/01/23/presenting-metadata-ctrl-enter-and-expand-references.aspx">metadata of referenced types</a> like Visual Studio does.</li>
+</ul>
+<p>
+	Of course, there are also a few downsides:</p>
+<ul>
+	<li>
+		The usability of the editor auto complete is noticeably lower than Visual Studio IntelliSense.</li>
+	<li>
+		The shortcut keys aren&rsquo;t customizable, which is a big no no considering that the basic ones like build and toggle breakpoint are different from the ones we&rsquo;re used to from Visual Studio.</li>
+	<li>
+		Custom debugger visualizers and other very useful add-ins&nbsp; for Visual Studio don&rsquo;t have a SharpDevelop version.</li>
+	<li>
+		It doesn&rsquo;t have Edit and Continue.</li>
+</ul>
+<p>
+	I had already tried SharpDevelop before in the past, but at the time it seemed to be too limited when compared to Visual Studio. I now think it&rsquo;s good enough to be usable, and as it&rsquo;s open source and the code base looks readable, I&rsquo;m going to try to fix a few quirks to be able to completely replace Visual Studio for my daily coding needs.</p>
+<p>
+	The first thing I did was to create a SharpDevelop add-in with equivalent functionality to the <a href="http://www.usysware.com/dpack/FileBrowser.aspx">DPack File Browser</a>, which is one of the Visual Studio add-ins that I use the most. I got a working prototype really fast, as the SharpDevelop add-in API is much cleaner that the Visual Studio EnvDTE mess:</p>
+<p>
+	<img border="0" height="190" src="/userfiles/Replacing-Visual-Studio_130FA/image_thumb.png" width="244" /></p>
+<p>
+	I&nbsp;posted the source code to <a href="https://github.com/ovatsus/CodeBeside.FileBrowser">https://github.com/ovatsus/CodeBeside.FileBrowser</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/12/18/agile-platform-5-1-1">Agile Platform 5.1.1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-12-18T00:00:00+00:00" pubdate data-updated="true">Dec 18<span>th</span>, 2010</time>
+        
+         | <a href="/blog/2010/12/18/agile-platform-5-1-1#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+	We&rsquo;ve recently released version 5.1.1 of the Agile Platform. It&rsquo;s got a lot of great new features and an improved look &amp; feel. And better yet, it&rsquo;s compatible with 5.1.0, so you don&rsquo;t need to upgrade your server.</p>
+<p>
+	Check the post <a href="http://www.outsystems.com/NetworkForums/ViewTopic.aspx?Topic=New-in-the-Agile-Platform-v5.1.1">New-in-the-Agile-Platform-v5.1.1</a> for more info.</p>
+<p>
+	<img src="http://www.outsystems.com/CKEditor/Download.aspx?GUID=20101282jg5g1100gj4b27ajcgxdvtt304kynvodja1puurz6" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square">How to Change Word 2007 Citation Style to Use Square Brackets</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-09-27T00:00:00+01:00" pubdate data-updated="true">Sep 27<span>th</span>, 2010</time>
+        
+         | <a href="/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+	This one was not easy to discover, so I&rsquo;m going to post it here for future reference.</p>
+<p>
+	In C:\Program Files\Microsoft Office\Office12\Bibliography\Style\Iso690Nmerical.xsl change the following lines:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;xsl:template</span> <span class="na">name=</span><span class="s">&quot;templ_prop_OpenBracket&quot;</span> <span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">&quot;_LCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;xsl:call-template</span> <span class="na">name=</span><span class="s">&quot;localLCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;xsl:with-param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="na">select=</span><span class="s">&quot;$LCID&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/xsl:call-template&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/xsl:variable&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:OpenBracket&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:text&gt;</span>[<span class="nt">&lt;/xsl:text&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/xsl:template&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;xsl:template</span> <span class="na">name=</span><span class="s">&quot;templ_prop_CloseBracket&quot;</span> <span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">&quot;_LCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;xsl:call-template</span> <span class="na">name=</span><span class="s">&quot;localLCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;xsl:with-param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="na">select=</span><span class="s">&quot;$LCID&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/xsl:call-template&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/xsl:variable&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:CloseBracket&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/xsl:template&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>
+	to this:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>  <span class="nt">&lt;xsl:template</span> <span class="na">name=</span><span class="s">&quot;templ_prop_OpenBracket&quot;</span> <span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">&quot;_LCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;xsl:call-template</span> <span class="na">name=</span><span class="s">&quot;localLCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;xsl:with-param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="na">select=</span><span class="s">&quot;$LCID&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/xsl:call-template&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/xsl:variable&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!--&lt;xsl:value-of select=&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:OpenBracket&quot;/&gt;--&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:text&gt;</span>[<span class="nt">&lt;/xsl:text&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/xsl:template&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;xsl:template</span> <span class="na">name=</span><span class="s">&quot;templ_prop_CloseBracket&quot;</span> <span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">&quot;_LCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;xsl:call-template</span> <span class="na">name=</span><span class="s">&quot;localLCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;xsl:with-param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="na">select=</span><span class="s">&quot;$LCID&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/xsl:call-template&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/xsl:variable&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!--&lt;xsl:value-of select=&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:CloseBracket&quot;/&gt;--&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:text&gt;</span>]<span class="nt">&lt;/xsl:text&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/xsl:template&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/08/23/agile-platform-tips-amp-tricks-7">Agile Platform Tips & Tricks #7</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-23T00:00:00+01:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2010</time>
+        
+         | <a href="/blog/2010/08/23/agile-platform-tips-amp-tricks-7#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>
+	How to change the page styles dynamically at runtime</h4>
+<p>
+	<em>[Edit 01/09/2001: Updated the sample to also override the colors in the popups]</em></p>
+<p>
+	Service Studio gives you a few good options to define style sheets for you pages and emails. Besides the global style sheet that applies to the whole eSpace, you can add a custom style sheet to each web screen and email, and you can even define a custom style sheet for each web block. The platform will take care of including all the style sheets in the html of the page/email according to the following order:</p>
+<ol>
+	<li>
+		The style sheet of all the web blocks directly or indirectly included in the page/email (including referenced ones), from the inner most blocks to the outermost blocks in case of nesting</li>
+	<li>
+		The eSpace style sheet</li>
+	<li>
+		The style sheet of the web screen or email.</li>
+</ol>
+<p>
+	In web screens, all those style sheets are deployed to separate files and referenced by the page, while in emails, their content is merged together and included inline in the html for optimal display in the majority of email clients. The platform also applies some post processing to the content of the style sheets to optimize their usage in content delivery networks.</p>
+<p>
+	All these style sheets are statically defined at design time and can&rsquo;t be dynamically changed at runtime, but it&rsquo;s possible to include more style sheets at runtime that override the static ones. That allows us to do cool things like giving a specific user a different style sheet, changing the color scheme to red when some critical situation is happening, or even letting the user choose the style sheet of his preference, like this:</p>
+<p>
+	&nbsp;<a href="/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
+<p>
+	To accomplish this, we need to do two things:</p>
+<ol>
+	<li>
+		Make sure the extra style sheets are deployed together with the application</li>
+	<li>
+		Manipulate the html returned to the browser to include a &lt;link rel=&rdquo;stylesheet&rdquo;&gt; tag in the &lt;head&gt; section</li>
+</ol>
+<p>
+	For #1, we can create the .css text files outside Service Studio and then import them as resources by using the Import Resource operation available in the eSpace tree context menu. However, that&rsquo;s not a very manageable solution. An alternative way is to create a set of web blocks that we don&rsquo;t use in any page, and use them just to define these style sheets. The platform will still deploy their style sheet files, even if the blocks themselves aren&rsquo;t used, and we can then reference those files in the page.</p>
+<p>
+	For #2, the AddStyleSheetTag action from the HTTPRequestHandler extension seems an obvious choice, but that will put the &lt;link&gt; tag at the beginning of the &lt;head&gt; section. As we want our dynamic style sheets to override the static style sheets, we must include them at the end, so this option doesn&rsquo;t work for us. Fortunately, we can also do this easily by using a little bit of JavaScript. For a complete example, take a look at this eSpace:</p>
+<p>
+	<a href="/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/08/18/agile-platform-tips-amp-tricks-6">Agile Platform Tips & Tricks #6</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-18T00:00:00+01:00" pubdate data-updated="true">Aug 18<span>th</span>, 2010</time>
+        
+         | <a href="/blog/2010/08/18/agile-platform-tips-amp-tricks-6#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>
+	Calling Screen Actions from custom JavaScript events</h4>
+<p>
+	Imagine you&rsquo;re using the Tabs_ClientSide from RichWidgets and you&rsquo;re showing a list in each tab. Instead of loading all the lists when the screen is loaded, you want to only populate each list when the corresponding tab is activated. The Tabs_ClientSide already provides a way to call custom JavaScript code on tab activation, so if we could call a Screen Action from JavaScript code, we could make that Screen Action refresh the table on the corresponding tab. So, how can we do that?</p>
+<p>
+	The AJAX capabilities of the Agile Platform already allow you to trigger the execution of Screen Actions when some standard JavaScript events are raised. For example, if you specify a Screen Action in the OnChange property of an Input widget, when the end-user types in something in the correspondent input displayed by the browser, that Screen Action will be called at the server. To do this, the Agile Platform generates custom JavaScript code that will send an AJAX request to the server when the native onchange event of that input HTML element is triggered. So, if we add an hidden Input widget to the page and on the OnTabActivation parameter of the Tabs_ClientSide we put some JavaScript code to trigger that onchange event manually, we know that the platform will take care of calling the Screen Action specified in the OnChange of that Input widget. This way we can put there the logic to refresh the list inside the tab that was activated in that Screen Action. Unfortunately, we have no way of telling to pass the tab which was activated as a parameter of that Screen Action, and that forces us to have to an hidden Input for each tab, and decide which hidden Input to trigger in JavaScript.</p>
+<p>
+	Fortunately, there&rsquo;s a simpler way to do this. It involves using the OnNotify property of a Web Block widget, call it by using OsNotifyWidget JavaScript function,&nbsp; and in the associated Screen Action using the NotifyWidgetGetMessage built-in action to get the tab that was activated. Instead of explaining it in detail, I&rsquo;ve made a sample eSpace that exemplifies this scenario. Here it is:</p>
+<p>
+	<a href="/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/08/18/agile-platform-tips-amp-tricks-5">Agile Platform Tips & Tricks #5</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-18T00:00:00+01:00" pubdate data-updated="true">Aug 18<span>th</span>, 2010</time>
+        
+         | <a href="/blog/2010/08/18/agile-platform-tips-amp-tricks-5#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+	When you need to change a public element of an eSpace, such as an Action or a Web Block, it&rsquo;s good to know before-hand where that element is being used, so you can anticipate possible problems. To do that, you can go to Service Center and check the References tab in the page relative to your eSpace. There you will find listed all the consumers of your eSpace, and if you click on the Details links next to each consumer eSpace, you can check which specific elements are being used:</p>
+<p>
+	<a href="/userfiles/AgilePlatformTipsTricks5_BFEF/image_2.png"><img alt="image" border="0" height="332" src="/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+<p>
+	<br />
+	To help to improve this process, I&rsquo;ve recently published the <a href="http://www.outsystems.com/forge/Component_Detail.aspx?ProjectId=161" title="References Dashboard">References Dashboard</a> component on the OutSystems Network. It has similar functionality to this tab of Service Center, but the consumers are grouped by element instead of by consumer eSpace, allowing for faster search:</p>
+<p>
+	<a href="/userfiles/AgilePlatformTipsTricks5_BFEF/image_4.png"><img alt="image" border="0" height="285" src="/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning">F# as a Octave/Matlab replacement for Machine Learning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/02/introducing-presharp">Introducing PreSharp</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food">Microsoft: please eat some more of your WPF-flavored dog food</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/25/migrating-from-subtext-to-blogenginenet">Migrating from SubText to BlogEngine.NET</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1">Replacing Visual Studio 2010 with SharpDevelop 4.1</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Tags</h1>
+  <span id="tag-cloud">
+    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 113.33333333333333%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
+  </span>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("ovatsus", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/ovatsus" class="twitter-follow-button" data-show-count="true">Follow @ovatsus</a>
+  
+</section>
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Gustavo Guerra -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'codebesideblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

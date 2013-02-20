@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: WPF | Code Beside]]></title>
+  <link href="http://ovatsus.github.com/blog/tags/wpf/atom.xml" rel="self"/>
+  <link href="http://ovatsus.github.com/"/>
+  <updated>2013-02-20T01:23:20+00:00</updated>
+  <id>http://ovatsus.github.com/</id>
+  <author>
+    <name><![CDATA[Gustavo Guerra]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Microsoft: please eat some more of your WPF-flavored dog food]]></title>
+    <link href="http://ovatsus.github.com/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food"/>
+    <updated>2011-09-27T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food</id>
+    <content type="html"><![CDATA[<p>
+    I have&nbsp; a love-hate relationship with WPF.</p>
+
+
+<p>
+    I think it is several orders of magnitude better than Windows Forms and gives developers a tremendous expressive power to materialize their ideas into good user interfaces. I wouldn&rsquo;t dream of doing many of the things I was able to do in just a few weeks in the <a href="http://www.outsystems.com/agile-platform/">Agile Platform IDE</a> in any other UI framework, even if I was given months. It&rsquo;s like going from plain C to C# 4.</p>
+
+
+<p>
+    But even though the concept is really good, the quality and completeness of the concrete implementation are really not there. There are just too many quirks, weird limitations, parts that don&rsquo;t play nice with others, performance problems, memory leaks, etc... And when things don&rsquo;t work as they should, many times you really have to go out of your way to be able to fix things.</p>
+
+
+<p>
+    I understand deadlines and priorities, and I know that probably Microsoft just had to ship something at some point, but it really seems that there was a big lack of dogfooding in the WPF case.</p>
+
+
+<p>
+    There&rsquo;s a striking example of this: what was the number one complaint that developers had about WPF since 2006?&hellip; Blurry text and images. And when did Microsoft fix it?&hellip; Only in 2010, when they started using WPF for Visual Studio.</p>
+
+
+<p>
+    Another issue that has been bugging me since I started using WPF was the airspace limitation. It seems that <a href="http://www.jonathanantoine.com/2011/09/24/wpf-4-5-%E2%80%93-part-8-no-more-airspace-problems-integrating-wpf-with-win32/">it&rsquo;s finally going to be fixed in 4.5</a>. Why do I think it&rsquo;s being solved now? Because they probably needed some native WinRT component to play nice with WPF&hellip;</p>
+
+
+<p>
+    I think eating you own dog food is really important. At <a href="http://www.outsystems.com">OutSystems</a> we use our product to build all web applications: the R&amp;D apps (bug tracking, project management, continuous integration&hellip;), the HR apps (directory, vacations, recruiting&hellip;), the sales apps, the marketing apps, the corporate site, the community forums, etc&hellip; And I can say with a great deal of confidence that if we didn&rsquo;t do that, our product wouldn&rsquo;t be half of what it is today.</p>
+
+
+<p>
+    Bottom line: we as developers should always try to eat our own dog food as much as we can. In fact, I think it&rsquo;s so important that it should have been item 13 in the <a href="http://www.joelonsoftware.com/articles/fog0000000043.html">Joel Test</a>.</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Extension Properties]]></title>
+    <link href="http://ovatsus.github.com/blog/2008/09/10/extension-properties"/>
+    <updated>2008-09-10T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2008/09/10/extension-properties</id>
+    <content type="html"><![CDATA[<p>
+    After you start to use extension methods and see all their benefits, you start thinking about how nice it would be to also have extension properties. When Scott Guthrie first announced them in <a href="http://weblogs.asp.net/scottgu/archive/2007/03/13/new-orcas-language-feature-extension-methods.aspx" title="">New &quot;Orcas&quot; Language Feature: Extension Methods</a>, someone immediately asked about extension properties. It just seems the feature is incomplete without both.</p>
+
+
+<p>
+    One particular area that would benefit greatly from extension properties would be WPF. Every time you define an attached property, you usually create a static getter and a static setter for it. If you could package that up in an extension property, attached properties would be much nicer to use.</p>
+
+
+<p>
+    There have been some hints that the C# language team is considering extension properties for the future, so maybe we&#39;ll get them in C# 4.0. But if you don&#39;t want to wait until 2010, you can have extension properties right now if you use F#. Check out Matthew Podwysocki&#39;s <a href="http://weblogs.asp.net/podwysocki/archive/2008/09/09/object-oriented-f-extension-everything.aspx">Object Oriented F# - Extension Everything</a>.</p>
+
+]]></content>
+  </entry>
+  
+</feed>

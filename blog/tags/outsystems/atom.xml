@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: OutSystems | Code Beside]]></title>
+  <link href="http://ovatsus.github.com/blog/tags/outsystems/atom.xml" rel="self"/>
+  <link href="http://ovatsus.github.com/"/>
+  <updated>2013-02-20T01:23:20+00:00</updated>
+  <id>http://ovatsus.github.com/</id>
+  <author>
+    <name><![CDATA[Gustavo Guerra]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform 5.1.1]]></title>
+    <link href="http://ovatsus.github.com/blog/2010/12/18/agile-platform-5-1-1"/>
+    <updated>2010-12-18T00:00:00+00:00</updated>
+    <id>http://ovatsus.github.com/blog/2010/12/18/agile-platform-5-1-1</id>
+    <content type="html"><![CDATA[<p>
+    We&rsquo;ve recently released version 5.1.1 of the Agile Platform. It&rsquo;s got a lot of great new features and an improved look &amp; feel. And better yet, it&rsquo;s compatible with 5.1.0, so you don&rsquo;t need to upgrade your server.</p>
+
+
+<p>
+    Check the post <a href="http://www.outsystems.com/NetworkForums/ViewTopic.aspx?Topic=New-in-the-Agile-Platform-v5.1.1">New-in-the-Agile-Platform-v5.1.1</a> for more info.</p>
+
+
+<p>
+    <img src="http://www.outsystems.com/CKEditor/Download.aspx?GUID=20101282jg5g1100gj4b27ajcgxdvtt304kynvodja1puurz6" /></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform Tips & Tricks #7]]></title>
+    <link href="http://ovatsus.github.com/blog/2010/08/23/agile-platform-tips-amp-tricks-7"/>
+    <updated>2010-08-23T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2010/08/23/agile-platform-tips-amp-tricks-7</id>
+    <content type="html"><![CDATA[<h4>
+    How to change the page styles dynamically at runtime</h4>
+
+
+<p>
+    <em>[Edit 01/09/2001: Updated the sample to also override the colors in the popups]</em></p>
+
+
+<p>
+    Service Studio gives you a few good options to define style sheets for you pages and emails. Besides the global style sheet that applies to the whole eSpace, you can add a custom style sheet to each web screen and email, and you can even define a custom style sheet for each web block. The platform will take care of including all the style sheets in the html of the page/email according to the following order:</p>
+
+
+<ol>
+    <li>
+        The style sheet of all the web blocks directly or indirectly included in the page/email (including referenced ones), from the inner most blocks to the outermost blocks in case of nesting</li>
+    <li>
+        The eSpace style sheet</li>
+    <li>
+        The style sheet of the web screen or email.</li>
+</ol>
+
+
+<p>
+    In web screens, all those style sheets are deployed to separate files and referenced by the page, while in emails, their content is merged together and included inline in the html for optimal display in the majority of email clients. The platform also applies some post processing to the content of the style sheets to optimize their usage in content delivery networks.</p>
+
+
+<p>
+    All these style sheets are statically defined at design time and can&rsquo;t be dynamically changed at runtime, but it&rsquo;s possible to include more style sheets at runtime that override the static ones. That allows us to do cool things like giving a specific user a different style sheet, changing the color scheme to red when some critical situation is happening, or even letting the user choose the style sheet of his preference, like this:</p>
+
+
+<p>
+    &nbsp;<a href="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
+
+
+<p>
+    To accomplish this, we need to do two things:</p>
+
+
+<ol>
+    <li>
+        Make sure the extra style sheets are deployed together with the application</li>
+    <li>
+        Manipulate the html returned to the browser to include a &lt;link rel=&rdquo;stylesheet&rdquo;&gt; tag in the &lt;head&gt; section</li>
+</ol>
+
+
+<p>
+    For #1, we can create the .css text files outside Service Studio and then import them as resources by using the Import Resource operation available in the eSpace tree context menu. However, that&rsquo;s not a very manageable solution. An alternative way is to create a set of web blocks that we don&rsquo;t use in any page, and use them just to define these style sheets. The platform will still deploy their style sheet files, even if the blocks themselves aren&rsquo;t used, and we can then reference those files in the page.</p>
+
+
+<p>
+    For #2, the AddStyleSheetTag action from the HTTPRequestHandler extension seems an obvious choice, but that will put the &lt;link&gt; tag at the beginning of the &lt;head&gt; section. As we want our dynamic style sheets to override the static style sheets, we must include them at the end, so this option doesn&rsquo;t work for us. Fortunately, we can also do this easily by using a little bit of JavaScript. For a complete example, take a look at this eSpace:</p>
+
+
+<p>
+    <a href="http://ovatsus.github.com/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform Tips & Tricks #6]]></title>
+    <link href="http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-6"/>
+    <updated>2010-08-18T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-6</id>
+    <content type="html"><![CDATA[<h4>
+    Calling Screen Actions from custom JavaScript events</h4>
+
+
+<p>
+    Imagine you&rsquo;re using the Tabs_ClientSide from RichWidgets and you&rsquo;re showing a list in each tab. Instead of loading all the lists when the screen is loaded, you want to only populate each list when the corresponding tab is activated. The Tabs_ClientSide already provides a way to call custom JavaScript code on tab activation, so if we could call a Screen Action from JavaScript code, we could make that Screen Action refresh the table on the corresponding tab. So, how can we do that?</p>
+
+
+<p>
+    The AJAX capabilities of the Agile Platform already allow you to trigger the execution of Screen Actions when some standard JavaScript events are raised. For example, if you specify a Screen Action in the OnChange property of an Input widget, when the end-user types in something in the correspondent input displayed by the browser, that Screen Action will be called at the server. To do this, the Agile Platform generates custom JavaScript code that will send an AJAX request to the server when the native onchange event of that input HTML element is triggered. So, if we add an hidden Input widget to the page and on the OnTabActivation parameter of the Tabs_ClientSide we put some JavaScript code to trigger that onchange event manually, we know that the platform will take care of calling the Screen Action specified in the OnChange of that Input widget. This way we can put there the logic to refresh the list inside the tab that was activated in that Screen Action. Unfortunately, we have no way of telling to pass the tab which was activated as a parameter of that Screen Action, and that forces us to have to an hidden Input for each tab, and decide which hidden Input to trigger in JavaScript.</p>
+
+
+<p>
+    Fortunately, there&rsquo;s a simpler way to do this. It involves using the OnNotify property of a Web Block widget, call it by using OsNotifyWidget JavaScript function,&nbsp; and in the associated Screen Action using the NotifyWidgetGetMessage built-in action to get the tab that was activated. Instead of explaining it in detail, I&rsquo;ve made a sample eSpace that exemplifies this scenario. Here it is:</p>
+
+
+<p>
+    <a href="http://ovatsus.github.com/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform Tips & Tricks #5]]></title>
+    <link href="http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-5"/>
+    <updated>2010-08-18T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-5</id>
+    <content type="html"><![CDATA[<p>
+    When you need to change a public element of an eSpace, such as an Action or a Web Block, it&rsquo;s good to know before-hand where that element is being used, so you can anticipate possible problems. To do that, you can go to Service Center and check the References tab in the page relative to your eSpace. There you will find listed all the consumers of your eSpace, and if you click on the Details links next to each consumer eSpace, you can check which specific elements are being used:</p>
+
+
+<p>
+    <a href="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks5_BFEF/image_2.png"><img alt="image" border="0" height="332" src="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+
+
+<p>
+    <br />
+    To help to improve this process, I&rsquo;ve recently published the <a href="http://www.outsystems.com/forge/Component_Detail.aspx?ProjectId=161" title="References Dashboard">References Dashboard</a> component on the OutSystems Network. It has similar functionality to this tab of Service Center, but the consumers are grouped by element instead of by consumer eSpace, allowing for faster search:</p>
+
+
+<p>
+    <a href="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks5_BFEF/image_4.png"><img alt="image" border="0" height="285" src="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform Tips & Tricks #4]]></title>
+    <link href="http://ovatsus.github.com/blog/2010/03/29/service-studio-tips-amp-tricks-4"/>
+    <updated>2010-03-29T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2010/03/29/service-studio-tips-amp-tricks-4</id>
+    <content type="html"><![CDATA[<p>
+    <br />
+    If you seen this post on the Agile Network Forums - <a href="http://www.outsystems.com/NetworkForums/ViewTopic.aspx?Topic=Usability-Tip-(Ctrl%2Bshift%2Bclick)">Usability Tip (Ctrl+shift+click)</a> - you already know a quick way to get some extra space between two elements in a flow.</p>
+
+
+<p>
+    From 5.0.2.9 up, there&rsquo;s an even easier way: just drag the the element, and if there&rsquo;s little space, the flow will be automatically arranged:</p>
+
+
+<p>
+    <object height="465" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/0e1c0a75-ec1d-4878-94aa-b912a9f8b096/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/0e1c0a75-ec1d-4878-94aa-b912a9f8b096/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=465&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/0e1c0a75-ec1d-4878-94aa-b912a9f8b096/2010-03-29_2259.swf" height="465" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/0e1c0a75-ec1d-4878-94aa-b912a9f8b096/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object></p>
+
+]]></content>
+  </entry>
+  
+</feed>

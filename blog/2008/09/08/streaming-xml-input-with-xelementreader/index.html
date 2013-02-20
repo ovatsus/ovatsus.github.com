@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Streaming XML input with XElementReader - Code Beside</title>
+  <meta name="author" content="Gustavo Guerra">
+
+  
+  <meta name="description" content="Updated on 2008/09/17: Fixed problem when skipping elements. Updated on 2008/09/15: Fixed problem when trying to read missing attributes. One of new &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://ovatsus.github.com/blog/2008/09/08/streaming-xml-input-with-xelementreader">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="http://feeds.feedburner.com/CodeBeside" rel="alternate" title="Code Beside" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-5385973-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Code Beside</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="http://feeds.feedburner.com/CodeBeside" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:ovatsus.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Streaming XML Input With XElementReader</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-08T00:00:00+01:00" pubdate data-updated="true">Sep 8<span>th</span>, 2008</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>
+	<strong>Updated on 2008/09/17</strong>: Fixed problem when skipping elements.<br />
+	<strong>Updated on 2008/09/15</strong>: Fixed problem when trying to read missing attributes.</p>
+<p>
+	One of new features introduced in .NET 3.5 that I welcomed the most was LINQ to XML. The old DOM API was a bit clumsy to use, and the simple fact that you don&#39;t need owner documents any more makes the new XElement much more flexible and pleasant to work with than the old XmlElement.</p>
+<p>
+	Also new is an API for streaming XML output, XStreamingElement, that by using deferred execution gives you SAX-like performance on a DOM-like API. There&#39;s no streaming XML input API, though, so although you can now get away with not having to use XmlWriter any more, you&#39;ll still need to use XmlReader when you want good performance on large documents. During the LINQ to XML development, the XML Team considered such an API, but they decided not to do it for Orcas.</p>
+<p>
+	Fortunately, Ralf L&auml;mmel proposed such an API in <a href="http://homepages.cwi.nl/~ralf/api-streaming-xml/">API-based XML streaming with FLWOR power and functional updates</a>. I contacted him too ask if he could publicly release the code of his prototype, but he said he couldn&#39;t do it. Nevertheless, he kindly offered to help me develop a similar library myself, so with his help I implemented a small subset of the functionality he described in the paper. It took a while to get the corner cases right, but this is being used in a real-world scenario for some months now, so I think it&#39;s stable enough.</p>
+<p>
+	The interface is the following:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="kt">string</span> <span class="n">path</span><span class="p">);</span>
+</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">TextReader</span> <span class="n">reader</span><span class="p">);</span>
+</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">XmlReader</span> <span class="n">reader</span><span class="p">);</span>
+</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">Stream</span> <span class="n">stream</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">XName</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="kt">string</span> <span class="n">Value</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">XAttribute</span> <span class="nf">Attribute</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XAttribute</span><span class="p">&gt;</span> <span class="n">Attributes</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">XElementReader</span> <span class="nf">FirstElement</span><span class="p">();</span>
+</span><span class='line'><span class="n">XElementReader</span> <span class="nf">Element</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XElementReader</span><span class="p">&gt;</span> <span class="n">Elements</span><span class="p">();</span>
+</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XElementReader</span><span class="p">&gt;</span> <span class="n">Elements</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">XElement</span> <span class="nf">ToXElement</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+<p></p>
+<p>
+	Although XElementReader looks a lot like a subset of XElement, you still have to remember that it&#39;s using a XmlReader underneath, so after you try to get to any child element, you have changed the reader position.</p>
+<p>
+	For example, if you have an element like &lt;Root&gt;&lt;A/&gt;&lt;B/&gt;&lt;A/&gt;&lt;B/&gt;&lt;/Root&gt; and call .Element(&quot;A&quot;) twice and then .Element(&quot;B&quot;) twice, the second call for B will return null. If you instead call .Elements(&quot;A&quot;) and then .Elements(&quot;B&quot;), you&#39;ll get two A elements, but no B elements at all. So to do this right, you have iterate on .Elements() and check the .Name property to see if you&#39;re in an A or in a B element.</p>
+<p>
+	This read once nature sometimes also complicates debugging. To help with that, you can define XML_DEBUG_MODE to force XElementReader to use a XElement behind the covers instead of a XmlReader, so you can add watches freely without worrying about side effects. But remember to fully test with this conditional compilation symbol off.</p>
+<p>
+	Here&#39;s the full code:</p>
+<script src="https://gist.github.com/1225799.js"></script>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Gustavo Guerra</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-08T00:00:00+01:00" pubdate data-updated="true">Sep 8<span>th</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/tags/linq/'>LINQ</a>, <a class='category' href='/blog/tags/xml/'>XML</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://ovatsus.github.com/blog/2008/09/08/streaming-xml-input-with-xelementreader" data-via="ovatsus" data-counturl="http://ovatsus.github.com/blog/2008/09/08/streaming-xml-input-with-xelementreader" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2008/08/28/staticstringdictionary-fast-switching-with-linq-revisited" title="Previous Post: StaticStringDictionary - Fast Switching with LINQ revisited">&laquo; StaticStringDictionary - Fast Switching with LINQ revisited</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2008/09/10/extension-properties" title="Next Post: Extension Properties">Extension Properties &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A little something about me.</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning">F# as a Octave/Matlab replacement for Machine Learning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/02/introducing-presharp">Introducing PreSharp</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food">Microsoft: please eat some more of your WPF-flavored dog food</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/25/migrating-from-subtext-to-blogenginenet">Migrating from SubText to BlogEngine.NET</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1">Replacing Visual Studio 2010 with SharpDevelop 4.1</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Tags</h1>
+  <span id="tag-cloud">
+    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 113.33333333333333%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
+  </span>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("ovatsus", 5, true);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/ovatsus" class="twitter-follow-button" data-show-count="true">Follow @ovatsus</a>
+  
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Gustavo Guerra -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'codebesideblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ovatsus.github.com/blog/2008/09/08/streaming-xml-input-with-xelementreader';
+        var disqus_url = 'http://ovatsus.github.com/blog/2008/09/08/streaming-xml-input-with-xelementreader';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

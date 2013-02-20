@@ -1,0 +1,9 @@
+<script type="text/javascript">
+    var url = document.location.href;    
+    if (url.indexOf(".aspx") >= 0 && url.indexOf("/post/" > 0)) {
+        window.location.replace(url.replace(/\/post\//g, "/blog/").replace(/.aspx/g, "").toLowerCase());
+    }
+</script>
+<p>This file does not exist.</p>    
+If you got here with a link for a previous version of my blog, try 
+<a id="newLink" href="/blog/archives">the archive</a>

@@ -1,0 +1,1280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Code Beside]]></title>
+  <link href="http://ovatsus.github.com/atom.xml" rel="self"/>
+  <link href="http://ovatsus.github.com/"/>
+  <updated>2013-02-20T01:23:20+00:00</updated>
+  <id>http://ovatsus.github.com/</id>
+  <author>
+    <name><![CDATA[Gustavo Guerra]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[F# as a Octave/Matlab replacement for Machine Learning]]></title>
+    <link href="http://ovatsus.github.com/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning"/>
+    <updated>2011-10-27T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning</id>
+    <content type="html"><![CDATA[<p>
+	<strong>EDIT</strong>: As another version of the ml-class course has started, I&#39;ve made the repository private</p>
+<p>
+	Back when I was in college, I took three different courses that dealt with subjects related to machine learning and data mining. Although I didn&rsquo;t lose interest on those matters, my work has led me in a totally unrelated direction, so I haven&rsquo;t exercised any of that knowledge in about eight years or so. A few weeks ago, I stumbled upon Stanford&rsquo;s online class on <a href="http://www.ml-class.org">Machine Learning</a> and decided to enroll. I want to revive many of the things I have forgotten and try to put them into practice, as nowadays it&rsquo;s very easy to access large amounts of interesting data from all kinds of online sources.</p>
+<p>
+	The programming exercises of this class are supposed to be done in Octave or Matlab, and while I understand the advantages of these tools, my past experience (where all the exercises and projects were done either with SAS or with Matlab) shows me that not using a general purpose programming languages doesn&rsquo;t help a lot in turning academic exercises into real world programs. As professor Andrew Ng said in the introduction, one of the goals of the class is for us to put machine learning into practice in real world problems we care about, so I decided that I&rsquo;ll implement all the algorithms and exercises in F#.</p>
+    <!-- more -->
+<p>
+	I&rsquo;m using <a href="http://numerics.mathdotnet.com/">Math.NET Numerics</a> for the linear algebra and statistics, and while some operations are not as simple as in Octave, being able to use higher order functions instead of for loops compensates for it. As an example, look at the code for feature normalization in Octave:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='matlab'><span class='line'><span class="k">function</span><span class="w"> </span>[X_norm, mu, sigma] <span class="p">=</span><span class="w"> </span><span class="nf">featureNormalize</span><span class="p">(</span>X<span class="p">)</span><span class="w"></span>
+</span><span class='line'>
+</span><span class='line'><span class="n">X_norm</span> <span class="p">=</span> <span class="n">X</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">mu</span> <span class="p">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+</span><span class='line'><span class="n">sigma</span> <span class="p">=</span> <span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">m</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> 1<span class="p">);</span>
+</span><span class='line'><span class="k">for</span> <span class="nb">i</span> <span class="p">=</span> 1<span class="p">:</span><span class="n">m</span>
+</span><span class='line'>    <span class="n">X_norm</span><span class="p">(</span><span class="nb">i</span><span class="p">,:)</span> <span class="p">=</span> <span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="p">,:)</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">./</span> <span class="n">sigma</span><span class="p">;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>
+	And here&rsquo;s the equivalent F# code:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">let</span> <span class="n">featureNormalize</span> <span class="o">(</span><span class="nc">X</span><span class="o">:</span> <span class="o">#</span><span class="nc">Matrix</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;)</span> <span class="o">=</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">let</span> <span class="err">μ</span> <span class="o">=</span>
+</span><span class='line'>        <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnEnumerator</span><span class="bp">()</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="n">col</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">col</span><span class="o">.</span><span class="nc">Mean</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="nn">DenseVector</span><span class="p">.</span><span class="n">ofSeq</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">let</span> <span class="err">σ</span> <span class="o">=</span>
+</span><span class='line'>        <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnEnumerator</span><span class="bp">()</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="n">col</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">col</span><span class="o">.</span><span class="nc">StandardDeviation</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="nn">DenseVector</span><span class="p">.</span><span class="n">ofSeq</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">let</span> <span class="nc">X</span> <span class="o">=</span>
+</span><span class='line'>        <span class="nc">X</span> <span class="o">|&gt;</span> <span class="nn">Matrix</span><span class="p">.</span><span class="n">mapRows</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="n">row</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">row</span> <span class="o">-</span> <span class="err">μ</span><span class="o">)</span> <span class="o">./</span> <span class="err">σ</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">(</span><span class="nc">X</span><span class="o">,</span> <span class="err">μ</span><span class="o">,</span> <span class="err">σ</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>
+	Even though calculating the mean and standard deviation is a little more elaborate than using just a built-in function call, the actual normalization code is more straightforward, so we&rsquo;re not really loosing any productivity by using F#, considering that we have the same kind of development interactivity thanks to F# Interactive. Other nice touches in F# are the ability to use greek letters and the possibility of separating the data from the algorithm parameters by means of the pipelining operator (|&gt;). By leaving all the data parameters at the end and aggregating them into a tuple, we can turn this code:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="nn">LinearRegression</span><span class="p">.</span><span class="n">plotGradientDescentIterations</span> <span class="err">α</span> <span class="n">num_iters</span> <span class="nc">XNorm</span> <span class="n">y</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>
+	into this:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="o">(</span><span class="nc">XNorm</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="o">|&gt;</span> <span class="nn">LinearRegression</span><span class="p">.</span><span class="n">plotGradientDescentIterations</span> <span class="err">α</span> <span class="n">num_iters</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>
+	which I think is clearer.</p>
+<p>
+	I also like the fact that Math.NET Numerics has a separate type for vectors instead of using one-column or one-row matrices for that, allowing us not to worry about transposing the vectors when multiplying.</p>
+<p>
+	Mimicking Matlab charting capabilities was a bit more tricky. For the majority of charting I&rsquo;m using <a href="http://code.msdn.microsoft.com/FSharpChart-b59073f5">FSharpChart</a>, but the Microsoft Chart Controls that it wraps don&rsquo;t support contour nor surface plots. For contour plots I ended up using <a href="http://dynamicdatadisplay.codeplex.com/">WPF Dynamic Data Display</a>, and for surface plots I adapted a <a href="http://www.codeproject.com/KB/WPF/WPFChart3D.aspx">sample from CodeProject</a>. I&rsquo;m not really happy with the surface plot, as it&rsquo;s really very basic, so I&rsquo;ll definitely try to improve it in the future. Here&rsquo;s a sample of charts from Matlab:</p>
+<p>
+	<a href="http://ovatsus.github.com/images/image.png"><img alt="image" border="0" height="217" src="http://ovatsus.github.com/images/image_thumb.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_1.png"><img alt="image" border="0" height="217" src="http://ovatsus.github.com/images/image_thumb_1.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_2.png"><img alt="image" border="0" height="217" src="http://ovatsus.github.com/images/image_thumb_2.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_3.png"><img alt="image" border="0" height="217" src="http://ovatsus.github.com/images/image_thumb_3.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
+<p>
+	And here are the equivalent ones I was able to produce in F#:</p>
+<p>
+	<a href="http://ovatsus.github.com/images/image_4.png"><img alt="image" border="0" height="244" src="http://ovatsus.github.com/images/image_thumb_4.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_5.png"><img alt="image" border="0" height="244" src="http://ovatsus.github.com/images/image_thumb_5.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_6.png"><img alt="image" border="0" height="244" src="http://ovatsus.github.com/images/image_thumb_6.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_7.png"><img alt="image" border="0" height="244" src="http://ovatsus.github.com/images/image_thumb_7.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
+<p>
+	I&rsquo;m putting this available at <a href="https://github.com/ovatsus/MLClass">https://github.com/ovatsus/MLClass</a>. I&rsquo;m only going to push the commits weekly after the class exercise deadlines expire, so at the time of this post only the implementation of the Linear Regression exercises is available.</p>
+<p>
+	So far this has been a very rewarding experience, as besides preparing the way so I can reuse this code in the future, I&#39;ve been submitting patches both to Math.NET Numerics and to FSharpChart.</p>
+<p>
+	<strong>Edit:</strong></p>
+<p>
+	As some people have pointed out in the comments, the Octave version of feature normalization could also be done without iteration:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='matlab'><span class='line'><span class="k">function</span><span class="w"> </span>[X_norm, mu, sigma] <span class="p">=</span><span class="w"> </span><span class="nf">featureNormalize</span><span class="p">(</span>X<span class="p">)</span><span class="w"></span>
+</span><span class='line'>
+</span><span class='line'><span class="n">mu</span> <span class="p">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+</span><span class='line'><span class="n">sigma</span> <span class="p">=</span> <span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+</span><span class='line'><span class="n">m</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> 1<span class="p">);</span>
+</span><span class='line'><span class="n">X_norm</span> <span class="p">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="nb">repmat</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> 1<span class="p">))</span> <span class="o">/</span> <span class="nb">diag</span><span class="p">(</span><span class="n">sigma</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>
+	In this case the corresponding F# code would be:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">let</span> <span class="n">featureNormalize</span> <span class="o">(</span><span class="nc">X</span><span class="o">:</span> <span class="nc">Matrix</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;)</span> <span class="o">=</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">let</span> <span class="err">μ</span> <span class="o">=</span>
+</span><span class='line'>        <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnEnumerator</span><span class="bp">()</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="n">col</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">col</span><span class="o">.</span><span class="nc">Mean</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="nn">DenseVector</span><span class="p">.</span><span class="n">ofSeq</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">let</span> <span class="err">σ</span> <span class="o">=</span>
+</span><span class='line'>        <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnEnumerator</span><span class="bp">()</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="n">col</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">col</span><span class="o">.</span><span class="nc">StandardDeviation</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">|&gt;</span> <span class="nn">DenseVector</span><span class="p">.</span><span class="n">ofSeq</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">let</span> <span class="err">μ</span><span class="nc">Expanded</span> <span class="o">=</span> <span class="nn">DenseMatrix</span><span class="p">.</span><span class="n">initRow</span> <span class="nn">X</span><span class="p">.</span><span class="nc">RowCount</span> <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnCount</span> <span class="o">(</span><span class="k">fun</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="err">μ</span><span class="o">)</span>
+</span><span class='line'>    <span class="k">let</span> <span class="err">σ</span><span class="nc">Diag</span> <span class="o">=</span> <span class="nn">DenseMatrix</span><span class="p">.</span><span class="n">diag</span> <span class="err">σ</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">let</span> <span class="nc">X</span> <span class="o">=</span> <span class="o">(</span><span class="nc">X</span> <span class="o">-</span> <span class="err">μ</span><span class="nc">Expanded</span><span class="o">)</span> <span class="o">*</span> <span class="err">σ</span><span class="nn">Diag</span><span class="p">.</span><span class="nc">Inverse</span><span class="bp">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">(</span><span class="nc">X</span><span class="o">,</span> <span class="err">μ</span><span class="o">,</span> <span class="err">σ</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Introducing PreSharp]]></title>
+    <link href="http://ovatsus.github.com/blog/2011/10/02/introducing-presharp"/>
+    <updated>2011-10-02T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2011/10/02/introducing-presharp</id>
+    <content type="html"><![CDATA[<h3>Background</h3>  <p>Back in 2004, I was doing some code-generation work as part of the <a href="http://www.gsd.inesc-id.pt/project-pages/past-projects/obiwan">OBIWAN</a> project. When I started, CodeDom was being used to do the work, but I really didn’t like it because it made the generator code very hard to read and modify. Realistically, I would not need to support any other language than C#, so I started looking for alternatives. <a href="http://www.codesmithtools.com/product/generator">CodeSmith</a> was very popular at the time for generating type-safe collections (.NET 2.0 generics didn’t exist yet), but it was targeted at one-shot generations, and not at creating code generation code. Then I found a very simple tool named <a href="http://web.archive.org/web/20060726075638/http://www.inmetrix.com/">CodeGen</a> that appealed to me. I had been playing around with the <a href="http://www.boost.org/doc/libs/?view=category_Preprocessor">Boost Preprocessor library</a> recently, so I really liked the idea of using the preprocessor. I did a few tweaks to it and was able to use it for my needs at the time. Later on, around mid-2007, I needed to do code-generation again, so I took this tool and added a good amount of more power to it. At this time, it was very far apart from the original code, so I re-baptized it as PreSharp and published it to CodePlex. I never got around to do any documentation for it, so I’m making this post to try to compensate for that. I also moved the project recently from CodePlex to <a href="https://github.com/ovatsus/PreSharp">GitHub</a>.</p>
+<!-- more -->
+<h3>PreSharp as a C# Preprocessor</h3>  <p>Let’s say we’re using .NET 2.0 which doesn’t have the Func&lt;&gt; delegates and we want to define our own: </p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">TResult</span><span class="p">&gt;();</span>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">);</span>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">T2</span> <span class="n">arg2</span><span class="p">);</span>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">T2</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">T3</span> <span class="n">arg3</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>This gets tedious really quickly, so let’s use PreSharp to generate this for us:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="cp">#if PRESHARP_TEMPLATE</span>
+</span><span class='line'><span class="p">&lt;%</span> <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;=</span> <span class="m">10</span><span class="p">;</span> <span class="p">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;&lt;%</span>
+</span><span class='line'>       <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&gt;</span><span class="n">T</span><span class="p">&lt;%=</span> <span class="n">j</span> <span class="p">%&gt;,</span> <span class="p">&lt;%</span> <span class="p">}</span>
+</span><span class='line'>                                 <span class="p">%&gt;</span><span class="n">TResult</span><span class="p">&gt;(&lt;%</span>
+</span><span class='line'>       <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&gt;&lt;%=</span> <span class="n">j</span> <span class="p">==</span> <span class="m">1</span> <span class="p">?</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span> <span class="p">:</span> <span class="s">&quot;, &quot;</span> <span class="p">%&gt;</span><span class="n">T</span><span class="p">&lt;%=</span> <span class="n">j</span> <span class="p">%&gt;</span> <span class="n">arg</span><span class="p">&lt;%=</span> <span class="n">j</span> <span class="p">%&gt;&lt;%</span> <span class="p">}</span>
+</span><span class='line'>                                                <span class="p">%&gt;);</span>
+</span><span class='line'><span class="p">&lt;%</span> <span class="p">}</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p align="left">Now if we run <a href="https://github.com/downloads/ovatsus/PreSharp/PreSharp.exe">PreSharp.exe</a> &lt;file.cs&gt;, that region of code will be turned into this:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="cp">#if PRESHARP_TEMPLATE</span>
+</span><span class='line'><span class="p">&lt;%</span> <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;=</span> <span class="m">5</span><span class="p">;</span> <span class="p">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;&lt;%</span>
+</span><span class='line'>       <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&gt;</span><span class="n">T</span><span class="p">&lt;%=</span> <span class="n">j</span> <span class="p">%&gt;,</span> <span class="p">&lt;%</span> <span class="p">}</span>
+</span><span class='line'>                                 <span class="p">%&gt;</span><span class="n">TResult</span><span class="p">&gt;(&lt;%</span>
+</span><span class='line'>       <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&gt;&lt;%=</span> <span class="n">j</span> <span class="p">==</span> <span class="m">1</span> <span class="p">?</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span> <span class="p">:</span> <span class="s">&quot;, &quot;</span> <span class="p">%&gt;</span><span class="n">T</span><span class="p">&lt;%=</span> <span class="n">j</span> <span class="p">%&gt;</span> <span class="n">arg</span><span class="p">&lt;%=</span> <span class="n">j</span> <span class="p">%&gt;&lt;%</span> <span class="p">}</span>
+</span><span class='line'>                                                <span class="p">%&gt;);</span>
+</span><span class='line'><span class="p">&lt;%</span> <span class="p">}</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#region PreSharp Generated</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">TResult</span><span class="p">&gt;();</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">T2</span> <span class="n">arg2</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">T2</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">T3</span> <span class="n">arg3</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">T4</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">T2</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">T3</span> <span class="n">arg3</span><span class="p">,</span> <span class="n">T4</span> <span class="n">arg4</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">T4</span><span class="p">,</span> <span class="n">T5</span><span class="p">,</span> <span class="n">TResult</span><span class="p">&gt;(</span><span class="n">T1</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">T2</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">T3</span> <span class="n">arg3</span><span class="p">,</span> <span class="n">T4</span> <span class="n">arg4</span><span class="p">,</span> <span class="n">T5</span> <span class="n">arg5</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endregion</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>So, the syntax is similar to ASP.NET, similarly to most template based code generators: code between &lt;% and %&gt; is executed; code between &lt;%= and %&gt; is evaluated as an expression; and the rest of the code is dumped to the output directly.</p>
+
+<h3>PreSharp as a Source Code Generator Generator</h3>
+
+<p>The real power of PreSharp comes when instead of PRESHARP_TEMPLATE we use PRESHARP_TEMPLATE_LIBRARY. In this case the output after running PreSharp will be the following:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="cp">#if PRESHARP_TEMPLATE_LIBRARY</span>
+</span><span class='line'><span class="p">&lt;%</span> <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;=</span> <span class="m">10</span><span class="p">;</span> <span class="p">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;&lt;%</span>
+</span><span class='line'>       <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&gt;</span><span class="n">T</span><span class="p">&lt;%=</span> <span class="n">j</span> <span class="p">%&gt;,</span> <span class="p">&lt;%</span> <span class="p">}</span>
+</span><span class='line'>                                 <span class="p">%&gt;</span><span class="n">TResult</span><span class="p">&gt;(&lt;%</span>
+</span><span class='line'>       <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span> <span class="p">%&gt;&lt;%=</span> <span class="n">j</span> <span class="p">==</span> <span class="m">1</span> <span class="p">?</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span> <span class="p">:</span> <span class="s">&quot;, &quot;</span> <span class="p">%&gt;</span><span class="n">T</span><span class="p">&lt;%=</span> <span class="n">j</span> <span class="p">%&gt;</span> <span class="n">arg</span><span class="p">&lt;%=</span> <span class="n">j</span> <span class="p">%&gt;&lt;%</span> <span class="p">}</span>
+</span><span class='line'>                                                <span class="p">%&gt;);</span>
+</span><span class='line'><span class="p">&lt;%</span> <span class="p">}</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#region PreSharp Generated</span>
+</span><span class='line'>   <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;=</span> <span class="m">10</span><span class="p">;</span> <span class="p">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>     <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;\r\n&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;public delegate TResult Func&lt;&quot;</span><span class="p">);</span>
+</span><span class='line'>       <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>         <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;T&quot;</span><span class="p">);</span><span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span> <span class="n">j</span> <span class="p">);</span>  <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;, &quot;</span><span class="p">);</span> <span class="p">}</span>
+</span><span class='line'>                                   <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;TResult&gt;(&quot;</span><span class="p">);</span>
+</span><span class='line'>       <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span> <span class="n">j</span> <span class="p">&lt;=</span> <span class="n">i</span><span class="p">;</span> <span class="p">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>         <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span> <span class="n">j</span> <span class="p">==</span> <span class="m">1</span> <span class="p">?</span> <span class="kt">string</span><span class="p">.</span><span class="n">Empty</span> <span class="p">:</span> <span class="s">&quot;, &quot;</span> <span class="p">);</span><span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;T&quot;</span><span class="p">);</span><span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span> <span class="n">j</span> <span class="p">);</span><span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot; arg&quot;</span><span class="p">);</span><span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span> <span class="n">j</span> <span class="p">);</span>   <span class="p">}</span>
+</span><span class='line'>                                                    <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;);\r\n&quot;</span><span class="p">);</span>
+</span><span class='line'>   <span class="p">}</span> <span class="n">writer</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="s">&quot;\r\n&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endregion</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>So if we use this in a context were we have an object named <strong>writer</strong> with a method <strong>Write</strong> that accepts a string, it will generate the code for generating the code at runtime. It’s ugly code, but it does the job, and we can collapse all the #region PreSharp Generated blocks. If instead of <strong>writer</strong>, we have a variable named something else, we can suffix the #if directive with _variableName. For example, if we want <strong>output</strong> as the variable name, we’ll use PRESHARP_TEMPLATE_LIBRARY_output.</p>
+
+<h3>Visual Studio Integration</h3>
+
+<p>To setup the Visual Studio integration of PreSharp we just need to run it once without parameters. It will copy itself to C:\Program Files (x86)\PreSharp, customize MSBuild Custom.After.Microsoft.Common.targets and set some Visual Studio settings in the registry.</p>
+
+<p>After this is setup, instead of running PreSharp.exe manually, we can just change the build action of the relevant files in Visual Studio from Compile to <strong>PreSharpInplace</strong>. This will make sure PreSharp is run before the compilation phase.</p>
+
+<p>When there is any error in the code inside a PreSharp block, the errors will be displayed in the Visual Studio errors pane, next to the compilation errors, and we can double click them to go to the correct location. In some cases PreSharp fails the column number by a few characters, but the line number is always right.</p>
+
+<p>As this is implemented through MSBuild tasks, it will also work in command line builds. Some other tools use Custom Tools that only work inside Visual Studio (but which have other advantages, like&#160; being able to display generated files below the source file in Solution Explorer).</p>
+
+<h3>Reusing code</h3>
+
+<p>Each PreSharp block is compiled independently of each other. If we need to share code, we must put it in separate files and set the build action to <strong>PreSharpTemplateLibrary</strong>. Then all public classes of those files will be available inside normal PreSharp template blocks. Additionally, you can also use directives inside template blocks to import namespaces and to reference assemblies, by using <strong>&lt;%@ Import Namespace=&quot;NamespaceToImport&quot; %&gt;</strong> and <strong>&lt;%@ Assembly Name=&quot;AssemblyToReference&quot; %&gt;</strong>.</p>
+
+<p>Let’s rewrite our example to take advantage of these features. We’ll add a file StringUtils.cs with the build action set to <strong>PreSharpTemplateLibrary</strong>:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+</span><span class='line'><span class="k">using</span> <span class="nn">System.Text</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">StringUtils</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="kt">string</span> <span class="nf">StrCat</span><span class="p">(</span><span class="k">this</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">source</span><span class="p">,</span> <span class="kt">string</span> <span class="n">separator</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="kt">var</span> <span class="n">sb</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="p">();</span>
+</span><span class='line'>        <span class="kt">bool</span> <span class="n">first</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">foreach</span> <span class="p">(</span><span class="kt">string</span> <span class="n">elem</span> <span class="k">in</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">first</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">first</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">sb</span><span class="p">.</span><span class="n">Append</span><span class="p">(</span><span class="n">separator</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>            <span class="n">sb</span><span class="p">.</span><span class="n">Append</span><span class="p">(</span><span class="n">elem</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">sb</span><span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>And then change the original PreSharp block to this:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="cp">#if PRESHARP_TEMPLATE</span>
+</span><span class='line'><span class="p">&lt;%</span><span class="err">@</span> <span class="n">Assembly</span> <span class="n">Name</span><span class="p">=</span><span class="s">&quot;System.Core&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&lt;%</span><span class="err">@</span> <span class="n">Import</span> <span class="n">Namespace</span><span class="p">=</span><span class="s">&quot;System.Linq&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&lt;%</span> <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;=</span> <span class="m">5</span><span class="p">;</span> <span class="p">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kt">var</span> <span class="n">range</span> <span class="p">=</span> <span class="n">Enumerable</span><span class="p">.</span><span class="n">Range</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="k">public</span> <span class="k">delegate</span> <span class="n">TResult</span> <span class="n">Func</span><span class="p">&lt;&lt;%=</span> <span class="n">range</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">ii</span> <span class="p">=&gt;</span> <span class="s">&quot;T&quot;</span> <span class="p">+</span> <span class="n">ii</span> <span class="p">+</span> <span class="s">&quot;, &quot;</span><span class="p">)</span>
+</span><span class='line'>                                      <span class="p">.</span><span class="n">StrCat</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span> <span class="p">%&gt;</span><span class="n">TResult</span><span class="p">&gt;(&lt;%=</span> <span class="n">range</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">ii</span> <span class="p">=&gt;</span> <span class="s">&quot;T&quot;</span> <span class="p">+</span> <span class="n">ii</span> <span class="p">+</span> <span class="s">&quot; arg&quot;</span> <span class="p">+</span> <span class="n">ii</span><span class="p">)</span>
+</span><span class='line'>                                                                      <span class="p">.</span><span class="n">StrCat</span><span class="p">(</span><span class="s">&quot;, &quot;</span><span class="p">)</span> <span class="p">%&gt;);</span>
+</span><span class='line'><span class="p">&lt;%</span> <span class="p">}</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>In the <strong>Assembly</strong> directive you can specify the full path of an assembly (and in that case don’t forget to include the .dll at the end), or if that assembly is referenced by the Visual Studio project you can just specify the assembly name. PreSharp takes advantage of part of the MSBuild processing to find the file path.</p>
+
+<p>In order for Visual Studio IntelliSense to work properly, StringUtils will be compiled into your assembly in debug builds, but it release builds it won’t, as this code is only meant to be used in your PreSharp blocks.</p>
+
+<h3>Generating files</h3>
+
+<p>Instead of generating code in-place in a C# file, PreSharp can also be used to define code that will be called at compile time to output additional files to the project. For that, we will use a new build action - <strong>PreSharpTemplate</strong>. Here’s an example:</p>
+
+<p>File ViewModelGenerator.cst with build action set to <strong>PreSharpTemplate</strong>:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="cp">#if PRESHARP_TEMPLATE</span>
+</span><span class='line'><span class="p">&lt;%</span><span class="err">@</span> <span class="n">CodeTemplate</span> <span class="n">Language</span><span class="p">=</span><span class="s">&quot;C#&quot;</span> <span class="n">TargetLanguage</span><span class="p">=</span><span class="s">&quot;C#&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&lt;%</span><span class="err">@</span> <span class="n">Assembly</span> <span class="n">Name</span><span class="p">=</span><span class="s">&quot;System.Core&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&lt;%</span><span class="err">@</span> <span class="n">Assembly</span> <span class="n">Name</span><span class="p">=</span><span class="s">&quot;System.Xml&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&lt;%</span><span class="err">@</span> <span class="n">Assembly</span> <span class="n">Name</span><span class="p">=</span><span class="s">&quot;System.Xml.Linq&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&lt;%</span><span class="err">@</span> <span class="n">Include</span> <span class="n">Path</span><span class="p">=</span><span class="s">&quot;ViewModelDefinition.cst&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="p">&lt;%</span><span class="err">@</span> <span class="n">EntryPoint</span> <span class="n">Statement</span><span class="p">=</span><span class="s">&quot;CodeGeneration.ViewModelGenerator.Generate();&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">using</span> <span class="nn">System.Xml.Linq</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nn">CodeGeneration</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">ViewModelGenerator</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Generate</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">viewXml</span> <span class="k">in</span> <span class="n">XElement</span><span class="p">.</span><span class="n">Load</span><span class="p">(</span><span class="s">&quot;ViewModel.xml&quot;</span><span class="p">).</span><span class="n">Elements</span><span class="p">(</span><span class="s">&quot;view&quot;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>                <span class="kt">var</span> <span class="n">view</span> <span class="p">=</span> <span class="k">new</span> <span class="n">View</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="n">Name</span> <span class="p">=</span> <span class="n">viewXml</span><span class="p">.</span><span class="n">Attribute</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">).</span><span class="n">Value</span><span class="p">,</span>
+</span><span class='line'>                <span class="p">};</span>
+</span><span class='line'>                <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">propertyXml</span> <span class="k">in</span> <span class="n">viewXml</span><span class="p">.</span><span class="n">Elements</span><span class="p">(</span><span class="s">&quot;property&quot;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="n">view</span><span class="p">.</span><span class="n">Properties</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">Property</span> <span class="p">{</span>
+</span><span class='line'>                        <span class="n">PropertyName</span> <span class="p">=</span> <span class="n">propertyXml</span><span class="p">.</span><span class="n">Attribute</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">).</span><span class="n">Value</span><span class="p">,</span>
+</span><span class='line'>                        <span class="n">Type</span> <span class="p">=</span> <span class="n">propertyXml</span><span class="p">.</span><span class="n">Attribute</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">).</span><span class="n">Value</span><span class="p">,</span>
+</span><span class='line'>                    <span class="p">});</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>                <span class="n">view</span><span class="p">.</span><span class="n">Dump</span><span class="p">();</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>File ViewModel.xml with build action set to <strong>PreSharpInput</strong>:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;viewModel&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;view</span> <span class="na">name=</span><span class="s">&quot;View1&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;Property1&quot;</span> <span class="na">type=</span><span class="s">&quot;string&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;Property2&quot;</span> <span class="na">type=</span><span class="s">&quot;int&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/view&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;view</span> <span class="na">name=</span><span class="s">&quot;View2&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;Property&quot;</span> <span class="na">type=</span><span class="s">&quot;bool&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/view&gt;</span>
+</span><span class='line'><span class="nt">&lt;/viewModel&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>File ViewModelDefinition.cst with build action set to <strong>PreSharpTemplateInclude</strong>:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="cp">#if PRESHARP_TEMPLATE</span>
+</span><span class='line'><span class="p">&lt;%</span><span class="err">@</span> <span class="n">Import</span> <span class="n">Namespace</span><span class="p">=</span><span class="s">&quot;System.Collections.Generic&quot;</span> <span class="p">%&gt;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nn">CodeGeneration</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">Property</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">public</span> <span class="kt">string</span> <span class="n">PropertyName</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>        <span class="k">public</span> <span class="kt">string</span> <span class="n">FieldName</span> <span class="p">{</span> <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">PropertyName</span><span class="p">.</span><span class="n">ToLower</span><span class="p">();</span> <span class="p">}</span> <span class="p">}</span>
+</span><span class='line'>        <span class="k">public</span> <span class="kt">string</span> <span class="n">Type</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">View</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>        <span class="k">public</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Property</span><span class="p">&gt;</span> <span class="n">Properties</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Property</span><span class="p">&gt;();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">public</span> <span class="k">void</span> <span class="nf">Dump</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'><span class="cp">#if PRESHARP_TEMPLATE</span>
+</span><span class='line'><span class="p">&lt;%</span> <span class="n">PreSharp</span><span class="p">.</span><span class="n">SetOutput</span><span class="p">(</span><span class="n">Name</span> <span class="p">+</span> <span class="s">&quot;.Generated.cs&quot;</span><span class="p">,</span> <span class="n">PreSharp</span><span class="p">.</span><span class="n">OutputType</span><span class="p">.</span><span class="n">Compile</span><span class="p">);</span> <span class="p">%&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="k">class</span> <span class="err">&lt;%= </span><span class="nc">Name</span> <span class="p">%&gt;</span> <span class="p">:</span> <span class="n">ViewModelBase</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>            <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">p</span> <span class="k">in</span> <span class="n">Properties</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="cp">#if PRESHARP_TEMPLATE</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">private</span> <span class="p">&lt;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">Type</span> <span class="p">%&gt;</span> <span class="p">&lt;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">FieldName</span> <span class="p">%&gt;;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="p">&lt;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">Type</span> <span class="p">%&gt;</span> <span class="p">&lt;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">PropertyName</span> <span class="p">%&gt;</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="p">&lt;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">FieldName</span> <span class="p">%&gt;;</span> <span class="p">}</span>
+</span><span class='line'>        <span class="k">set</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(&lt;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">FieldName</span> <span class="p">%&gt;</span> <span class="p">!=</span> <span class="k">value</span><span class="p">)</span> <span class="p">{</span> <span class="p">&lt;%=</span> <span class="n">p</span><span class="p">.</span><span class="n">FieldName</span> <span class="p">%&gt;</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span> <span class="n">RaiseNotify</span><span class="p">(</span><span class="s">&quot;&lt;%= p.PropertyName %&gt;&quot;</span><span class="p">);</span> <span class="p">}</span> <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'><span class="cp">#if PRESHARP_TEMPLATE</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>Let me explain how this works:</p>
+
+<ul>
+  <li>The file with the build action set to <strong>PreSharpTemplate</strong> must specify directive with the format <strong>&lt;%@ EntryPoint Statement=&quot;codeToExecute();&quot; %&gt;</strong> to tell PreSharp what code to execute at compile time. That code can call PreSharp.SetOutput(string filename, PreSharp.OutputType outputType) inside the blocks to set the output file (OutputType is an enum with the values <strong>Compile</strong>, <strong>EmbeddedResource</strong>, and <strong>None</strong>). From that point on, the code generated by the PreSharp blocks will be written to that file, and that file will be added to the Visual Studio project with the corresponding build action. </li>
+
+  <li>The build action <strong>PreSharpTemplateInclude</strong> and the associated <strong>&lt;%@ Include Path=&quot;path&quot; %&gt;</strong> directive allow you to split generators in multiple files. If you just have multiple files with PreSharpTemplate build action they will all be handled independently.</li>
+
+  <li>In the examples I uses the extension .cst but in reality it could be anything. When PreSharp is installed it registers .cst in Visual Studio as a c# file, so you can use that extension and still have syntax highlighting. </li>
+
+  <li>The build action <strong>PreSharpInput</strong> informs PreSharp that whenever that file is changed, it should regenerate the target files. </li>
+
+  <li>The <strong>&lt;%@ CodeTemplate Language=&quot;C#&quot; TargetLanguage=&quot;C#&quot; %&gt; </strong>directive is ignored, and it’s only supported to allow compatibility with CodeSmith so you can edit these files in its editor and have syntax highlighting.</li>
+</ul>
+
+<h3>Debugging</h3>
+
+<p>When PreSharp executes the templates in the previous example, it generates a file named ViewModelGenerator.cst.PreSharpDebug.cs. If you want to debug the template execution, you can create a new C# project that includes this file, references C:\Program Files (x86)\PreSharp\PreSharp.exe as an assembly, and then put the contents of the Entry directive as the Main method. When running this project you can step by step the execution of the template.</p>
+
+<h3>Known Problems</h3>
+
+<p>I’ve been using PreSharp for a few years in real-life production software, so it’s pretty stable and efficient by now. But there is still one very annoying problem with it. If you have a generated file open and then build the project and that file is changed, Visual Studio will wrongly use the cache of the previous content of the file in the compilation, and your build output will be wrong. At OutSystems we call this the “double build syndrome”. If you don’t have that file open, or if you’re building directly with MSBuild on a command shell or on a build server, it all works correctly, so it’s really a Visual Studio bug.</p>
+
+<p>Aside from this post (which I should have done three years ago when I first created the blog), there is currently no other documentation for PreSharp, so feel free to ask any question through a comment here or through the GitHub project page.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Microsoft: please eat some more of your WPF-flavored dog food]]></title>
+    <link href="http://ovatsus.github.com/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food"/>
+    <updated>2011-09-27T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food</id>
+    <content type="html"><![CDATA[<p>
+	I have&nbsp; a love-hate relationship with WPF.</p>
+<p>
+	I think it is several orders of magnitude better than Windows Forms and gives developers a tremendous expressive power to materialize their ideas into good user interfaces. I wouldn&rsquo;t dream of doing many of the things I was able to do in just a few weeks in the <a href="http://www.outsystems.com/agile-platform/">Agile Platform IDE</a> in any other UI framework, even if I was given months. It&rsquo;s like going from plain C to C# 4.</p>
+<p>
+	But even though the concept is really good, the quality and completeness of the concrete implementation are really not there. There are just too many quirks, weird limitations, parts that don&rsquo;t play nice with others, performance problems, memory leaks, etc&#8230; And when things don&rsquo;t work as they should, many times you really have to go out of your way to be able to fix things.</p>
+<p>
+	I understand deadlines and priorities, and I know that probably Microsoft just had to ship something at some point, but it really seems that there was a big lack of dogfooding in the WPF case.</p>
+<p>
+	There&rsquo;s a striking example of this: what was the number one complaint that developers had about WPF since 2006?&hellip; Blurry text and images. And when did Microsoft fix it?&hellip; Only in 2010, when they started using WPF for Visual Studio.</p>
+<p>
+	Another issue that has been bugging me since I started using WPF was the airspace limitation. It seems that <a href="http://www.jonathanantoine.com/2011/09/24/wpf-4-5-%E2%80%93-part-8-no-more-airspace-problems-integrating-wpf-with-win32/">it&rsquo;s finally going to be fixed in 4.5</a>. Why do I think it&rsquo;s being solved now? Because they probably needed some native WinRT component to play nice with WPF&hellip;</p>
+<p>
+	I think eating you own dog food is really important. At <a href="http://www.outsystems.com">OutSystems</a> we use our product to build all web applications: the R&amp;D apps (bug tracking, project management, continuous integration&hellip;), the HR apps (directory, vacations, recruiting&hellip;), the sales apps, the marketing apps, the corporate site, the community forums, etc&hellip; And I can say with a great deal of confidence that if we didn&rsquo;t do that, our product wouldn&rsquo;t be half of what it is today.</p>
+<p>
+	Bottom line: we as developers should always try to eat our own dog food as much as we can. In fact, I think it&rsquo;s so important that it should have been item 13 in the <a href="http://www.joelonsoftware.com/articles/fog0000000043.html">Joel Test</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Migrating from SubText to BlogEngine.NET]]></title>
+    <link href="http://ovatsus.github.com/blog/2011/09/25/migrating-from-subtext-to-blogenginenet"/>
+    <updated>2011-09-25T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2011/09/25/migrating-from-subtext-to-blogenginenet</id>
+    <content type="html"><![CDATA[<p>
+	My blog was running in <a href="http://subtextproject.com">SubText</a>, but I&rsquo;ve recently changed to <a href="http://www.dotnetblogengine.net/">BlogEngine.NET</a>. The main reason for the change was that BlogEngine.NET supports storing the data in plain XML files, without having any dependency to a database. This makes it really easy to customize, as I can develop everything in my local machine, and then just send the files to the server. With SubText this was harder to do, so I ended up doing fewer tweaks, and doing them directly in production, which I didn&rsquo;t like.</p>
+<p>
+	The migration wasn&rsquo;t as smooth as I though it would be, so here are the steps I took, in case someone needs to go through a similar process:</p>
+<ul>
+	<li>
+		Exporting to BlogML and then importing didn&rsquo;t work correctly. After exporting, I had to <a href="http://garfoot.com/blog/2010/08/importing-blogml-into-wordpress/">convert the content from Base64</a>, replace the &amp;amp;&rsquo;s in the titles with &amp;, and then manually set the author in all post. I also had to set the tags manually in all posts, as in SubText they weren&rsquo;t a separate field but instead were part of the content of the posts. Having the posts on xml files on disk rather than on a database eased this job a lot.</li>
+	<li>
+		The TinyMCE bundled in BlogEngine.NET doesn&rsquo;t support images, so I had to <a href="http://jerryhuang.net/post/Replace-TinyMCE-with-CKEditor-and-CKFinder-in-BlogEngine-20.aspx">replace it with CKEditor and CKFinder</a>.</li>
+	<li>
+		The SubText post URL&#39;s have the format /archive/year/month/day/name-of-the-post.aspx, while BlogEngine.NET post URL&#39;s have the format /server/post/year/month/day/name-of-the-post.aspx. I had to set up redirection so the old links would keep working. To do that I&rsquo;ve taken the source code from <a href="http://www.blogenginewall.com/post/2011/04/01/BlogEngine-SEO-Permanent-Redirection-From-Old-URL-To-New-URL.aspx">BlogEngine SEO Redirection extension</a> and changed the comparison to only check prefixes (source code <a href="https://github.com/ovatsus/Blog/commit/a8c8c3f0984507182b2a0139aa2fcbdcb5a51358">here</a>).</li>
+	<li>
+		Several of the extensions available out there don&rsquo;t work out of the box with the latest version of BlogEngine.NET (2.5):
+		<ul>
+			<li>
+				For the AddThis extension I had to <a href="http://www.mbaldinger.com/post/AddThisNET-Social-Bookmarking-Buttons-for-Blogengine-v5.aspx#id_7b41fd26-f300-4029-b606-60b0cc2f0e6d">add some missing using&rsquo;s to the code</a>, and disable the form validation of the settings page (source code <a href="https://github.com/ovatsus/Blog/commit/931e4f13c76f8505ea65cd6d154fd29354526fbb">here</a>).</li>
+			<li>
+				To be able to configure widgets in the AllTuts theme, I had to make a small bug fix (as described in Janier Davila comment <a href="http://www.pravesh.me/alltuts-theme-blogenginenet-updated-v25/">here</a>)</li>
+		</ul>
+	</li>
+</ul>
+<p>
+	After all that work, now I have a setup that allows me to tweak the blog very easily. I have it on GitHub, cloned into my local machine and into the server. I can play around locally, and when I&rsquo;m glad with the results I just need to do a git push locally and then remote desktop to the server to do a git pull and force a reload of the application by touching the web.config.</p>
+<p>
+	Of course, to protect my passwords and keys, I have to tell git to ignore users.xml, akismetfilter.xml and recaptcha.xml, using <a href="http://blog.pagebakers.nl/2009/01/29/git-ignoring-changes-in-tracked-files/">this procedure</a>. And I also must take care with the email settings that are stored on the global settings.xml file, which forces me to always have that file uncommitted at the server, but other than that, it&rsquo;s orders of magnitude better than editing directly on production.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Replacing Visual Studio 2010 with SharpDevelop 4.1]]></title>
+    <link href="http://ovatsus.github.com/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1"/>
+    <updated>2011-04-19T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1</id>
+    <content type="html"><![CDATA[<p>
+	I use Visual Studio 2010 on a daily basis, and I must say that the overall experience is far from good:</p>
+<ul>
+	<li>
+		The find dialog has some really weird and annoying resizing issues.</li>
+	<li>
+		Sometimes find text simply stops working, never returning any result. Even worst, sometimes it starts returning only the first hit on each file, which of course you only notice the next day because of the bug you introduced in the code base because of that.</li>
+	<li>
+		It has the habit of recompiling more projects than it really needs to.</li>
+	<li>
+		Sometimes the simple action of clicking on a text editor to change the caret position stops working, and we can only use the keyboard for that until you restart Visual Studio.</li>
+	<li>
+		It takes forever to open XAML files (even with the option to always open in full XAML view, not design mode).</li>
+	<li>
+		It has some serious file cache problems when using custom MSBuild build steps that generate files for compilation. If during a build a generated file is changed while it&rsquo;s opened, the result of the compilation will be as if the file hadn&rsquo;t been changed. If that file is not opened, or we use the MSBuild command line, it works correctly. Just imagine going through a huge list of steps to reproduce some problem only to find out that you&rsquo;re debugging outdated code. It&rsquo;s a real nightmare.</li>
+</ul>
+<p>
+	So I decided to give SharpDeveloper a try, and I was pleasantly surprised:</p>
+<ul>
+	<li>
+		It&rsquo;s pretty fast and responsive, even with big solutions, as long as you turn off source control integration.</li>
+	<li>
+		I can open .xaml files as fast as .cs files, and the xaml auto complete works sufficiently good.</li>
+	<li>
+		It builds the big solution I use daily in <strong>half</strong> the time (literally)</li>
+	<li>
+		It doesn&rsquo;t have the file cache problem</li>
+	<li>
+		It has an option for building modified projects only, ignoring the dependencies</li>
+	<li>
+		The latest 4.1 alpha builds allow to see the <a href="http://community.sharpdevelop.net/blogs/marcueusebiu/archive/2011/01/23/presenting-metadata-ctrl-enter-and-expand-references.aspx">metadata of referenced types</a> like Visual Studio does.</li>
+</ul>
+<p>
+	Of course, there are also a few downsides:</p>
+<ul>
+	<li>
+		The usability of the editor auto complete is noticeably lower than Visual Studio IntelliSense.</li>
+	<li>
+		The shortcut keys aren&rsquo;t customizable, which is a big no no considering that the basic ones like build and toggle breakpoint are different from the ones we&rsquo;re used to from Visual Studio.</li>
+	<li>
+		Custom debugger visualizers and other very useful add-ins&nbsp; for Visual Studio don&rsquo;t have a SharpDevelop version.</li>
+	<li>
+		It doesn&rsquo;t have Edit and Continue.</li>
+</ul>
+<p>
+	I had already tried SharpDevelop before in the past, but at the time it seemed to be too limited when compared to Visual Studio. I now think it&rsquo;s good enough to be usable, and as it&rsquo;s open source and the code base looks readable, I&rsquo;m going to try to fix a few quirks to be able to completely replace Visual Studio for my daily coding needs.</p>
+<p>
+	The first thing I did was to create a SharpDevelop add-in with equivalent functionality to the <a href="http://www.usysware.com/dpack/FileBrowser.aspx">DPack File Browser</a>, which is one of the Visual Studio add-ins that I use the most. I got a working prototype really fast, as the SharpDevelop add-in API is much cleaner that the Visual Studio EnvDTE mess:</p>
+<p>
+	<img border="0" height="190" src="http://ovatsus.github.com/userfiles/Replacing-Visual-Studio_130FA/image_thumb.png" width="244" /></p>
+<p>
+	I&nbsp;posted the source code to <a href="https://github.com/ovatsus/CodeBeside.FileBrowser">https://github.com/ovatsus/CodeBeside.FileBrowser</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform 5.1.1]]></title>
+    <link href="http://ovatsus.github.com/blog/2010/12/18/agile-platform-5-1-1"/>
+    <updated>2010-12-18T00:00:00+00:00</updated>
+    <id>http://ovatsus.github.com/blog/2010/12/18/agile-platform-5-1-1</id>
+    <content type="html"><![CDATA[<p>
+	We&rsquo;ve recently released version 5.1.1 of the Agile Platform. It&rsquo;s got a lot of great new features and an improved look &amp; feel. And better yet, it&rsquo;s compatible with 5.1.0, so you don&rsquo;t need to upgrade your server.</p>
+<p>
+	Check the post <a href="http://www.outsystems.com/NetworkForums/ViewTopic.aspx?Topic=New-in-the-Agile-Platform-v5.1.1">New-in-the-Agile-Platform-v5.1.1</a> for more info.</p>
+<p>
+	<img src="http://www.outsystems.com/CKEditor/Download.aspx?GUID=20101282jg5g1100gj4b27ajcgxdvtt304kynvodja1puurz6" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to change Word 2007 citation style to use square brackets]]></title>
+    <link href="http://ovatsus.github.com/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square"/>
+    <updated>2010-09-27T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square</id>
+    <content type="html"><![CDATA[<p>
+	This one was not easy to discover, so I&rsquo;m going to post it here for future reference.</p>
+<p>
+	In C:\Program Files\Microsoft Office\Office12\Bibliography\Style\Iso690Nmerical.xsl change the following lines:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;xsl:template</span> <span class="na">name=</span><span class="s">&quot;templ_prop_OpenBracket&quot;</span> <span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">&quot;_LCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;xsl:call-template</span> <span class="na">name=</span><span class="s">&quot;localLCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;xsl:with-param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="na">select=</span><span class="s">&quot;$LCID&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/xsl:call-template&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/xsl:variable&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:OpenBracket&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:text&gt;</span>[<span class="nt">&lt;/xsl:text&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/xsl:template&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;xsl:template</span> <span class="na">name=</span><span class="s">&quot;templ_prop_CloseBracket&quot;</span> <span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">&quot;_LCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;xsl:call-template</span> <span class="na">name=</span><span class="s">&quot;localLCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;xsl:with-param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="na">select=</span><span class="s">&quot;$LCID&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/xsl:call-template&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/xsl:variable&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:CloseBracket&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/xsl:template&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>
+	to this:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>  <span class="nt">&lt;xsl:template</span> <span class="na">name=</span><span class="s">&quot;templ_prop_OpenBracket&quot;</span> <span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">&quot;_LCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;xsl:call-template</span> <span class="na">name=</span><span class="s">&quot;localLCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;xsl:with-param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="na">select=</span><span class="s">&quot;$LCID&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/xsl:call-template&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/xsl:variable&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!--&lt;xsl:value-of select=&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:OpenBracket&quot;/&gt;--&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:text&gt;</span>[<span class="nt">&lt;/xsl:text&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/xsl:template&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;xsl:template</span> <span class="na">name=</span><span class="s">&quot;templ_prop_CloseBracket&quot;</span> <span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:variable</span> <span class="na">name=</span><span class="s">&quot;_LCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;xsl:call-template</span> <span class="na">name=</span><span class="s">&quot;localLCID&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;xsl:with-param</span> <span class="na">name=</span><span class="s">&quot;LCID&quot;</span> <span class="na">select=</span><span class="s">&quot;$LCID&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/xsl:call-template&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/xsl:variable&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!--&lt;xsl:value-of select=&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:CloseBracket&quot;/&gt;--&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xsl:text&gt;</span>]<span class="nt">&lt;/xsl:text&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/xsl:template&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform Tips & Tricks #7]]></title>
+    <link href="http://ovatsus.github.com/blog/2010/08/23/agile-platform-tips-amp-tricks-7"/>
+    <updated>2010-08-23T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2010/08/23/agile-platform-tips-amp-tricks-7</id>
+    <content type="html"><![CDATA[<h4>
+	How to change the page styles dynamically at runtime</h4>
+<p>
+	<em>[Edit 01/09/2001: Updated the sample to also override the colors in the popups]</em></p>
+<p>
+	Service Studio gives you a few good options to define style sheets for you pages and emails. Besides the global style sheet that applies to the whole eSpace, you can add a custom style sheet to each web screen and email, and you can even define a custom style sheet for each web block. The platform will take care of including all the style sheets in the html of the page/email according to the following order:</p>
+<ol>
+	<li>
+		The style sheet of all the web blocks directly or indirectly included in the page/email (including referenced ones), from the inner most blocks to the outermost blocks in case of nesting</li>
+	<li>
+		The eSpace style sheet</li>
+	<li>
+		The style sheet of the web screen or email.</li>
+</ol>
+<p>
+	In web screens, all those style sheets are deployed to separate files and referenced by the page, while in emails, their content is merged together and included inline in the html for optimal display in the majority of email clients. The platform also applies some post processing to the content of the style sheets to optimize their usage in content delivery networks.</p>
+<p>
+	All these style sheets are statically defined at design time and can&rsquo;t be dynamically changed at runtime, but it&rsquo;s possible to include more style sheets at runtime that override the static ones. That allows us to do cool things like giving a specific user a different style sheet, changing the color scheme to red when some critical situation is happening, or even letting the user choose the style sheet of his preference, like this:</p>
+<p>
+	&nbsp;<a href="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
+<p>
+	To accomplish this, we need to do two things:</p>
+<ol>
+	<li>
+		Make sure the extra style sheets are deployed together with the application</li>
+	<li>
+		Manipulate the html returned to the browser to include a &lt;link rel=&rdquo;stylesheet&rdquo;&gt; tag in the &lt;head&gt; section</li>
+</ol>
+<p>
+	For #1, we can create the .css text files outside Service Studio and then import them as resources by using the Import Resource operation available in the eSpace tree context menu. However, that&rsquo;s not a very manageable solution. An alternative way is to create a set of web blocks that we don&rsquo;t use in any page, and use them just to define these style sheets. The platform will still deploy their style sheet files, even if the blocks themselves aren&rsquo;t used, and we can then reference those files in the page.</p>
+<p>
+	For #2, the AddStyleSheetTag action from the HTTPRequestHandler extension seems an obvious choice, but that will put the &lt;link&gt; tag at the beginning of the &lt;head&gt; section. As we want our dynamic style sheets to override the static style sheets, we must include them at the end, so this option doesn&rsquo;t work for us. Fortunately, we can also do this easily by using a little bit of JavaScript. For a complete example, take a look at this eSpace:</p>
+<p>
+	<a href="http://ovatsus.github.com/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform Tips & Tricks #6]]></title>
+    <link href="http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-6"/>
+    <updated>2010-08-18T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-6</id>
+    <content type="html"><![CDATA[<h4>
+	Calling Screen Actions from custom JavaScript events</h4>
+<p>
+	Imagine you&rsquo;re using the Tabs_ClientSide from RichWidgets and you&rsquo;re showing a list in each tab. Instead of loading all the lists when the screen is loaded, you want to only populate each list when the corresponding tab is activated. The Tabs_ClientSide already provides a way to call custom JavaScript code on tab activation, so if we could call a Screen Action from JavaScript code, we could make that Screen Action refresh the table on the corresponding tab. So, how can we do that?</p>
+<p>
+	The AJAX capabilities of the Agile Platform already allow you to trigger the execution of Screen Actions when some standard JavaScript events are raised. For example, if you specify a Screen Action in the OnChange property of an Input widget, when the end-user types in something in the correspondent input displayed by the browser, that Screen Action will be called at the server. To do this, the Agile Platform generates custom JavaScript code that will send an AJAX request to the server when the native onchange event of that input HTML element is triggered. So, if we add an hidden Input widget to the page and on the OnTabActivation parameter of the Tabs_ClientSide we put some JavaScript code to trigger that onchange event manually, we know that the platform will take care of calling the Screen Action specified in the OnChange of that Input widget. This way we can put there the logic to refresh the list inside the tab that was activated in that Screen Action. Unfortunately, we have no way of telling to pass the tab which was activated as a parameter of that Screen Action, and that forces us to have to an hidden Input for each tab, and decide which hidden Input to trigger in JavaScript.</p>
+<p>
+	Fortunately, there&rsquo;s a simpler way to do this. It involves using the OnNotify property of a Web Block widget, call it by using OsNotifyWidget JavaScript function,&nbsp; and in the associated Screen Action using the NotifyWidgetGetMessage built-in action to get the tab that was activated. Instead of explaining it in detail, I&rsquo;ve made a sample eSpace that exemplifies this scenario. Here it is:</p>
+<p>
+	<a href="http://ovatsus.github.com/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform Tips & Tricks #5]]></title>
+    <link href="http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-5"/>
+    <updated>2010-08-18T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-5</id>
+    <content type="html"><![CDATA[<p>
+	When you need to change a public element of an eSpace, such as an Action or a Web Block, it&rsquo;s good to know before-hand where that element is being used, so you can anticipate possible problems. To do that, you can go to Service Center and check the References tab in the page relative to your eSpace. There you will find listed all the consumers of your eSpace, and if you click on the Details links next to each consumer eSpace, you can check which specific elements are being used:</p>
+<p>
+	<a href="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks5_BFEF/image_2.png"><img alt="image" border="0" height="332" src="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+<p>
+	<br />
+	To help to improve this process, I&rsquo;ve recently published the <a href="http://www.outsystems.com/forge/Component_Detail.aspx?ProjectId=161" title="References Dashboard">References Dashboard</a> component on the OutSystems Network. It has similar functionality to this tab of Service Center, but the consumers are grouped by element instead of by consumer eSpace, allowing for faster search:</p>
+<p>
+	<a href="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks5_BFEF/image_4.png"><img alt="image" border="0" height="285" src="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform Tips & Tricks #4]]></title>
+    <link href="http://ovatsus.github.com/blog/2010/03/29/service-studio-tips-amp-tricks-4"/>
+    <updated>2010-03-29T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2010/03/29/service-studio-tips-amp-tricks-4</id>
+    <content type="html"><![CDATA[<p>
+	<br />
+	If you seen this post on the Agile Network Forums - <a href="http://www.outsystems.com/NetworkForums/ViewTopic.aspx?Topic=Usability-Tip-(Ctrl%2Bshift%2Bclick)">Usability Tip (Ctrl+shift+click)</a> - you already know a quick way to get some extra space between two elements in a flow.</p>
+<p>
+	From 5.0.2.9 up, there&rsquo;s an even easier way: just drag the the element, and if there&rsquo;s little space, the flow will be automatically arranged:</p>
+<p>
+	<object height="465" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/0e1c0a75-ec1d-4878-94aa-b912a9f8b096/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/0e1c0a75-ec1d-4878-94aa-b912a9f8b096/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=465&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/0e1c0a75-ec1d-4878-94aa-b912a9f8b096/2010-03-29_2259.swf" height="465" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/0e1c0a75-ec1d-4878-94aa-b912a9f8b096/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform Tips & Tricks #3]]></title>
+    <link href="http://ovatsus.github.com/blog/2010/03/20/agile-platform-tips-amp-tricks-3"/>
+    <updated>2010-03-20T00:00:00+00:00</updated>
+    <id>http://ovatsus.github.com/blog/2010/03/20/agile-platform-tips-amp-tricks-3</id>
+    <content type="html"><![CDATA[<p>
+	<br />
+	In the previous post, I showed an accelerator to easily create a Query for an edit or show screen by dragging an Input Parameter of an Entity Identifier type to the Preparation. In 5.0.2, there&rsquo;s an even easier way to do this.</p>
+<p>
+	Create the EditRecord or the ShowRecord and drag the Entity on top of it. Then, if there&rsquo;s an Input Parameter of the correspondent Entity Identifier type, a suggestion will appear in the Source Record property:</p>
+<p>
+	<object height="285" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/e3565709-1573-4752-9b3b-852eab095d1e/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/e3565709-1573-4752-9b3b-852eab095d1e/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=285&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/e3565709-1573-4752-9b3b-852eab095d1e/2010-03-20_1142.swf" height="285" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/e3565709-1573-4752-9b3b-852eab095d1e/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform Tips & Tricks #2]]></title>
+    <link href="http://ovatsus.github.com/blog/2010/03/15/agile-platform-tips-amp-tricks-2"/>
+    <updated>2010-03-15T00:00:00+00:00</updated>
+    <id>http://ovatsus.github.com/blog/2010/03/15/agile-platform-tips-amp-tricks-2</id>
+    <content type="html"><![CDATA[<p>
+	&nbsp;</p>
+<p>
+	Service Studio 5.0 had a lot of improvements in the drag &amp; drop department. Some of them are listed in this great video from Rodrigo Coutinho - <a href="http://www.outsystems.com/NetworkForums/ViewTopic.aspx?Topic=What%27s-new-in-the-Agile-Platform-5.0#Post5" title="New in 5.0- Drag &amp; Drop">New in 5.0 - Drag &amp; Drop</a> &ndash; but there are a lot more. Here are 3 of my favorites that aren&rsquo;t included in that video:</p>
+<ul>
+	<li>
+		If you drag an input parameter with an Entity Identifier type from the eSpace tree to a preparation or any other kind of action flow, a query to get the respective Entity will be created. This is very handy when creating edit or show screens<br />
+		<br />
+		<object height="374" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/a386ef9e-1c10-4f31-a575-cde8fe1a06c0/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/a386ef9e-1c10-4f31-a575-cde8fe1a06c0/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=374&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/a386ef9e-1c10-4f31-a575-cde8fe1a06c0/2010-03-15_0014.swf" height="374" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/a386ef9e-1c10-4f31-a575-cde8fe1a06c0/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object><br />
+		&nbsp;</li>
+	<li>
+		[New in 5.0.2] You can replace any terminal element with any other terminal element by dropping on top of it. This is especially useful when you want to replace the default end element of preparations or screen actions with a destination or a download element. What used to take three steps (remove the old element, drag the new one, and recreate the connector) can now be done with only one step!<br />
+		<br />
+		<object height="352" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/0f4bc1ff-1972-4f04-9a7d-d1381d6f9a95/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/0f4bc1ff-1972-4f04-9a7d-d1381d6f9a95/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=352&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/0f4bc1ff-1972-4f04-9a7d-d1381d6f9a95/2010-03-15_0018.swf" height="352" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/0f4bc1ff-1972-4f04-9a7d-d1381d6f9a95/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object><br />
+		&nbsp;</li>
+	<li>
+		[New in 5.0.2] You can drag variables on top of widgets to change their binding:<br />
+		<br />
+		<object height="156" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/7acf8d7d-f799-44a5-922f-33de2860d112/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/7acf8d7d-f799-44a5-922f-33de2860d112/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=156&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/7acf8d7d-f799-44a5-922f-33de2860d112/2010-03-15_0047.swf" height="156" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/7acf8d7d-f799-44a5-922f-33de2860d112/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object></li>
+</ul>
+<p>
+	Remember, there are lot more behaviors like these ones, just try to drag things around to find them.</p>
+<p>
+	Happy drag &amp; dropping!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform Tips & Tricks #1]]></title>
+    <link href="http://ovatsus.github.com/blog/2009/12/05/agile-platform-tips-amp-tricks-1"/>
+    <updated>2009-12-05T00:00:00+00:00</updated>
+    <id>http://ovatsus.github.com/blog/2009/12/05/agile-platform-tips-amp-tricks-1</id>
+    <content type="html"><![CDATA[<p>
+	Expression Editor had a lot of improvements in Service Studio 5.0. You&rsquo;ve probably already found most of them, but just in case you haven&rsquo;t, here&rsquo;s a list of some of them:</p>
+<p>
+	- The window is no longer modal so you can open several of them for comparison and copy/paste.</p>
+<p>
+	- Besides dragging from the scope tree, you can now also drag variables &amp; actions set as functions from the eSpace tree.</p>
+<p>
+	- As you&rsquo;re typing, the border of the text editor turns red when the expression is invalid, giving you immediate feedback when make a typo. Additionally, the case of variables and functions is automatically corrected to match its definition, so you have that extra degree of confidence that the TrueChange&trade; engine recognized what you just typed when you see it fix the case for you.</p>
+<p>
+	- You can now right click most elements in the scope tree and go to their definition:</p>
+<table border="0" cellpadding="2" cellspacing="0" width="400">
+	<tbody>
+		<tr>
+			<td valign="top" width="133">
+				<a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_6.png"><img alt="image" border="0" height="95" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_2.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_4.png"><img alt="image" border="0" height="58" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a></td>
+			<td valign="top" width="133">
+				<a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_8.png"><img alt="image" border="0" height="107" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_3.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_14.png"><img alt="image" border="0" height="39" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_6.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN-LEFT: 0px; BORDER-LEFT-WIDTH: 0px; MARGIN-RIGHT: 0px" title="image" width="244" /></a></td>
+		</tr>
+	</tbody>
+</table>
+<p>
+	<a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_16.png"><img alt="image" border="0" height="118" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_7.png" style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; " title="image" width="244" /></a></p>
+<p>
+	- The completion list now includes the icons of the elements and tooltips about them:</p>
+<p>
+	<a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_18.png"><img alt="image" border="0" height="130" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_8.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a></p>
+<p>
+	- The filtering algorithm of the completion list is now smarter, and also matches word at the middle instead of just at the start:</p>
+<p>
+	<a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_20.png"><img alt="image" border="0" height="138" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_9.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a></p>
+<p>
+	- It also detects acronyms, so if you open up the completion list by pressing Ctrl+Space and then type &ldquo;ni&rdquo; it automatically selects the &ldquo;NullIdentifier()&rdquo; built-in function. In addition, if you don&rsquo;t have the completion list open yet and just type &ldquo;ni&rdquo; followed by Ctrl+Space, it automatically inserts &ldquo;NullIdentifier()&rdquo; if there&rsquo;s no other match as good. This works also for <strong>N</strong>ull<strong>D</strong>ate<strong>T</strong>ime, <strong>C</strong>urr<strong>D</strong>ate<strong>T</strong>ime, and other variations.</p>
+<p>
+	How cool is that?</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Butterfly was released into the wild]]></title>
+    <link href="http://ovatsus.github.com/blog/2009/11/18/the-butterfly-was-released-into-the-wild"/>
+    <updated>2009-11-18T00:00:00+00:00</updated>
+    <id>http://ovatsus.github.com/blog/2009/11/18/the-butterfly-was-released-into-the-wild</id>
+    <content type="html"><![CDATA[<p>
+	<a href="http://ovatsus.github.com/userfiles/392b6651fa61_D7D2/150px-Blue_Morphos_2.jpg"><img align="left" alt="" border="0" height="136" src="http://ovatsus.github.com/userfiles/150px-Blue_Morphos.jpg" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="150px-Blue_Morphos" width="150" /></a></p>
+<p>
+	A little more than two years ago, shortly after the Agile Platform version 4.1 was released, the engineering team at OutSystems joined together and did a self review on what we could do to improve our ability to deliver faster and with better quality. We already knew that the developers that used the OutSystems Platform were much more productive than the ones using .NET or J2EE, but we wanted to raise the bar even higher, taking their productivity to the next level. The current version of Service Studio had a few Achilles&rsquo; heels that were being hard to get rid of, in part due to some compromises that had to be done in the past to enable us to get the first version out as soon as possible. That legacy was starting to slow down our ability to deliver constant innovation in the agile software development field, so, after a series of brainstorming sessions, we decided that we would re-engineer some parts of the platform in order to enable us to be even more agile, and prepare ourselves to the great features we wanted to build in the future. And this was the start of what would later be called the Butterfly project.</p>
+<p align="justify">
+	While most of the R&amp;D began the work on the Antelope version (4.2), two teams were spawned to work on the Butterfly version (5.0). While the Blue Morphos team initiated a deep analysis on the features we would want to deliver on the long term, the Red Bull team started immediately the work on the platform re-engineering that would enable us to deliver those features. This team started off with just two developers (myself included), growing to four developers shortly after. A year later, while 4.2 was approaching completion, another team joined us to work on the 5.0 killer feature &ndash; Business Process Technology &ndash; already using the new codebase. At the end, most of the R&amp;D was involved, and with the hard work of 14 Developers (3 of them fully dedicated to Quality Assurance), 3 Product Managers, our <a href="http://kutuma.blogspot.com/">product delivery manager</a> and of course the support from all the other parts of the company, from marketing to support, this journey finally came to an end, and I think that the result is a great product. I&rsquo;m really proud of being involved in it since the start, and I feel like a mother that has just gave birth to its new-born child: it was though, but now that it&rsquo;s over all that matters is the marvelous new baby :)</p>
+<p align="justify">
+	So, what did version 5.0 of the Agile Platform brought us? Aside from the Business Process Technology which by itself is a groundbreaking step on the history of agile development, we were able to deliver a few other big improvements:</p>
+<ul>
+	<li>
+		<div align="justify">
+			Ridiculously faster load and save times. For example, a 5.2MB .oml file that took 75 seconds to open and 20 seconds to save in 4.2, now takes 8 seconds to open and 2,5 seconds to save in 5.0. That amounts to <strong><font color="#ff0000" size="4">89,3%</font></strong> and <strong><font color="#ff0000" size="4">87,5%</font></strong> speed improvements respectively!!! Find, Find Usages, Merge &amp; Clone are also now significantly faster.</div>
+	</li>
+</ul>
+<ul>
+	<li>
+		<div align="justify">
+			Most applications crash from time to time, making you loose your work. A few of them them save backups periodically and allow you to recover most of it, but many times you still loose a big chunk. Service Studio 5.0 is the only application that I know of that&nbsp;<strong>automatically heals itself</strong> in case of errors, rollbacking the tiny action that caused the error and allowing you to continue your work as if no crash has happened, without loosing any work at all.</div>
+	</li>
+</ul>
+<ul>
+	<li>
+		<div align="justify">
+			The new improved TrueChange&trade; engine is now omnipresent, immediately informing the developer of his typos &amp; mistakes by the form of toolips, visual cues for warnings and errors, drop-down suggestions for common operations and a message pane that refreshes in real-time. In addition to that, all the system is now much more strongly bound, and now you can really assemble the pieces of your application like a puzzle, without fear of things getting unbound and loosing the strong checking abilities. Refactoring is now so easy that your application will be truly built-to-change.</div>
+	</li>
+</ul>
+<ul>
+	<li>
+		<div align="justify">
+			There&rsquo;s a big focus on usability, and most pieces of the Service Studio workspace have been improved. There&rsquo;s an new web screen editor with improved WYSIWYG editing, better zoom support, a big number of new drag&amp;drop behaviors, support for copy/pasting everything, multi-level undo support, syntax highlighting in expressions, SQL, CSS &amp; JavaScript, more information shown in the tools tree, eSpace tree &amp; the add/remove references tree, etc&hellip;</div>
+	</li>
+</ul>
+<p align="justify">
+	There&rsquo;s a lot more, so go and try the <a href="http://www.outsystems.com/download">community edition</a>, and let yourself be pleasantly surprised.</p>
+<p align="justify">
+	This is just the tip of the iceberg, as much of the potential of the new system is still not being used, so stay tuned for the next chapters. The next versions will be even more groundbreaking.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Extension Properties]]></title>
+    <link href="http://ovatsus.github.com/blog/2008/09/10/extension-properties"/>
+    <updated>2008-09-10T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2008/09/10/extension-properties</id>
+    <content type="html"><![CDATA[<p>
+	After you start to use extension methods and see all their benefits, you start thinking about how nice it would be to also have extension properties. When Scott Guthrie first announced them in <a href="http://weblogs.asp.net/scottgu/archive/2007/03/13/new-orcas-language-feature-extension-methods.aspx" title="">New &quot;Orcas&quot; Language Feature: Extension Methods</a>, someone immediately asked about extension properties. It just seems the feature is incomplete without both.</p>
+<p>
+	One particular area that would benefit greatly from extension properties would be WPF. Every time you define an attached property, you usually create a static getter and a static setter for it. If you could package that up in an extension property, attached properties would be much nicer to use.</p>
+<p>
+	There have been some hints that the C# language team is considering extension properties for the future, so maybe we&#39;ll get them in C# 4.0. But if you don&#39;t want to wait until 2010, you can have extension properties right now if you use F#. Check out Matthew Podwysocki&#39;s <a href="http://weblogs.asp.net/podwysocki/archive/2008/09/09/object-oriented-f-extension-everything.aspx">Object Oriented F# - Extension Everything</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Streaming XML input with XElementReader]]></title>
+    <link href="http://ovatsus.github.com/blog/2008/09/08/streaming-xml-input-with-xelementreader"/>
+    <updated>2008-09-08T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2008/09/08/streaming-xml-input-with-xelementreader</id>
+    <content type="html"><![CDATA[<p>
+	<strong>Updated on 2008/09/17</strong>: Fixed problem when skipping elements.<br />
+	<strong>Updated on 2008/09/15</strong>: Fixed problem when trying to read missing attributes.</p>
+<p>
+	One of new features introduced in .NET 3.5 that I welcomed the most was LINQ to XML. The old DOM API was a bit clumsy to use, and the simple fact that you don&#39;t need owner documents any more makes the new XElement much more flexible and pleasant to work with than the old XmlElement.</p>
+<p>
+	Also new is an API for streaming XML output, XStreamingElement, that by using deferred execution gives you SAX-like performance on a DOM-like API. There&#39;s no streaming XML input API, though, so although you can now get away with not having to use XmlWriter any more, you&#39;ll still need to use XmlReader when you want good performance on large documents. During the LINQ to XML development, the XML Team considered such an API, but they decided not to do it for Orcas.</p>
+<p>
+	Fortunately, Ralf L&auml;mmel proposed such an API in <a href="http://homepages.cwi.nl/~ralf/api-streaming-xml/">API-based XML streaming with FLWOR power and functional updates</a>. I contacted him too ask if he could publicly release the code of his prototype, but he said he couldn&#39;t do it. Nevertheless, he kindly offered to help me develop a similar library myself, so with his help I implemented a small subset of the functionality he described in the paper. It took a while to get the corner cases right, but this is being used in a real-world scenario for some months now, so I think it&#39;s stable enough.</p>
+<p>
+	The interface is the following:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="kt">string</span> <span class="n">path</span><span class="p">);</span>
+</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">TextReader</span> <span class="n">reader</span><span class="p">);</span>
+</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">XmlReader</span> <span class="n">reader</span><span class="p">);</span>
+</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">Stream</span> <span class="n">stream</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">XName</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="kt">string</span> <span class="n">Value</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">XAttribute</span> <span class="nf">Attribute</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XAttribute</span><span class="p">&gt;</span> <span class="n">Attributes</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">XElementReader</span> <span class="nf">FirstElement</span><span class="p">();</span>
+</span><span class='line'><span class="n">XElementReader</span> <span class="nf">Element</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XElementReader</span><span class="p">&gt;</span> <span class="n">Elements</span><span class="p">();</span>
+</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XElementReader</span><span class="p">&gt;</span> <span class="n">Elements</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">XElement</span> <span class="nf">ToXElement</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+<p></p>
+<p>
+	Although XElementReader looks a lot like a subset of XElement, you still have to remember that it&#39;s using a XmlReader underneath, so after you try to get to any child element, you have changed the reader position.</p>
+<p>
+	For example, if you have an element like &lt;Root&gt;&lt;A/&gt;&lt;B/&gt;&lt;A/&gt;&lt;B/&gt;&lt;/Root&gt; and call .Element(&quot;A&quot;) twice and then .Element(&quot;B&quot;) twice, the second call for B will return null. If you instead call .Elements(&quot;A&quot;) and then .Elements(&quot;B&quot;), you&#39;ll get two A elements, but no B elements at all. So to do this right, you have iterate on .Elements() and check the .Name property to see if you&#39;re in an A or in a B element.</p>
+<p>
+	This read once nature sometimes also complicates debugging. To help with that, you can define XML_DEBUG_MODE to force XElementReader to use a XElement behind the covers instead of a XmlReader, so you can add watches freely without worrying about side effects. But remember to fully test with this conditional compilation symbol off.</p>
+<p>
+	Here&#39;s the full code:</p>
+<script src="https://gist.github.com/1225799.js"></script>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[StaticStringDictionary - Fast Switching with LINQ revisited]]></title>
+    <link href="http://ovatsus.github.com/blog/2008/08/28/staticstringdictionary-fast-switching-with-linq-revisited"/>
+    <updated>2008-08-28T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2008/08/28/staticstringdictionary-fast-switching-with-linq-revisited</id>
+    <content type="html"><![CDATA[<p>
+	Expression trees are one of the more powerful features of C#. They let you manipulate code in ways that almost remind you of LISP macros (but at runtime instead of compile time). Since I discovered them, I managed to eliminate almost completely the usage of reflection in my code, replacing it with much faster code using techniques similar to what Roger Alsing described in <a href="http://rogeralsing.com/2008/02/28/linq-expressions-creating-objects/">Linq Expressions - Creating objects</a>. Expression trees also made possible something that I find myself using a lot these days: what Jomo Fisher described in <a href="http://blogs.msdn.com/jomo_fisher/archive/2007/03/28/fast-switching-with-linq.aspx">Fast Switching with LINQ</a>. It&#39;s a great example of the powerful things C# allows you to do with a little creativity. As I used it more and more, I collected a few modifications to the original code, so I though in sharing them here. I named it StaticStringDictionary.</p>
+<p>
+	The main difference of this version from the original code is that I don&#39;t assume that the key being looked up is in the dictionary. That forces me to call string.Equals at the end to check if the key is the correct one. If string.Equals returns false, a fallback function is used. This also invalidates the optimization in the original code that took advantage of different keys with the same value. I also made StaticStringDictionary&lt;T&gt; implement IDictionary&lt;string, T&gt; so it would be easier to adapt existing code.</p>
+<p>
+	Unfortunately I also stumbled over some problems with certain dictionaries, similar to the ones that Raptor-75 wrote about in the comments of the original article. After a few hours of debugging together with Rui Eug&eacute;nio (and also with the help of <a href="http://blogs.msdn.com/charlie/archive/2008/01/31/expression-tree-basics.aspx">Expression Tree Visualizer</a> and <a href="http://www.manuelabadia.com/blog/PermaLink,guid,9160035f-490f-46bd-ab55-516b5c7545af.aspx">StructsViz DebuggerVisualizer</a>), we managed to fix all the problems we found. The comparer was changed to ensure the characters of indices already tested are ignored for the ordering, and in some situations the algorithm has to some backtracking.</p>
+<p>
+	Without further due, here&#39;s the code:</p>
+<script src="https://gist.github.com/1225796.js"></script>
+<p>
+	And here&#39;s the test case for Raptor-75&#39;s problem:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="kt">var</span> <span class="n">dict</span> <span class="p">=</span> <span class="n">StaticStringDictionary</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span>
+</span><span class='line'>       <span class="k">new</span> <span class="n">Dictionary</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="kt">int</span><span class="p">&gt;</span> <span class="p">{</span>
+</span><span class='line'>           <span class="p">{</span><span class="s">&quot;Ado&quot;</span><span class="p">,</span> <span class="m">0</span><span class="p">},</span>
+</span><span class='line'>           <span class="p">{</span><span class="s">&quot;A2o&quot;</span><span class="p">,</span> <span class="m">1</span><span class="p">},</span>
+</span><span class='line'>           <span class="p">{</span><span class="s">&quot;A2i&quot;</span><span class="p">,</span> <span class="m">2</span><span class="p">},</span>
+</span><span class='line'>           <span class="p">{</span><span class="s">&quot;B2o&quot;</span><span class="p">,</span> <span class="m">3</span><span class="p">},</span>
+</span><span class='line'>           <span class="p">{</span><span class="s">&quot;AdoX&quot;</span><span class="p">,</span> <span class="m">4</span><span class="p">},</span>
+</span><span class='line'>           <span class="p">{</span><span class="s">&quot;AdPX&quot;</span><span class="p">,</span> <span class="m">5</span><span class="p">}</span>
+</span><span class='line'>       <span class="p">},</span>
+</span><span class='line'>       <span class="n">key</span> <span class="p">=&gt;</span> <span class="p">-</span><span class="m">1</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;Ado&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;A2o&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;A2i&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;B2o&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;AdoX&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;AdPX&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;xpto&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Test</span><span class="p">(</span><span class="kt">string</span> <span class="n">key</span><span class="p">,</span> <span class="n">IDictionary</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="kt">int</span><span class="p">&gt;</span> <span class="n">dict</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">key</span> <span class="p">+</span> <span class="s">&quot;: &quot;</span> <span class="p">+</span> <span class="n">dict</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+<p>
+	It should produce this output when run:</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Ado: 0
+</span><span class='line'>A2o: 1
+</span><span class='line'>A2i: 2
+</span><span class='line'>B2o: 3
+</span><span class='line'>AdoX: 4
+</span><span class='line'>AdPX: 5
+</span><span class='line'>xpto: -1</span></code></pre></td></tr></table></div></figure>
+<p>
+	I also found useful to define this variation when I also need to do reverse lookups:</p>
+<script src="https://gist.github.com/1225797.js"></script>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Expression CodeDom Visualizer]]></title>
+    <link href="http://ovatsus.github.com/blog/2008/08/28/expression-codedom-visualizer"/>
+    <updated>2008-08-28T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2008/08/28/expression-codedom-visualizer</id>
+    <content type="html"><![CDATA[<p>
+	Can Erten created a very useful expression tree to CodeDom converter. He wrote about it here: <a href="http://www.canerten.com/meta-programming-with-expression-trees-lambdas-to-codedom-conversion/">Expression Trees-Lambdas to CodeDom Conversion</a>. I created a visual studio debugger visualizer based on it. You can find it in attachment. Just copy the assembly to My Documents\Visual Studio 2008\Visualizers and you&#39;re set. I also attached the full source code.</p>
+<p>
+	<a href="http://ovatsus.github.com/userfiles/ExpressionCodeDomVisualizer.dll">ExpressionCodeDomVisualizer.dll</a>&nbsp;<a href="http://ovatsus.github.com/userfiles/ExpressionCodeDomVisualizerSourceCode.zip">ExpressionCodeDomVisualizerSourceCode.zip</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Counting the number of messages in a Message Queue in .NET]]></title>
+    <link href="http://ovatsus.github.com/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in"/>
+    <updated>2008-08-27T00:00:00+01:00</updated>
+    <id>http://ovatsus.github.com/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in</id>
+    <content type="html"><![CDATA[<p>
+	.NET includes a managed MSMQ API (System.Messaging) to send and receive messages, but unfortunately there&#39;s a key functionality missing: obtaining the number of messages currently in the queue. Yoel Arnon talks about this problem with more detail <a href="http://msmq.spaces.live.com/Blog/cns!1pGjsZEQBluYM9y4YjJoNkTg!113.entry" title="Counting the number of messages in a queue">here</a> and <a href="http://msmq.spaces.live.com/blog/cns!393534E869CE55B7!121.entry" title="Counting messages in Queue - the .NET version">here</a>. After reading that, we learn that there are three ways to overcome this limitation: using the MSMQ performance counters (with the .NET Performance Counter API or via WMI), using the MSMQ COM wrapper, or using the MSMQ Admin API directly. The first option is not very reliable and the second one is not available on all versions of MSMQ, so the third one is the preferable way. It&#39;s also the most complex. Jared Evans has explained how to do it using a C++ Managed wrapper <a href="http://www.jaredlog.com/?p=101">here</a>, but that approach adds some complexity to the deployment of your application. It forces you to redistribute the Microsoft Visual C++ Redistributable Package, and if you want to support the x64 versions of Windows, you have to build the C++ wrapper for both x86 and x64 and have additional logic in the application installer to know which version of your assembly to install (and the same for the Visual C++ Redistributable which also has two versions). Some months ago, I upgraded my home PC to Windows Vista x64, so at the time I decided to develop a C# only solution for this, as there wasn&#39;t any publicly available on the net.</p>
+<p>
+	The first approach I tried was to look at the mq.h file and translate all the required structures to C#. This proved to be a nightmare, as at the time the <a href="http://www.codeplex.com/clrinterop">P/Invoke Interop Assistant</a> hadn&#39;t been created yet and the structures proved to be a little complex. So instead of trying to translate the whole structures correctly, I turned on the debugger and started examining the fields that were really needed, defining dummy spacer fields for the rest. This took a while, but it was worth it. Here&#39;s the code:</p>
+<script src="https://gist.github.com/1225789.js"></script>
+<p>
+	Note that you&#39;ll have to go to the project properties and check the &quot;Allow unsafe code&quot; option for this to build.</p>
+<p>
+	After building and running, it should give you the following output:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Count should be 0: 0
+</span><span class='line'>Count should be 1: 1
+</span><span class='line'>Count should be 2: 2
+</span><span class='line'>Count should be 1: 1
+</span><span class='line'>Count should be 2: 2
+</span><span class='line'>Count should be 0: 0</span></code></pre></td></tr></table></div></figure>
+]]></content>
+  </entry>
+  
+</feed>
