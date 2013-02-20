@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: Code Generation | Code Beside]]></title>
-  <link href="http://ovatsus.github.com/blog/tags/code-generation/atom.xml" rel="self"/>
-  <link href="http://ovatsus.github.com/"/>
-  <updated>2013-02-20T01:23:20+00:00</updated>
-  <id>http://ovatsus.github.com/</id>
+  <link href="http://blog.codebeside.org/blog/tags/code-generation/atom.xml" rel="self"/>
+  <link href="http://blog.codebeside.org/"/>
+  <updated>2013-02-20T01:29:08+00:00</updated>
+  <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Introducing PreSharp]]></title>
-    <link href="http://ovatsus.github.com/blog/2011/10/02/introducing-presharp"/>
+    <link href="http://blog.codebeside.org/blog/2011/10/02/introducing-presharp"/>
     <updated>2011-10-02T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2011/10/02/introducing-presharp</id>
+    <id>http://blog.codebeside.org/blog/2011/10/02/introducing-presharp</id>
     <content type="html"><![CDATA[<h3>Background</h3>
 
 

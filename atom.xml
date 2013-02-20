@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Code Beside]]></title>
-  <link href="http://ovatsus.github.com/atom.xml" rel="self"/>
-  <link href="http://ovatsus.github.com/"/>
-  <updated>2013-02-20T01:23:20+00:00</updated>
-  <id>http://ovatsus.github.com/</id>
+  <link href="http://blog.codebeside.org/atom.xml" rel="self"/>
+  <link href="http://blog.codebeside.org/"/>
+  <updated>2013-02-20T01:29:08+00:00</updated>
+  <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[F# as a Octave/Matlab replacement for Machine Learning]]></title>
-    <link href="http://ovatsus.github.com/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning"/>
+    <link href="http://blog.codebeside.org/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning"/>
     <updated>2011-10-27T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning</id>
+    <id>http://blog.codebeside.org/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning</id>
     <content type="html"><![CDATA[<p>
 	<strong>EDIT</strong>: As another version of the ml-class course has started, I&#39;ve made the repository private</p>
 <p>
@@ -106,11 +106,11 @@
 <p>
 	Mimicking Matlab charting capabilities was a bit more tricky. For the majority of charting I&rsquo;m using <a href="http://code.msdn.microsoft.com/FSharpChart-b59073f5">FSharpChart</a>, but the Microsoft Chart Controls that it wraps don&rsquo;t support contour nor surface plots. For contour plots I ended up using <a href="http://dynamicdatadisplay.codeplex.com/">WPF Dynamic Data Display</a>, and for surface plots I adapted a <a href="http://www.codeproject.com/KB/WPF/WPFChart3D.aspx">sample from CodeProject</a>. I&rsquo;m not really happy with the surface plot, as it&rsquo;s really very basic, so I&rsquo;ll definitely try to improve it in the future. Here&rsquo;s a sample of charts from Matlab:</p>
 <p>
-	<a href="http://ovatsus.github.com/images/image.png"><img alt="image" border="0" height="217" src="http://ovatsus.github.com/images/image_thumb.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_1.png"><img alt="image" border="0" height="217" src="http://ovatsus.github.com/images/image_thumb_1.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_2.png"><img alt="image" border="0" height="217" src="http://ovatsus.github.com/images/image_thumb_2.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_3.png"><img alt="image" border="0" height="217" src="http://ovatsus.github.com/images/image_thumb_3.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
+	<a href="http://blog.codebeside.org/images/image.png"><img alt="image" border="0" height="217" src="http://blog.codebeside.org/images/image_thumb.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_1.png"><img alt="image" border="0" height="217" src="http://blog.codebeside.org/images/image_thumb_1.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_2.png"><img alt="image" border="0" height="217" src="http://blog.codebeside.org/images/image_thumb_2.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_3.png"><img alt="image" border="0" height="217" src="http://blog.codebeside.org/images/image_thumb_3.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
 <p>
 	And here are the equivalent ones I was able to produce in F#:</p>
 <p>
-	<a href="http://ovatsus.github.com/images/image_4.png"><img alt="image" border="0" height="244" src="http://ovatsus.github.com/images/image_thumb_4.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_5.png"><img alt="image" border="0" height="244" src="http://ovatsus.github.com/images/image_thumb_5.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_6.png"><img alt="image" border="0" height="244" src="http://ovatsus.github.com/images/image_thumb_6.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/images/image_7.png"><img alt="image" border="0" height="244" src="http://ovatsus.github.com/images/image_thumb_7.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
+	<a href="http://blog.codebeside.org/images/image_4.png"><img alt="image" border="0" height="244" src="http://blog.codebeside.org/images/image_thumb_4.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_5.png"><img alt="image" border="0" height="244" src="http://blog.codebeside.org/images/image_thumb_5.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_6.png"><img alt="image" border="0" height="244" src="http://blog.codebeside.org/images/image_thumb_6.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_7.png"><img alt="image" border="0" height="244" src="http://blog.codebeside.org/images/image_thumb_7.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
 <p>
 	I&rsquo;m putting this available at <a href="https://github.com/ovatsus/MLClass">https://github.com/ovatsus/MLClass</a>. I&rsquo;m only going to push the commits weekly after the class exercise deadlines expire, so at the time of this post only the implementation of the Linear Regression exercises is available.</p>
 <p>
@@ -180,9 +180,9 @@
   
   <entry>
     <title type="html"><![CDATA[Introducing PreSharp]]></title>
-    <link href="http://ovatsus.github.com/blog/2011/10/02/introducing-presharp"/>
+    <link href="http://blog.codebeside.org/blog/2011/10/02/introducing-presharp"/>
     <updated>2011-10-02T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2011/10/02/introducing-presharp</id>
+    <id>http://blog.codebeside.org/blog/2011/10/02/introducing-presharp</id>
     <content type="html"><![CDATA[<h3>Background</h3>  <p>Back in 2004, I was doing some code-generation work as part of the <a href="http://www.gsd.inesc-id.pt/project-pages/past-projects/obiwan">OBIWAN</a> project. When I started, CodeDom was being used to do the work, but I really didn’t like it because it made the generator code very hard to read and modify. Realistically, I would not need to support any other language than C#, so I started looking for alternatives. <a href="http://www.codesmithtools.com/product/generator">CodeSmith</a> was very popular at the time for generating type-safe collections (.NET 2.0 generics didn’t exist yet), but it was targeted at one-shot generations, and not at creating code generation code. Then I found a very simple tool named <a href="http://web.archive.org/web/20060726075638/http://www.inmetrix.com/">CodeGen</a> that appealed to me. I had been playing around with the <a href="http://www.boost.org/doc/libs/?view=category_Preprocessor">Boost Preprocessor library</a> recently, so I really liked the idea of using the preprocessor. I did a few tweaks to it and was able to use it for my needs at the time. Later on, around mid-2007, I needed to do code-generation again, so I took this tool and added a good amount of more power to it. At this time, it was very far apart from the original code, so I re-baptized it as PreSharp and published it to CodePlex. I never got around to do any documentation for it, so I’m making this post to try to compensate for that. I also moved the project recently from CodePlex to <a href="https://github.com/ovatsus/PreSharp">GitHub</a>.</p>
 <!-- more -->
 <h3>PreSharp as a C# Preprocessor</h3>  <p>Let’s say we’re using .NET 2.0 which doesn’t have the Func&lt;&gt; delegates and we want to define our own: </p>
@@ -612,9 +612,9 @@
   
   <entry>
     <title type="html"><![CDATA[Microsoft: please eat some more of your WPF-flavored dog food]]></title>
-    <link href="http://ovatsus.github.com/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food"/>
+    <link href="http://blog.codebeside.org/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food"/>
     <updated>2011-09-27T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food</id>
+    <id>http://blog.codebeside.org/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food</id>
     <content type="html"><![CDATA[<p>
 	I have&nbsp; a love-hate relationship with WPF.</p>
 <p>
@@ -636,9 +636,9 @@
   
   <entry>
     <title type="html"><![CDATA[Migrating from SubText to BlogEngine.NET]]></title>
-    <link href="http://ovatsus.github.com/blog/2011/09/25/migrating-from-subtext-to-blogenginenet"/>
+    <link href="http://blog.codebeside.org/blog/2011/09/25/migrating-from-subtext-to-blogenginenet"/>
     <updated>2011-09-25T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2011/09/25/migrating-from-subtext-to-blogenginenet</id>
+    <id>http://blog.codebeside.org/blog/2011/09/25/migrating-from-subtext-to-blogenginenet</id>
     <content type="html"><![CDATA[<p>
 	My blog was running in <a href="http://subtextproject.com">SubText</a>, but I&rsquo;ve recently changed to <a href="http://www.dotnetblogengine.net/">BlogEngine.NET</a>. The main reason for the change was that BlogEngine.NET supports storing the data in plain XML files, without having any dependency to a database. This makes it really easy to customize, as I can develop everything in my local machine, and then just send the files to the server. With SubText this was harder to do, so I ended up doing fewer tweaks, and doing them directly in production, which I didn&rsquo;t like.</p>
 <p>
@@ -669,9 +669,9 @@
   
   <entry>
     <title type="html"><![CDATA[Replacing Visual Studio 2010 with SharpDevelop 4.1]]></title>
-    <link href="http://ovatsus.github.com/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1"/>
+    <link href="http://blog.codebeside.org/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1"/>
     <updated>2011-04-19T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1</id>
+    <id>http://blog.codebeside.org/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1</id>
     <content type="html"><![CDATA[<p>
 	I use Visual Studio 2010 on a daily basis, and I must say that the overall experience is far from good:</p>
 <ul>
@@ -721,7 +721,7 @@
 <p>
 	The first thing I did was to create a SharpDevelop add-in with equivalent functionality to the <a href="http://www.usysware.com/dpack/FileBrowser.aspx">DPack File Browser</a>, which is one of the Visual Studio add-ins that I use the most. I got a working prototype really fast, as the SharpDevelop add-in API is much cleaner that the Visual Studio EnvDTE mess:</p>
 <p>
-	<img border="0" height="190" src="http://ovatsus.github.com/userfiles/Replacing-Visual-Studio_130FA/image_thumb.png" width="244" /></p>
+	<img border="0" height="190" src="http://blog.codebeside.org/userfiles/Replacing-Visual-Studio_130FA/image_thumb.png" width="244" /></p>
 <p>
 	I&nbsp;posted the source code to <a href="https://github.com/ovatsus/CodeBeside.FileBrowser">https://github.com/ovatsus/CodeBeside.FileBrowser</a></p>
 ]]></content>
@@ -729,9 +729,9 @@
   
   <entry>
     <title type="html"><![CDATA[Agile Platform 5.1.1]]></title>
-    <link href="http://ovatsus.github.com/blog/2010/12/18/agile-platform-5-1-1"/>
+    <link href="http://blog.codebeside.org/blog/2010/12/18/agile-platform-5-1-1"/>
     <updated>2010-12-18T00:00:00+00:00</updated>
-    <id>http://ovatsus.github.com/blog/2010/12/18/agile-platform-5-1-1</id>
+    <id>http://blog.codebeside.org/blog/2010/12/18/agile-platform-5-1-1</id>
     <content type="html"><![CDATA[<p>
 	We&rsquo;ve recently released version 5.1.1 of the Agile Platform. It&rsquo;s got a lot of great new features and an improved look &amp; feel. And better yet, it&rsquo;s compatible with 5.1.0, so you don&rsquo;t need to upgrade your server.</p>
 <p>
@@ -743,9 +743,9 @@
   
   <entry>
     <title type="html"><![CDATA[How to change Word 2007 citation style to use square brackets]]></title>
-    <link href="http://ovatsus.github.com/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square"/>
+    <link href="http://blog.codebeside.org/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square"/>
     <updated>2010-09-27T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square</id>
+    <id>http://blog.codebeside.org/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square</id>
     <content type="html"><![CDATA[<p>
 	This one was not easy to discover, so I&rsquo;m going to post it here for future reference.</p>
 <p>
@@ -845,9 +845,9 @@
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #7]]></title>
-    <link href="http://ovatsus.github.com/blog/2010/08/23/agile-platform-tips-amp-tricks-7"/>
+    <link href="http://blog.codebeside.org/blog/2010/08/23/agile-platform-tips-amp-tricks-7"/>
     <updated>2010-08-23T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2010/08/23/agile-platform-tips-amp-tricks-7</id>
+    <id>http://blog.codebeside.org/blog/2010/08/23/agile-platform-tips-amp-tricks-7</id>
     <content type="html"><![CDATA[<h4>
 	How to change the page styles dynamically at runtime</h4>
 <p>
@@ -867,7 +867,7 @@
 <p>
 	All these style sheets are statically defined at design time and can&rsquo;t be dynamically changed at runtime, but it&rsquo;s possible to include more style sheets at runtime that override the static ones. That allows us to do cool things like giving a specific user a different style sheet, changing the color scheme to red when some critical situation is happening, or even letting the user choose the style sheet of his preference, like this:</p>
 <p>
-	&nbsp;<a href="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
+	&nbsp;<a href="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
 <p>
 	To accomplish this, we need to do two things:</p>
 <ol>
@@ -881,15 +881,15 @@
 <p>
 	For #2, the AddStyleSheetTag action from the HTTPRequestHandler extension seems an obvious choice, but that will put the &lt;link&gt; tag at the beginning of the &lt;head&gt; section. As we want our dynamic style sheets to override the static style sheets, we must include them at the end, so this option doesn&rsquo;t work for us. Fortunately, we can also do this easily by using a little bit of JavaScript. For a complete example, take a look at this eSpace:</p>
 <p>
-	<a href="http://ovatsus.github.com/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>
+	<a href="http://blog.codebeside.org/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #6]]></title>
-    <link href="http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-6"/>
+    <link href="http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-6"/>
     <updated>2010-08-18T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-6</id>
+    <id>http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-6</id>
     <content type="html"><![CDATA[<h4>
 	Calling Screen Actions from custom JavaScript events</h4>
 <p>
@@ -899,32 +899,32 @@
 <p>
 	Fortunately, there&rsquo;s a simpler way to do this. It involves using the OnNotify property of a Web Block widget, call it by using OsNotifyWidget JavaScript function,&nbsp; and in the associated Screen Action using the NotifyWidgetGetMessage built-in action to get the tab that was activated. Instead of explaining it in detail, I&rsquo;ve made a sample eSpace that exemplifies this scenario. Here it is:</p>
 <p>
-	<a href="http://ovatsus.github.com/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>
+	<a href="http://blog.codebeside.org/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #5]]></title>
-    <link href="http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-5"/>
+    <link href="http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-5"/>
     <updated>2010-08-18T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-5</id>
+    <id>http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-5</id>
     <content type="html"><![CDATA[<p>
 	When you need to change a public element of an eSpace, such as an Action or a Web Block, it&rsquo;s good to know before-hand where that element is being used, so you can anticipate possible problems. To do that, you can go to Service Center and check the References tab in the page relative to your eSpace. There you will find listed all the consumers of your eSpace, and if you click on the Details links next to each consumer eSpace, you can check which specific elements are being used:</p>
 <p>
-	<a href="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks5_BFEF/image_2.png"><img alt="image" border="0" height="332" src="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+	<a href="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks5_BFEF/image_2.png"><img alt="image" border="0" height="332" src="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
 <p>
 	<br />
 	To help to improve this process, I&rsquo;ve recently published the <a href="http://www.outsystems.com/forge/Component_Detail.aspx?ProjectId=161" title="References Dashboard">References Dashboard</a> component on the OutSystems Network. It has similar functionality to this tab of Service Center, but the consumers are grouped by element instead of by consumer eSpace, allowing for faster search:</p>
 <p>
-	<a href="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks5_BFEF/image_4.png"><img alt="image" border="0" height="285" src="http://ovatsus.github.com/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+	<a href="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks5_BFEF/image_4.png"><img alt="image" border="0" height="285" src="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #4]]></title>
-    <link href="http://ovatsus.github.com/blog/2010/03/29/service-studio-tips-amp-tricks-4"/>
+    <link href="http://blog.codebeside.org/blog/2010/03/29/service-studio-tips-amp-tricks-4"/>
     <updated>2010-03-29T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2010/03/29/service-studio-tips-amp-tricks-4</id>
+    <id>http://blog.codebeside.org/blog/2010/03/29/service-studio-tips-amp-tricks-4</id>
     <content type="html"><![CDATA[<p>
 	<br />
 	If you seen this post on the Agile Network Forums - <a href="http://www.outsystems.com/NetworkForums/ViewTopic.aspx?Topic=Usability-Tip-(Ctrl%2Bshift%2Bclick)">Usability Tip (Ctrl+shift+click)</a> - you already know a quick way to get some extra space between two elements in a flow.</p>
@@ -937,9 +937,9 @@
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #3]]></title>
-    <link href="http://ovatsus.github.com/blog/2010/03/20/agile-platform-tips-amp-tricks-3"/>
+    <link href="http://blog.codebeside.org/blog/2010/03/20/agile-platform-tips-amp-tricks-3"/>
     <updated>2010-03-20T00:00:00+00:00</updated>
-    <id>http://ovatsus.github.com/blog/2010/03/20/agile-platform-tips-amp-tricks-3</id>
+    <id>http://blog.codebeside.org/blog/2010/03/20/agile-platform-tips-amp-tricks-3</id>
     <content type="html"><![CDATA[<p>
 	<br />
 	In the previous post, I showed an accelerator to easily create a Query for an edit or show screen by dragging an Input Parameter of an Entity Identifier type to the Preparation. In 5.0.2, there&rsquo;s an even easier way to do this.</p>
@@ -952,9 +952,9 @@
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #2]]></title>
-    <link href="http://ovatsus.github.com/blog/2010/03/15/agile-platform-tips-amp-tricks-2"/>
+    <link href="http://blog.codebeside.org/blog/2010/03/15/agile-platform-tips-amp-tricks-2"/>
     <updated>2010-03-15T00:00:00+00:00</updated>
-    <id>http://ovatsus.github.com/blog/2010/03/15/agile-platform-tips-amp-tricks-2</id>
+    <id>http://blog.codebeside.org/blog/2010/03/15/agile-platform-tips-amp-tricks-2</id>
     <content type="html"><![CDATA[<p>
 	&nbsp;</p>
 <p>
@@ -984,9 +984,9 @@
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #1]]></title>
-    <link href="http://ovatsus.github.com/blog/2009/12/05/agile-platform-tips-amp-tricks-1"/>
+    <link href="http://blog.codebeside.org/blog/2009/12/05/agile-platform-tips-amp-tricks-1"/>
     <updated>2009-12-05T00:00:00+00:00</updated>
-    <id>http://ovatsus.github.com/blog/2009/12/05/agile-platform-tips-amp-tricks-1</id>
+    <id>http://blog.codebeside.org/blog/2009/12/05/agile-platform-tips-amp-tricks-1</id>
     <content type="html"><![CDATA[<p>
 	Expression Editor had a lot of improvements in Service Studio 5.0. You&rsquo;ve probably already found most of them, but just in case you haven&rsquo;t, here&rsquo;s a list of some of them:</p>
 <p>
@@ -1001,22 +1001,22 @@
 	<tbody>
 		<tr>
 			<td valign="top" width="133">
-				<a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_6.png"><img alt="image" border="0" height="95" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_2.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_4.png"><img alt="image" border="0" height="58" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a></td>
+				<a href="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_6.png"><img alt="image" border="0" height="95" src="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_2.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_4.png"><img alt="image" border="0" height="58" src="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a></td>
 			<td valign="top" width="133">
-				<a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_8.png"><img alt="image" border="0" height="107" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_3.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a><a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_14.png"><img alt="image" border="0" height="39" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_6.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN-LEFT: 0px; BORDER-LEFT-WIDTH: 0px; MARGIN-RIGHT: 0px" title="image" width="244" /></a></td>
+				<a href="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_8.png"><img alt="image" border="0" height="107" src="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_3.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_14.png"><img alt="image" border="0" height="39" src="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_6.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN-LEFT: 0px; BORDER-LEFT-WIDTH: 0px; MARGIN-RIGHT: 0px" title="image" width="244" /></a></td>
 		</tr>
 	</tbody>
 </table>
 <p>
-	<a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_16.png"><img alt="image" border="0" height="118" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_7.png" style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; " title="image" width="244" /></a></p>
+	<a href="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_16.png"><img alt="image" border="0" height="118" src="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_7.png" style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; " title="image" width="244" /></a></p>
 <p>
 	- The completion list now includes the icons of the elements and tooltips about them:</p>
 <p>
-	<a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_18.png"><img alt="image" border="0" height="130" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_8.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a></p>
+	<a href="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_18.png"><img alt="image" border="0" height="130" src="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_8.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a></p>
 <p>
 	- The filtering algorithm of the completion list is now smarter, and also matches word at the middle instead of just at the start:</p>
 <p>
-	<a href="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_20.png"><img alt="image" border="0" height="138" src="http://ovatsus.github.com/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_9.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a></p>
+	<a href="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_20.png"><img alt="image" border="0" height="138" src="http://blog.codebeside.org/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_9.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a></p>
 <p>
 	- It also detects acronyms, so if you open up the completion list by pressing Ctrl+Space and then type &ldquo;ni&rdquo; it automatically selects the &ldquo;NullIdentifier()&rdquo; built-in function. In addition, if you don&rsquo;t have the completion list open yet and just type &ldquo;ni&rdquo; followed by Ctrl+Space, it automatically inserts &ldquo;NullIdentifier()&rdquo; if there&rsquo;s no other match as good. This works also for <strong>N</strong>ull<strong>D</strong>ate<strong>T</strong>ime, <strong>C</strong>urr<strong>D</strong>ate<strong>T</strong>ime, and other variations.</p>
 <p>
@@ -1026,11 +1026,11 @@
   
   <entry>
     <title type="html"><![CDATA[The Butterfly was released into the wild]]></title>
-    <link href="http://ovatsus.github.com/blog/2009/11/18/the-butterfly-was-released-into-the-wild"/>
+    <link href="http://blog.codebeside.org/blog/2009/11/18/the-butterfly-was-released-into-the-wild"/>
     <updated>2009-11-18T00:00:00+00:00</updated>
-    <id>http://ovatsus.github.com/blog/2009/11/18/the-butterfly-was-released-into-the-wild</id>
+    <id>http://blog.codebeside.org/blog/2009/11/18/the-butterfly-was-released-into-the-wild</id>
     <content type="html"><![CDATA[<p>
-	<a href="http://ovatsus.github.com/userfiles/392b6651fa61_D7D2/150px-Blue_Morphos_2.jpg"><img align="left" alt="" border="0" height="136" src="http://ovatsus.github.com/userfiles/150px-Blue_Morphos.jpg" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="150px-Blue_Morphos" width="150" /></a></p>
+	<a href="http://blog.codebeside.org/userfiles/392b6651fa61_D7D2/150px-Blue_Morphos_2.jpg"><img align="left" alt="" border="0" height="136" src="http://blog.codebeside.org/userfiles/150px-Blue_Morphos.jpg" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="150px-Blue_Morphos" width="150" /></a></p>
 <p>
 	A little more than two years ago, shortly after the Agile Platform version 4.1 was released, the engineering team at OutSystems joined together and did a self review on what we could do to improve our ability to deliver faster and with better quality. We already knew that the developers that used the OutSystems Platform were much more productive than the ones using .NET or J2EE, but we wanted to raise the bar even higher, taking their productivity to the next level. The current version of Service Studio had a few Achilles&rsquo; heels that were being hard to get rid of, in part due to some compromises that had to be done in the past to enable us to get the first version out as soon as possible. That legacy was starting to slow down our ability to deliver constant innovation in the agile software development field, so, after a series of brainstorming sessions, we decided that we would re-engineer some parts of the platform in order to enable us to be even more agile, and prepare ourselves to the great features we wanted to build in the future. And this was the start of what would later be called the Butterfly project.</p>
 <p align="justify">
@@ -1070,9 +1070,9 @@
   
   <entry>
     <title type="html"><![CDATA[Extension Properties]]></title>
-    <link href="http://ovatsus.github.com/blog/2008/09/10/extension-properties"/>
+    <link href="http://blog.codebeside.org/blog/2008/09/10/extension-properties"/>
     <updated>2008-09-10T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2008/09/10/extension-properties</id>
+    <id>http://blog.codebeside.org/blog/2008/09/10/extension-properties</id>
     <content type="html"><![CDATA[<p>
 	After you start to use extension methods and see all their benefits, you start thinking about how nice it would be to also have extension properties. When Scott Guthrie first announced them in <a href="http://weblogs.asp.net/scottgu/archive/2007/03/13/new-orcas-language-feature-extension-methods.aspx" title="">New &quot;Orcas&quot; Language Feature: Extension Methods</a>, someone immediately asked about extension properties. It just seems the feature is incomplete without both.</p>
 <p>
@@ -1084,9 +1084,9 @@
   
   <entry>
     <title type="html"><![CDATA[Streaming XML input with XElementReader]]></title>
-    <link href="http://ovatsus.github.com/blog/2008/09/08/streaming-xml-input-with-xelementreader"/>
+    <link href="http://blog.codebeside.org/blog/2008/09/08/streaming-xml-input-with-xelementreader"/>
     <updated>2008-09-08T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2008/09/08/streaming-xml-input-with-xelementreader</id>
+    <id>http://blog.codebeside.org/blog/2008/09/08/streaming-xml-input-with-xelementreader</id>
     <content type="html"><![CDATA[<p>
 	<strong>Updated on 2008/09/17</strong>: Fixed problem when skipping elements.<br />
 	<strong>Updated on 2008/09/15</strong>: Fixed problem when trying to read missing attributes.</p>
@@ -1148,9 +1148,9 @@
   
   <entry>
     <title type="html"><![CDATA[StaticStringDictionary - Fast Switching with LINQ revisited]]></title>
-    <link href="http://ovatsus.github.com/blog/2008/08/28/staticstringdictionary-fast-switching-with-linq-revisited"/>
+    <link href="http://blog.codebeside.org/blog/2008/08/28/staticstringdictionary-fast-switching-with-linq-revisited"/>
     <updated>2008-08-28T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2008/08/28/staticstringdictionary-fast-switching-with-linq-revisited</id>
+    <id>http://blog.codebeside.org/blog/2008/08/28/staticstringdictionary-fast-switching-with-linq-revisited</id>
     <content type="html"><![CDATA[<p>
 	Expression trees are one of the more powerful features of C#. They let you manipulate code in ways that almost remind you of LISP macros (but at runtime instead of compile time). Since I discovered them, I managed to eliminate almost completely the usage of reflection in my code, replacing it with much faster code using techniques similar to what Roger Alsing described in <a href="http://rogeralsing.com/2008/02/28/linq-expressions-creating-objects/">Linq Expressions - Creating objects</a>. Expression trees also made possible something that I find myself using a lot these days: what Jomo Fisher described in <a href="http://blogs.msdn.com/jomo_fisher/archive/2007/03/28/fast-switching-with-linq.aspx">Fast Switching with LINQ</a>. It&#39;s a great example of the powerful things C# allows you to do with a little creativity. As I used it more and more, I collected a few modifications to the original code, so I though in sharing them here. I named it StaticStringDictionary.</p>
 <p>
@@ -1237,21 +1237,21 @@
   
   <entry>
     <title type="html"><![CDATA[Expression CodeDom Visualizer]]></title>
-    <link href="http://ovatsus.github.com/blog/2008/08/28/expression-codedom-visualizer"/>
+    <link href="http://blog.codebeside.org/blog/2008/08/28/expression-codedom-visualizer"/>
     <updated>2008-08-28T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2008/08/28/expression-codedom-visualizer</id>
+    <id>http://blog.codebeside.org/blog/2008/08/28/expression-codedom-visualizer</id>
     <content type="html"><![CDATA[<p>
 	Can Erten created a very useful expression tree to CodeDom converter. He wrote about it here: <a href="http://www.canerten.com/meta-programming-with-expression-trees-lambdas-to-codedom-conversion/">Expression Trees-Lambdas to CodeDom Conversion</a>. I created a visual studio debugger visualizer based on it. You can find it in attachment. Just copy the assembly to My Documents\Visual Studio 2008\Visualizers and you&#39;re set. I also attached the full source code.</p>
 <p>
-	<a href="http://ovatsus.github.com/userfiles/ExpressionCodeDomVisualizer.dll">ExpressionCodeDomVisualizer.dll</a>&nbsp;<a href="http://ovatsus.github.com/userfiles/ExpressionCodeDomVisualizerSourceCode.zip">ExpressionCodeDomVisualizerSourceCode.zip</a></p>
+	<a href="http://blog.codebeside.org/userfiles/ExpressionCodeDomVisualizer.dll">ExpressionCodeDomVisualizer.dll</a>&nbsp;<a href="http://blog.codebeside.org/userfiles/ExpressionCodeDomVisualizerSourceCode.zip">ExpressionCodeDomVisualizerSourceCode.zip</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Counting the number of messages in a Message Queue in .NET]]></title>
-    <link href="http://ovatsus.github.com/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in"/>
+    <link href="http://blog.codebeside.org/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in"/>
     <updated>2008-08-27T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in</id>
+    <id>http://blog.codebeside.org/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in</id>
     <content type="html"><![CDATA[<p>
 	.NET includes a managed MSMQ API (System.Messaging) to send and receive messages, but unfortunately there&#39;s a key functionality missing: obtaining the number of messages currently in the queue. Yoel Arnon talks about this problem with more detail <a href="http://msmq.spaces.live.com/Blog/cns!1pGjsZEQBluYM9y4YjJoNkTg!113.entry" title="Counting the number of messages in a queue">here</a> and <a href="http://msmq.spaces.live.com/blog/cns!393534E869CE55B7!121.entry" title="Counting messages in Queue - the .NET version">here</a>. After reading that, we learn that there are three ways to overcome this limitation: using the MSMQ performance counters (with the .NET Performance Counter API or via WMI), using the MSMQ COM wrapper, or using the MSMQ Admin API directly. The first option is not very reliable and the second one is not available on all versions of MSMQ, so the third one is the preferable way. It&#39;s also the most complex. Jared Evans has explained how to do it using a C++ Managed wrapper <a href="http://www.jaredlog.com/?p=101">here</a>, but that approach adds some complexity to the deployment of your application. It forces you to redistribute the Microsoft Visual C++ Redistributable Package, and if you want to support the x64 versions of Windows, you have to build the C++ wrapper for both x86 and x64 and have additional logic in the application installer to know which version of your assembly to install (and the same for the Visual C++ Redistributable which also has two versions). Some months ago, I upgraded my home PC to Windows Vista x64, so at the time I decided to develop a C# only solution for this, as there wasn&#39;t any publicly available on the net.</p>
 <p>

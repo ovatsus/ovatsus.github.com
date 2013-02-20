@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ovatsus.github.com/blog/tags/outsystems/">
+  <link rel="canonical" href="http://blog.codebeside.orgblog/tags/outsystems/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -49,17 +49,23 @@
   <header role="banner"><hgroup>
   <h1><a href="/">Code Beside</a></h1>
   
+  <div style="float:right; margin-top:20px; margin-right:20px">
+    <a href="http://twitter.com/ovatsus" title="Twitter"><img src="/images/ico_twitter.png" /></a>
+    <a href="http://github.com/ovatsus" title="GitHub"/><img src="/images/ico_github.png" /></a>
+    <a href="http://www.linkedin.com/in/ovatsus" title="LinkedIn"><img src="/images/ico_linkedin.png" /></a>
+    <a href="http://feeds.feedburner.com/CodeBeside" title="subscribe via RSS"><img src="/images/ico_rss.png" /></a>
+  </div>
 </hgroup>
 
 </header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="http://feeds.feedburner.com/CodeBeside" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  <!--<li><a href="http://feeds.feedburner.com/CodeBeside" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>-->
   
 </ul>
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:ovatsus.github.com" />
+    <input type="hidden" name="q" value="site:blog.codebeside.org" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -67,6 +73,7 @@
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="http://www.google.com/recaptcha/mailhide/d?k=01fvxbLCjfbApKdVLPRXZpew==&c=-9MautyEaQLUV3lZJtarnYj7m_iIE1vmrl9MSiLGGbg=">Contact</a></li>
 </ul>
 
 </nav>
@@ -224,8 +231,9 @@
 <aside class="sidebar">
   
     <section>
-  <h1>About Me</h1>
-  <p>A little something about me.</p>
+  <h1>About me</h1>
+  <p>I'm a Software Developer interested in Functional Programming, Machine Learning, Robotics, and User Experience Design</p>
+  <iframe src="http://githubbadge.appspot.com/badge/ovatsus?a=0" style="border: 0;height: 112px;width: 200px;overflow: hidden;" frameBorder=0></iframe>
 </section>
 <section>
   <h1>Recent Posts</h1>
@@ -267,12 +275,12 @@
   </ul>
   <script type="text/javascript">
     $.domReady(function(){
-      getTwitterFeed("ovatsus", 5, true);
+      getTwitterFeed("ovatsus", 5, false);
     });
   </script>
   <script src="/javascripts/twitter.js" type="text/javascript"> </script>
   
-    <a href="http://twitter.com/ovatsus" class="twitter-follow-button" data-show-count="true">Follow @ovatsus</a>
+    <a href="http://twitter.com/ovatsus" class="twitter-follow-button" data-show-count="false">Follow @ovatsus</a>
   
 </section>
 
@@ -286,6 +294,8 @@
   <footer role="contentinfo"><p>
   Copyright &copy; 2013 - Gustavo Guerra -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
+  <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
 </p>
 
 </footer>

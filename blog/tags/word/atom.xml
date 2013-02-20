@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: Word | Code Beside]]></title>
-  <link href="http://ovatsus.github.com/blog/tags/word/atom.xml" rel="self"/>
-  <link href="http://ovatsus.github.com/"/>
-  <updated>2013-02-20T01:23:20+00:00</updated>
-  <id>http://ovatsus.github.com/</id>
+  <link href="http://blog.codebeside.org/blog/tags/word/atom.xml" rel="self"/>
+  <link href="http://blog.codebeside.org/"/>
+  <updated>2013-02-20T01:29:08+00:00</updated>
+  <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[How to change Word 2007 citation style to use square brackets]]></title>
-    <link href="http://ovatsus.github.com/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square"/>
+    <link href="http://blog.codebeside.org/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square"/>
     <updated>2010-09-27T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square</id>
+    <id>http://blog.codebeside.org/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square</id>
     <content type="html"><![CDATA[<p>
     This one was not easy to discover, so I&rsquo;m going to post it here for future reference.</p>
 

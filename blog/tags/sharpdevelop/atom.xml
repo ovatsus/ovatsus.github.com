@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: SharpDevelop | Code Beside]]></title>
-  <link href="http://ovatsus.github.com/blog/tags/sharpdevelop/atom.xml" rel="self"/>
-  <link href="http://ovatsus.github.com/"/>
-  <updated>2013-02-20T01:23:20+00:00</updated>
-  <id>http://ovatsus.github.com/</id>
+  <link href="http://blog.codebeside.org/blog/tags/sharpdevelop/atom.xml" rel="self"/>
+  <link href="http://blog.codebeside.org/"/>
+  <updated>2013-02-20T01:29:08+00:00</updated>
+  <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Replacing Visual Studio 2010 with SharpDevelop 4.1]]></title>
-    <link href="http://ovatsus.github.com/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1"/>
+    <link href="http://blog.codebeside.org/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1"/>
     <updated>2011-04-19T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1</id>
+    <id>http://blog.codebeside.org/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1</id>
     <content type="html"><![CDATA[<p>
     I use Visual Studio 2010 on a daily basis, and I must say that the overall experience is far from good:</p>
 
@@ -83,7 +83,7 @@
 
 
 <p>
-    <img border="0" height="190" src="http://ovatsus.github.com/userfiles/Replacing-Visual-Studio_130FA/image_thumb.png" width="244" /></p>
+    <img border="0" height="190" src="http://blog.codebeside.org/userfiles/Replacing-Visual-Studio_130FA/image_thumb.png" width="244" /></p>
 
 
 <p>

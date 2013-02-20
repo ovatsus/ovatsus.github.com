@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: AJAX | Code Beside]]></title>
-  <link href="http://ovatsus.github.com/blog/tags/ajax/atom.xml" rel="self"/>
-  <link href="http://ovatsus.github.com/"/>
-  <updated>2013-02-20T01:23:20+00:00</updated>
-  <id>http://ovatsus.github.com/</id>
+  <link href="http://blog.codebeside.org/blog/tags/ajax/atom.xml" rel="self"/>
+  <link href="http://blog.codebeside.org/"/>
+  <updated>2013-02-20T01:29:08+00:00</updated>
+  <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #6]]></title>
-    <link href="http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-6"/>
+    <link href="http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-6"/>
     <updated>2010-08-18T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2010/08/18/agile-platform-tips-amp-tricks-6</id>
+    <id>http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-6</id>
     <content type="html"><![CDATA[<h4>
     Calling Screen Actions from custom JavaScript events</h4>
 
@@ -35,7 +35,7 @@
 
 
 <p>
-    <a href="http://ovatsus.github.com/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>
+    <a href="http://blog.codebeside.org/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>
 
 ]]></content>
   </entry>

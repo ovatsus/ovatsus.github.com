@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: WPF | Code Beside]]></title>
-  <link href="http://ovatsus.github.com/blog/tags/wpf/atom.xml" rel="self"/>
-  <link href="http://ovatsus.github.com/"/>
-  <updated>2013-02-20T01:23:20+00:00</updated>
-  <id>http://ovatsus.github.com/</id>
+  <link href="http://blog.codebeside.org/blog/tags/wpf/atom.xml" rel="self"/>
+  <link href="http://blog.codebeside.org/"/>
+  <updated>2013-02-20T01:29:08+00:00</updated>
+  <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Microsoft: please eat some more of your WPF-flavored dog food]]></title>
-    <link href="http://ovatsus.github.com/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food"/>
+    <link href="http://blog.codebeside.org/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food"/>
     <updated>2011-09-27T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food</id>
+    <id>http://blog.codebeside.org/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food</id>
     <content type="html"><![CDATA[<p>
     I have&nbsp; a love-hate relationship with WPF.</p>
 
@@ -54,9 +54,9 @@
   
   <entry>
     <title type="html"><![CDATA[Extension Properties]]></title>
-    <link href="http://ovatsus.github.com/blog/2008/09/10/extension-properties"/>
+    <link href="http://blog.codebeside.org/blog/2008/09/10/extension-properties"/>
     <updated>2008-09-10T00:00:00+01:00</updated>
-    <id>http://ovatsus.github.com/blog/2008/09/10/extension-properties</id>
+    <id>http://blog.codebeside.org/blog/2008/09/10/extension-properties</id>
     <content type="html"><![CDATA[<p>
     After you start to use extension methods and see all their benefits, you start thinking about how nice it would be to also have extension properties. When Scott Guthrie first announced them in <a href="http://weblogs.asp.net/scottgu/archive/2007/03/13/new-orcas-language-feature-extension-methods.aspx" title="">New &quot;Orcas&quot; Language Feature: Extension Methods</a>, someone immediately asked about extension properties. It just seems the feature is incomplete without both.</p>
 
