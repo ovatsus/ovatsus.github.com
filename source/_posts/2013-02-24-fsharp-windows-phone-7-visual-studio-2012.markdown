@@ -10,9 +10,11 @@ shipped as part of the standalone F# redistribution. There were even some nice [
 
 In F# 3.0 there is no standalone redistributable package anymore, and Visual Studio 2012 only ships with two versions of FSharp.Core.dll: the full .NET 4.5 version, and a portable class library version targeting Profile47 (which includes .NET 4.5, Silverlight 5.0, and .NET for Windows Store apps).
 
-I tried to create versions for Windows Phone 7 and for Profile88 (which additionally includes .NET 4.0, Silverlight 4.0, and Windows Phone 7.1) from the [source code](https://github.com/fsharp/fsharp), and I even got them to [compile](https://github.com/fsharp/fsharp/pull/102), but unfortunately I still get a bunch of Invalid Program exceptions at runtime when running on the device on both versions.
+I tried to create versions for Windows Phone 7 and for Profile88 (which additionally includes .NET 4.0, Silverlight 4.0, and Windows Phone 7.1) from the [source code](https://github.com/fsharp/fsharp), and I even got them to [compile](https://github.com/fsharp/fsharp/pull/102), but unfortunately I still get a bunch of Invalid Program exceptions at runtime when running on the emulator or on the device for both versions.
 
 So I tried another approach - to reuse the FSharp.Core.dll version from F# 2.0 - and it seems to work just fine. Type providers and other new F# 3.0 features that depend on the library won't work, but at least we can use Visual Studio 2012 and some of the features like the triple quotes.
+
+<!-- more -->
 
 To make this work we must force the F# compiler to compile for Silverlight 4, which is no longer supported, so we need to modify the file `C:\Program Files (x86)\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.targets` and comment out the following lines:
 
@@ -24,3 +26,80 @@ To make this work we must force the F# compiler to compile for Silverlight 4, wh
 {% endcodeblock %}
 
 Then if you take Daniel Mohl's template, change the manifest to state it supports Visual Studio 2012, and upgrade the .csproj and .fsproj files, it all works. I've uploaded the updated template to the [Visual Studio Gallery](http://visualstudiogallery.msdn.microsoft.com/241d3a0a-a0a7-42f5-badf-bbbed30514c8).
+
+Here's a small sample of loading some data asynchronously and databinding to a record:
+
+{% codeblock F# Code lang:fsharp %}
+
+type Topic = 
+    { Id : int
+      Name : string
+      Icon : string }
+
+let PopulateTopics (addTopic : Action<Topic>) (onFinish : Action) =
+
+    let synchronizationContext = SynchronizationContext.Current
+    
+    let doInUiThred f = 
+        synchronizationContext.Post ((fun _ -> f()), null)
+    
+    async {
+        let! topics = (...)
+        for topic in topics do
+            doInUiThred (fun () -> addTopic.Invoke topic)
+        doInUiThred (fun () -> onFinish.Invoke())
+    } |> Async.Catch |> Async.Ignore |> Async.Start
+
+{% endcodeblock %}
+
+{% codeblock XAML code lang:xml %}
+
+<Grid>
+    <ScrollViewer>
+        <ItemsControl x:Name="topicsList">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Click="OnTopicButtonClick">
+                        <Grid>
+                            <Image Source="{Binding Icon}" />
+                            <TextBlock Foreground="Black"
+                                       FontWeight="Bold"
+                                       FontSize="40"
+                                       TextWrapping="Wrap"
+                                       Text="{Binding Name}" />
+                        </Grid>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+    <TextBlock Margin="0,0,0,200" 
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center" 
+               Text="Loading..." 
+               Visibility="Collapsed" 
+               x:Name="loading" />
+</Grid>
+
+{% endcodeblock %}
+
+{% codeblock C# Code lang:csharp %}
+
+private void OnLoaded(object sender, RoutedEventArgs e)
+{
+    loading.Visibility = Visibility.Visible;
+    
+    var topics = new ObservableCollection<Topic>();
+    topicsList.ItemsSource = topics;
+    
+    PopulateTopics(
+        topic => topics.Add(topic),
+        () => loading.Visibility = Visibility.Collapsed);
+}
+
+private void OnTopicButtonClick(object sender, RoutedEventArgs e)
+{
+    var topic = (Topic)((Button)sender).DataContext;
+    NavigationService.Navigate(new Uri("/TopicPage.xaml?id=" + topic.Id, UriKind.Relative));
+}
+{% endcodeblock %}
