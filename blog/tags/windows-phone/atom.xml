@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: Windows Phone | Code Beside]]></title>
+  <link href="http://blog.codebeside.org/blog/tags/windows-phone/atom.xml" rel="self"/>
+  <link href="http://blog.codebeside.org/"/>
+  <updated>2013-02-24T01:23:36+00:00</updated>
+  <id>http://blog.codebeside.org/</id>
+  <author>
+    <name><![CDATA[Gustavo Guerra]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[F#, Windows Phone 7 & Visual Studio 2012]]></title>
+    <link href="http://blog.codebeside.org/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012"/>
+    <updated>2013-02-24T00:00:00+00:00</updated>
+    <id>http://blog.codebeside.org/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012</id>
+    <content type="html"><![CDATA[<p>F# 2.0 supported Silverlight 4, Silverlight 5, and Windows Phone 7.1, as several versions of FSharp.Core.dll were
+shipped as part of the standalone F# redistribution. There were even some nice <a href="http://blogs.msdn.com/b/dsyme/archive/2010/08/20/f-windows-phone-7-silverlight-templates-now-on-visual-studio-gallery.aspx">Visual Studio 2010 templates</a> made by <a href="http://bloggemdano.blogspot.co.uk/">Daniel Mohl</a>.</p>
+
+<p>In F# 3.0 there is no standalone redistributable package anymore, and Visual Studio 2012 only ships with two versions of FSharp.Core.dll: the full .NET 4.5 version, and a portable class library version targeting Profile47 (which includes .NET 4.5, Silverlight 5.0, and .NET for Windows Store apps).</p>
+
+<p>I tried to create versions for Windows Phone 7 and for Profile88 (which additionally includes .NET 4.0, Silverlight 4.0, and Windows Phone 7.1) from the <a href="https://github.com/fsharp/fsharp">source code</a>, and I even got them to <a href="https://github.com/fsharp/fsharp/pull/102">compile</a>, but unfortunately I still get a bunch of Invalid Program exceptions at runtime when running on the device on both versions.</p>
+
+<p>So I tried another approach - to reuse the FSharp.Core.dll version from F# 2.0 - and it seems to work just fine. Type providers and other new F# 3.0 features that depend on the library won't work, but at least we can use Visual Studio 2012 and some of the features like the triple quotes.</p>
+
+<p>To make this work we must force the F# compiler to compile for Silverlight 4, which is no longer supported, so we need to modify the file <code>C:\Program Files (x86)\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.targets</code> and comment out the following lines:</p>
+
+<p>{% codeblock lang:xml %}
+&lt;Error</p>
+
+<pre><code>Condition="'$(SilverlightVersion)' != '' and '$(SilverlightVersion)' != 'v5.0'"
+Text="In this version of Visual Studio, F# for Silverlight can only target Silverlight v5.0. Use a prior version of Visual Studio to target previous versions of Silverlight with F#."
+</code></pre>
+
+<p>/>
+{% endcodeblock %}</p>
+
+<p>Then if you take Daniel Mohl's template, change the manifest to state it supports Visual Studio 2012, and upgrade the .csproj and .fsproj files, it all works. I've uploaded the updated template to the <a href="http://visualstudiogallery.msdn.microsoft.com/241d3a0a-a0a7-42f5-badf-bbbed30514c8">Visual Studio Gallery</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>

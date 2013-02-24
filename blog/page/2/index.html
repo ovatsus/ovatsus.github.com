@@ -9,7 +9,7 @@
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="If you seen this post on the Agile Network Forums - Usability Tip (Ctrl+shift+click) - you already know a quick way to get some extra space between &hellip;">
+  <meta name="description" content="When you need to change a public element of an eSpace, such as an Action or a Web Block, it&rsquo;s good to know before-hand where that element is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/08/18/agile-platform-tips-amp-tricks-5">Agile Platform Tips & Tricks #5</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-18T00:00:00+01:00" pubdate data-updated="true">Aug 18<span>th</span>, 2010</time>
+        
+         | <a href="/blog/2010/08/18/agile-platform-tips-amp-tricks-5#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+	When you need to change a public element of an eSpace, such as an Action or a Web Block, it&rsquo;s good to know before-hand where that element is being used, so you can anticipate possible problems. To do that, you can go to Service Center and check the References tab in the page relative to your eSpace. There you will find listed all the consumers of your eSpace, and if you click on the Details links next to each consumer eSpace, you can check which specific elements are being used:</p>
+<p>
+	<a href="/userfiles/AgilePlatformTipsTricks5_BFEF/image_2.png"><img alt="image" border="0" height="332" src="/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+<p>
+	<br />
+	To help to improve this process, I&rsquo;ve recently published the <a href="http://www.outsystems.com/forge/Component_Detail.aspx?ProjectId=161" title="References Dashboard">References Dashboard</a> component on the OutSystems Network. It has similar functionality to this tab of Service Center, but the consumers are grouped by element instead of by consumer eSpace, allowing for faster search:</p>
+<p>
+	<a href="/userfiles/AgilePlatformTipsTricks5_BFEF/image_4.png"><img alt="image" border="0" height="285" src="/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -670,66 +716,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in">Counting the Number of Messages in a Message Queue in .NET</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-08-27T00:00:00+01:00" pubdate data-updated="true">Aug 27<span>th</span>, 2008</time>
-        
-         | <a href="/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-	.NET includes a managed MSMQ API (System.Messaging) to send and receive messages, but unfortunately there&#39;s a key functionality missing: obtaining the number of messages currently in the queue. Yoel Arnon talks about this problem with more detail <a href="http://msmq.spaces.live.com/Blog/cns!1pGjsZEQBluYM9y4YjJoNkTg!113.entry" title="Counting the number of messages in a queue">here</a> and <a href="http://msmq.spaces.live.com/blog/cns!393534E869CE55B7!121.entry" title="Counting messages in Queue - the .NET version">here</a>. After reading that, we learn that there are three ways to overcome this limitation: using the MSMQ performance counters (with the .NET Performance Counter API or via WMI), using the MSMQ COM wrapper, or using the MSMQ Admin API directly. The first option is not very reliable and the second one is not available on all versions of MSMQ, so the third one is the preferable way. It&#39;s also the most complex. Jared Evans has explained how to do it using a C++ Managed wrapper <a href="http://www.jaredlog.com/?p=101">here</a>, but that approach adds some complexity to the deployment of your application. It forces you to redistribute the Microsoft Visual C++ Redistributable Package, and if you want to support the x64 versions of Windows, you have to build the C++ wrapper for both x86 and x64 and have additional logic in the application installer to know which version of your assembly to install (and the same for the Visual C++ Redistributable which also has two versions). Some months ago, I upgraded my home PC to Windows Vista x64, so at the time I decided to develop a C# only solution for this, as there wasn&#39;t any publicly available on the net.</p>
-<p>
-	The first approach I tried was to look at the mq.h file and translate all the required structures to C#. This proved to be a nightmare, as at the time the <a href="http://www.codeplex.com/clrinterop">P/Invoke Interop Assistant</a> hadn&#39;t been created yet and the structures proved to be a little complex. So instead of trying to translate the whole structures correctly, I turned on the debugger and started examining the fields that were really needed, defining dummy spacer fields for the rest. This took a while, but it was worth it. Here&#39;s the code:</p>
-<script src="https://gist.github.com/1225789.js"></script>
-<p>
-	Note that you&#39;ll have to go to the project properties and check the &quot;Allow unsafe code&quot; option for this to build.</p>
-<p>
-	After building and running, it should give you the following output:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Count should be 0: 0
-</span><span class='line'>Count should be 1: 1
-</span><span class='line'>Count should be 2: 2
-</span><span class='line'>Count should be 1: 1
-</span><span class='line'>Count should be 2: 2
-</span><span class='line'>Count should be 0: 0</span></code></pre></td></tr></table></div></figure>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/3/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -749,6 +738,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012">F#, Windows Phone 7 & Visual Studio 2012</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning">F# as a Octave/Matlab replacement for Machine Learning</a>
       </li>
     
@@ -764,16 +757,12 @@
         <a href="/blog/2011/09/25/migrating-from-subtext-to-blogenginenet">Migrating from SubText to BlogEngine.NET</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1">Replacing Visual Studio 2010 with SharpDevelop 4.1</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tags</h1>
   <span id="tag-cloud">
-    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 113.33333333333333%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
+    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 120.0%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
   </span>
 </section>
 

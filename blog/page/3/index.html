@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Agile Platform Tips & Tricks #1 - Code Beside</title>
+  <title>Code Beside</title>
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="Expression Editor had a lot of improvements in Service Studio 5.0. You&rsquo;ve probably already found most of them, but just in case you haven& &hellip;">
+  <meta name="description" content=".NET includes a managed MSMQ API (System.Messaging) to send and receive messages, but unfortunately there&#39;s a key functionality missing: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.codebeside.org/blog/2009/12/05/agile-platform-tips-amp-tricks-1">
+  <link rel="canonical" href="http://blog.codebeside.org/blog/page/3/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -79,12 +79,15 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div>
-<article class="hentry" role="article">
+      <div class="blog-index">
   
+  
+  
+    <article>
+      
   <header>
     
-      <h1 class="entry-title">Agile Platform Tips & Tricks #1</h1>
+      <h1 class="entry-title"><a href="/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in">Counting the Number of Messages in a Message Queue in .NET</a></h1>
     
     
       <p class="meta">
@@ -100,116 +103,57 @@
   
 
 
-<time datetime="2009-12-05T00:00:00+00:00" pubdate data-updated="true">Dec 5<span>th</span>, 2009</time>
+<time datetime="2008-08-27T00:00:00+01:00" pubdate data-updated="true">Aug 27<span>th</span>, 2008</time>
         
-         | <a href="#disqus_thread">Comments</a>
+         | <a href="/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>
-	Expression Editor had a lot of improvements in Service Studio 5.0. You&rsquo;ve probably already found most of them, but just in case you haven&rsquo;t, here&rsquo;s a list of some of them:</p>
+  <div class="entry-content"><p>
+	.NET includes a managed MSMQ API (System.Messaging) to send and receive messages, but unfortunately there&#39;s a key functionality missing: obtaining the number of messages currently in the queue. Yoel Arnon talks about this problem with more detail <a href="http://msmq.spaces.live.com/Blog/cns!1pGjsZEQBluYM9y4YjJoNkTg!113.entry" title="Counting the number of messages in a queue">here</a> and <a href="http://msmq.spaces.live.com/blog/cns!393534E869CE55B7!121.entry" title="Counting messages in Queue - the .NET version">here</a>. After reading that, we learn that there are three ways to overcome this limitation: using the MSMQ performance counters (with the .NET Performance Counter API or via WMI), using the MSMQ COM wrapper, or using the MSMQ Admin API directly. The first option is not very reliable and the second one is not available on all versions of MSMQ, so the third one is the preferable way. It&#39;s also the most complex. Jared Evans has explained how to do it using a C++ Managed wrapper <a href="http://www.jaredlog.com/?p=101">here</a>, but that approach adds some complexity to the deployment of your application. It forces you to redistribute the Microsoft Visual C++ Redistributable Package, and if you want to support the x64 versions of Windows, you have to build the C++ wrapper for both x86 and x64 and have additional logic in the application installer to know which version of your assembly to install (and the same for the Visual C++ Redistributable which also has two versions). Some months ago, I upgraded my home PC to Windows Vista x64, so at the time I decided to develop a C# only solution for this, as there wasn&#39;t any publicly available on the net.</p>
 <p>
-	- The window is no longer modal so you can open several of them for comparison and copy/paste.</p>
+	The first approach I tried was to look at the mq.h file and translate all the required structures to C#. This proved to be a nightmare, as at the time the <a href="http://www.codeplex.com/clrinterop">P/Invoke Interop Assistant</a> hadn&#39;t been created yet and the structures proved to be a little complex. So instead of trying to translate the whole structures correctly, I turned on the debugger and started examining the fields that were really needed, defining dummy spacer fields for the rest. This took a while, but it was worth it. Here&#39;s the code:</p>
+<script src="https://gist.github.com/1225789.js"></script>
 <p>
-	- Besides dragging from the scope tree, you can now also drag variables &amp; actions set as functions from the eSpace tree.</p>
+	Note that you&#39;ll have to go to the project properties and check the &quot;Allow unsafe code&quot; option for this to build.</p>
 <p>
-	- As you&rsquo;re typing, the border of the text editor turns red when the expression is invalid, giving you immediate feedback when make a typo. Additionally, the case of variables and functions is automatically corrected to match its definition, so you have that extra degree of confidence that the TrueChange&trade; engine recognized what you just typed when you see it fix the case for you.</p>
-<p>
-	- You can now right click most elements in the scope tree and go to their definition:</p>
-<table border="0" cellpadding="2" cellspacing="0" width="400">
-	<tbody>
-		<tr>
-			<td valign="top" width="133">
-				<a href="/userfiles/ServiceStudioTipsTricks1_B7CC/image_6.png"><img alt="image" border="0" height="95" src="/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_2.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a><a href="/userfiles/ServiceStudioTipsTricks1_B7CC/image_4.png"><img alt="image" border="0" height="58" src="/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a></td>
-			<td valign="top" width="133">
-				<a href="/userfiles/ServiceStudioTipsTricks1_B7CC/image_8.png"><img alt="image" border="0" height="107" src="/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_3.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a><a href="/userfiles/ServiceStudioTipsTricks1_B7CC/image_14.png"><img alt="image" border="0" height="39" src="/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_6.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; MARGIN-LEFT: 0px; BORDER-LEFT-WIDTH: 0px; MARGIN-RIGHT: 0px" title="image" width="244" /></a></td>
-		</tr>
-	</tbody>
-</table>
-<p>
-	<a href="/userfiles/ServiceStudioTipsTricks1_B7CC/image_16.png"><img alt="image" border="0" height="118" src="/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_7.png" style="border-right-width: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; " title="image" width="244" /></a></p>
-<p>
-	- The completion list now includes the icons of the elements and tooltips about them:</p>
-<p>
-	<a href="/userfiles/ServiceStudioTipsTricks1_B7CC/image_18.png"><img alt="image" border="0" height="130" src="/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_8.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a></p>
-<p>
-	- The filtering algorithm of the completion list is now smarter, and also matches word at the middle instead of just at the start:</p>
-<p>
-	<a href="/userfiles/ServiceStudioTipsTricks1_B7CC/image_20.png"><img alt="image" border="0" height="138" src="/userfiles/ServiceStudioTipsTricks1_B7CC/image_thumb_9.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="244" /></a></p>
-<p>
-	- It also detects acronyms, so if you open up the completion list by pressing Ctrl+Space and then type &ldquo;ni&rdquo; it automatically selects the &ldquo;NullIdentifier()&rdquo; built-in function. In addition, if you don&rsquo;t have the completion list open yet and just type &ldquo;ni&rdquo; followed by Ctrl+Space, it automatically inserts &ldquo;NullIdentifier()&rdquo; if there&rsquo;s no other match as good. This works also for <strong>N</strong>ull<strong>D</strong>ate<strong>T</strong>ime, <strong>C</strong>urr<strong>D</strong>ate<strong>T</strong>ime, and other variations.</p>
-<p>
-	How cool is that?</p>
+	After building and running, it should give you the following output:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Count should be 0: 0
+</span><span class='line'>Count should be 1: 1
+</span><span class='line'>Count should be 2: 2
+</span><span class='line'>Count should be 1: 1
+</span><span class='line'>Count should be 2: 2
+</span><span class='line'>Count should be 0: 0</span></code></pre></td></tr></table></div></figure>
 </div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Gustavo Guerra</span></span>
-
-      
-
-
-
-
-
-
-
-
   
 
 
-<time datetime="2009-12-05T00:00:00+00:00" pubdate data-updated="true">Dec 5<span>th</span>, 2009</time>
-      
-
-<span class="categories">
+    </article>
   
-    <a class='category' href='/blog/tags/outsystems/'>OutSystems</a>
-  
-</span>
-
-
-    </p>
+  <div class="pagination">
     
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.codebeside.org/blog/2009/12/05/agile-platform-tips-amp-tricks-1" data-via="ovatsus" data-counturl="http://blog.codebeside.org/blog/2009/12/05/agile-platform-tips-amp-tricks-1" >Tweet</a>
-  
-  
-  
-</div>
-
+    <a href="/blog/archives">Blog Archives</a>
     
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2009/11/18/the-butterfly-was-released-into-the-wild" title="Previous Post: The Butterfly was released into the wild">&laquo; The Butterfly was released into the wild</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2010/03/15/agile-platform-tips-amp-tricks-2" title="Next Post: Agile Platform Tips & Tricks #2">Agile Platform Tips & Tricks #2 &raquo;</a>
-      
-    </p>
-  </footer>
-</article>
-
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a class="next" href="/blog/page/2/">Newer &rarr;</a>
+    
+  </div>
 </div>
-  </section>
-
-</div>
-
 <aside class="sidebar">
   
     <section>
   <h1>About me</h1>
-  <p>I'm a Software Developer interested in Functional Programming, Machine Learning, Robotics, and User Experience Design</p>
+  <p>I&#8217;m a Software Developer interested in Functional Programming, Machine Learning, Robotics, and User Experience Design</p>
   <iframe src="http://githubbadge.appspot.com/badge/ovatsus?a=0" style="border: 0;height: 112px;width: 200px;overflow: hidden;" frameBorder=0></iframe>
 </section>
 <section>
@@ -248,7 +192,7 @@
 <section>
   <h1>Latest Tweets</h1>
   <ul id="tweets">
-    <li class="loading">Status updating...</li>
+    <li class="loading">Status updating&#8230;</li>
   </ul>
   <script type="text/javascript">
     $.domReady(function(){
@@ -264,7 +208,6 @@
 
   
 </aside>
-
 
     </div>
   </div>
@@ -282,10 +225,7 @@
       var disqus_shortname = 'codebesideblog';
       
         
-        // var disqus_developer = 1;
-        var disqus_identifier = 'http://blog.codebeside.org/blog/2009/12/05/agile-platform-tips-amp-tricks-1';
-        var disqus_url = 'http://blog.codebeside.org/blog/2009/12/05/agile-platform-tips-amp-tricks-1';
-        var disqus_script = 'embed.js';
+        var disqus_script = 'count.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

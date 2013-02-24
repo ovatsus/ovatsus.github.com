@@ -99,12 +99,18 @@
         <lastmod>2013-02-20T01:28:37+00:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://blog.codebeside.org/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012
+        </loc>
+        <lastmod>2013-02-24T01:23:36+00:00</lastmod>
+    </url>
+    <url>
         <loc>http://blog.codebeside.org/blog/archives/</loc>
-        <lastmod>2013-02-20T01:28:38+00:00</lastmod>
+        <lastmod>2013-02-24T01:23:36+00:00</lastmod>
     </url>
     <url>
         <loc>http://blog.codebeside.org/</loc>
-        <lastmod>2013-02-20T01:28:38+00:00</lastmod>
+        <lastmod>2013-02-24T01:23:36+00:00</lastmod>
     </url>
     <url>
         <loc>http://blog.codebeside.org/robots.txt</loc>
