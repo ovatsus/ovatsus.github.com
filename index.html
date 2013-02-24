@@ -118,26 +118,16 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 
 <p>In F# 3.0 there is no standalone redistributable package anymore, and Visual Studio 2012 only ships with two versions of FSharp.Core.dll: the full .NET 4.5 version, and a portable class library version targeting Profile47 (which includes .NET 4.5, Silverlight 5.0, and .NET for Windows Store apps).</p>
 
-<p>I tried to create versions for Windows Phone 7 and for Profile88 (which additionally includes .NET 4.0, Silverlight 4.0, and Windows Phone 7.1) from the <a href="https://github.com/fsharp/fsharp">source code</a>, and I even got them to <a href="https://github.com/fsharp/fsharp/pull/102">compile</a>, but unfortunately I still get a bunch of Invalid Program exceptions at runtime when running on the device on both versions.</p>
+<p>I tried to create versions for Windows Phone 7 and for Profile88 (which additionally includes .NET 4.0, Silverlight 4.0, and Windows Phone 7.1) from the <a href="https://github.com/fsharp/fsharp">source code</a>, and I even got them to <a href="https://github.com/fsharp/fsharp/pull/102">compile</a>, but unfortunately I still get a bunch of Invalid Program exceptions at runtime when running on the emulator or on the device for both versions.</p>
 
 <p>So I tried another approach - to reuse the FSharp.Core.dll version from F# 2.0 - and it seems to work just fine. Type providers and other new F# 3.0 features that depend on the library won&#8217;t work, but at least we can use Visual Studio 2012 and some of the features like the triple quotes.</p>
 
-<p>To make this work we must force the F# compiler to compile for Silverlight 4, which is no longer supported, so we need to modify the file <code>C:\Program Files (x86)\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.targets</code> and comment out the following lines:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;Error</span>
-</span><span class='line'>    <span class="na">Condition=</span><span class="s">&quot;&#39;$(SilverlightVersion)&#39; != &#39;&#39; and &#39;$(SilverlightVersion)&#39; != &#39;v5.0&#39;&quot;</span>
-</span><span class='line'>    <span class="na">Text=</span><span class="s">&quot;In this version of Visual Studio, F# for Silverlight can only target Silverlight v5.0. Use a prior version of Visual Studio to target previous versions of Silverlight with F#.&quot;</span>
-</span><span class='line'><span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Then if you take Daniel Mohl&#8217;s template, change the manifest to state it support Visual Studio 2012, and upgrade the .csproj and .fsproj files, it all works. I&#8217;ve uploaded the updated template to the <a href="http://visualstudiogallery.msdn.microsoft.com/241d3a0a-a0a7-42f5-badf-bbbed30514c8">Visual Studio Gallery</a></p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012">Read on &rarr;</a>
+    </footer>
   
 
 

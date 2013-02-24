@@ -4,7 +4,7 @@
   <title><![CDATA[Code Beside]]></title>
   <link href="http://blog.codebeside.org/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2013-02-24T01:23:17+00:00</updated>
+  <updated>2013-02-24T12:24:02+00:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -23,9 +23,12 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 
 <p>In F# 3.0 there is no standalone redistributable package anymore, and Visual Studio 2012 only ships with two versions of FSharp.Core.dll: the full .NET 4.5 version, and a portable class library version targeting Profile47 (which includes .NET 4.5, Silverlight 5.0, and .NET for Windows Store apps).</p>
 
-<p>I tried to create versions for Windows Phone 7 and for Profile88 (which additionally includes .NET 4.0, Silverlight 4.0, and Windows Phone 7.1) from the <a href="https://github.com/fsharp/fsharp">source code</a>, and I even got them to <a href="https://github.com/fsharp/fsharp/pull/102">compile</a>, but unfortunately I still get a bunch of Invalid Program exceptions at runtime when running on the device on both versions.</p>
+<p>I tried to create versions for Windows Phone 7 and for Profile88 (which additionally includes .NET 4.0, Silverlight 4.0, and Windows Phone 7.1) from the <a href="https://github.com/fsharp/fsharp">source code</a>, and I even got them to <a href="https://github.com/fsharp/fsharp/pull/102">compile</a>, but unfortunately I still get a bunch of Invalid Program exceptions at runtime when running on the emulator or on the device for both versions.</p>
 
 <p>So I tried another approach - to reuse the FSharp.Core.dll version from F# 2.0 - and it seems to work just fine. Type providers and other new F# 3.0 features that depend on the library won&#8217;t work, but at least we can use Visual Studio 2012 and some of the features like the triple quotes.</p>
+
+<!-- more -->
+
 
 <p>To make this work we must force the F# compiler to compile for Silverlight 4, which is no longer supported, so we need to modify the file <code>C:\Program Files (x86)\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.targets</code> and comment out the following lines:</p>
 
@@ -40,7 +43,149 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Then if you take Daniel Mohl&#8217;s template, change the manifest to state it support Visual Studio 2012, and upgrade the .csproj and .fsproj files, it all works. I&#8217;ve uploaded the updated template to the <a href="http://visualstudiogallery.msdn.microsoft.com/241d3a0a-a0a7-42f5-badf-bbbed30514c8">Visual Studio Gallery</a></p>
+<p>Then if you take Daniel Mohl&#8217;s template, change the manifest to state it supports Visual Studio 2012, and upgrade the .csproj and .fsproj files, it all works. I&#8217;ve uploaded the updated template to the <a href="http://visualstudiogallery.msdn.microsoft.com/241d3a0a-a0a7-42f5-badf-bbbed30514c8">Visual Studio Gallery</a>.</p>
+
+<p>Here&#8217;s a small sample of loading some data asynchronously and databinding to a record:</p>
+
+<figure class='code'><figcaption><span>F# Code  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">type</span> <span class="nc">Topic</span> <span class="o">=</span>
+</span><span class='line'>    <span class="o">{</span> <span class="nc">Id</span> <span class="o">:</span> <span class="kt">int</span>
+</span><span class='line'>      <span class="nc">Name</span> <span class="o">:</span> <span class="kt">string</span>
+</span><span class='line'>      <span class="nc">Icon</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="nc">PopulateTopics</span> <span class="o">(</span><span class="n">addTopic</span> <span class="o">:</span> <span class="nc">Action</span><span class="o">&lt;</span><span class="nc">Topic</span><span class="o">&gt;)</span> <span class="o">(</span><span class="n">onFinish</span> <span class="o">:</span> <span class="nc">Action</span><span class="o">)</span> <span class="o">=</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">let</span> <span class="n">synchronizationContext</span> <span class="o">=</span> <span class="nn">SynchronizationContext</span><span class="p">.</span><span class="nc">Current</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">let</span> <span class="n">doInUiThred</span> <span class="n">f</span> <span class="o">=</span>
+</span><span class='line'>        <span class="n">synchronizationContext</span><span class="o">.</span><span class="nc">Post</span> <span class="o">((</span><span class="k">fun</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">f</span><span class="bp">()</span><span class="o">),</span> <span class="k">null</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">async</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">let</span><span class="o">!</span> <span class="n">topics</span> <span class="o">=</span> <span class="o">(...)</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">topic</span> <span class="k">in</span> <span class="n">topics</span> <span class="k">do</span>
+</span><span class='line'>            <span class="n">doInUiThred</span> <span class="o">(</span><span class="k">fun</span> <span class="bp">()</span> <span class="o">-&gt;</span> <span class="n">addTopic</span><span class="o">.</span><span class="nc">Invoke</span> <span class="n">topic</span><span class="o">)</span>
+</span><span class='line'>        <span class="n">doInUiThred</span> <span class="o">(</span><span class="k">fun</span> <span class="bp">()</span> <span class="o">-&gt;</span> <span class="n">onFinish</span><span class="o">.</span><span class="nc">Invoke</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">}</span> <span class="o">|&gt;</span> <span class="nn">Async</span><span class="p">.</span><span class="nc">Catch</span> <span class="o">|&gt;</span> <span class="nn">Async</span><span class="p">.</span><span class="nc">Ignore</span> <span class="o">|&gt;</span> <span class="nn">Async</span><span class="p">.</span><span class="nc">Start</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>XAML code  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;Grid&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;ScrollViewer&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;ItemsControl</span> <span class="na">x:Name=</span><span class="s">&quot;topicsList&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;ItemsControl.ItemTemplate&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;DataTemplate&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;Button</span> <span class="na">Click=</span><span class="s">&quot;OnTopicButtonClick&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;Grid&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;Image</span> <span class="na">Source=</span><span class="s">&quot;{Binding Icon}&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>                            <span class="nt">&lt;TextBlock</span> <span class="na">Foreground=</span><span class="s">&quot;Black&quot;</span>
+</span><span class='line'>                                       <span class="na">FontWeight=</span><span class="s">&quot;Bold&quot;</span>
+</span><span class='line'>                                       <span class="na">FontSize=</span><span class="s">&quot;40&quot;</span>
+</span><span class='line'>                                       <span class="na">TextWrapping=</span><span class="s">&quot;Wrap&quot;</span>
+</span><span class='line'>                                       <span class="na">Text=</span><span class="s">&quot;{Binding Name}&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'>                        <span class="nt">&lt;/Grid&gt;</span>
+</span><span class='line'>                    <span class="nt">&lt;/Button&gt;</span>
+</span><span class='line'>                <span class="nt">&lt;/DataTemplate&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/ItemsControl.ItemTemplate&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/ItemsControl&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/ScrollViewer&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;TextBlock</span> <span class="na">Margin=</span><span class="s">&quot;0,0,0,200&quot;</span>
+</span><span class='line'>               <span class="na">HorizontalAlignment=</span><span class="s">&quot;Center&quot;</span>
+</span><span class='line'>               <span class="na">VerticalAlignment=</span><span class="s">&quot;Center&quot;</span>
+</span><span class='line'>               <span class="na">Text=</span><span class="s">&quot;Loading...&quot;</span>
+</span><span class='line'>               <span class="na">Visibility=</span><span class="s">&quot;Collapsed&quot;</span>
+</span><span class='line'>               <span class="na">x:Name=</span><span class="s">&quot;loading&quot;</span> <span class="nt">/&gt;</span>
+</span><span class='line'><span class="nt">&lt;/Grid&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>C# Code  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">private</span> <span class="k">void</span> <span class="nf">OnLoaded</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">RoutedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">loading</span><span class="p">.</span><span class="n">Visibility</span> <span class="p">=</span> <span class="n">Visibility</span><span class="p">.</span><span class="n">Visible</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">var</span> <span class="n">topics</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ObservableCollection</span><span class="p">&lt;</span><span class="n">Topic</span><span class="p">&gt;();</span>
+</span><span class='line'>    <span class="n">topicsList</span><span class="p">.</span><span class="n">ItemsSource</span> <span class="p">=</span> <span class="n">topics</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">PopulateTopics</span><span class="p">(</span>
+</span><span class='line'>        <span class="n">topic</span> <span class="p">=&gt;</span> <span class="n">topics</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">topic</span><span class="p">),</span>
+</span><span class='line'>        <span class="p">()</span> <span class="p">=&gt;</span> <span class="n">loading</span><span class="p">.</span><span class="n">Visibility</span> <span class="p">=</span> <span class="n">Visibility</span><span class="p">.</span><span class="n">Collapsed</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">private</span> <span class="k">void</span> <span class="nf">OnTopicButtonClick</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">RoutedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">var</span> <span class="n">topic</span> <span class="p">=</span> <span class="p">(</span><span class="n">Topic</span><span class="p">)((</span><span class="n">Button</span><span class="p">)</span><span class="n">sender</span><span class="p">).</span><span class="n">DataContext</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">NavigationService</span><span class="p">.</span><span class="n">Navigate</span><span class="p">(</span><span class="k">new</span> <span class="n">Uri</span><span class="p">(</span><span class="s">&quot;/TopicPage.xaml?id=&quot;</span> <span class="p">+</span> <span class="n">topic</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span> <span class="n">UriKind</span><span class="p">.</span><span class="n">Relative</span><span class="p">));</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
 ]]></content>
   </entry>
   
