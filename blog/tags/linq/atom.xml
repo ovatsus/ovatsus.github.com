@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: LINQ | Code Beside]]></title>
   <link href="http://blog.codebeside.org/blog/tags/linq/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2013-02-24T12:24:02+00:00</updated>
+  <updated>2013-04-11T13:37:39+01:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -39,41 +39,25 @@
     The interface is the following:</p>
 
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="kt">string</span> <span class="n">path</span><span class="p">);</span>
-</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">TextReader</span> <span class="n">reader</span><span class="p">);</span>
-</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">XmlReader</span> <span class="n">reader</span><span class="p">);</span>
-</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">Stream</span> <span class="n">stream</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="n">XName</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
-</span><span class='line'><span class="kt">string</span> <span class="n">Value</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="n">XAttribute</span> <span class="n">Attribute</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);</span>
-</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XAttribute</span><span class="p">&gt;</span> <span class="n">Attributes</span><span class="p">();&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="n">XElementReader</span> <span class="n">FirstElement</span><span class="p">();</span>
-</span><span class='line'><span class="n">XElementReader</span> <span class="nf">Element</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);</span>
-</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XElementReader</span><span class="p">&gt;</span> <span class="n">Elements</span><span class="p">();</span>
-</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XElementReader</span><span class="p">&gt;</span> <span class="n">Elements</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="n">XElement</span> <span class="n">ToXElement</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:csharp %}
+XElementReader(string path);
+XElementReader(TextReader reader);
+XElementReader(XmlReader reader);
+XElementReader(Stream stream);</p>
+
+<p>XName Name { get; }
+string Value { get; }</p>
+
+<p>XAttribute Attribute(XName name);
+IEnumerable<XAttribute> Attributes();</p>
+
+<p>XElementReader FirstElement();
+XElementReader Element(XName name);
+IEnumerable<XElementReader> Elements();
+IEnumerable<XElementReader> Elements(XName name);</p>
+
+<p>XElement ToXElement();
+{% endcodeblock %}</p>
 
 <p></p>
 
@@ -127,88 +111,53 @@
     And here&#39;s the test case for Raptor-75&#39;s problem:</p>
 
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">()</span> <span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span>   <span class="kt">var</span> <span class="n">dict</span> <span class="p">=</span> <span class="n">StaticStringDictionary</span><span class="p">.</span><span class="n">Create</span><span class="p">(&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span>   <span class="k">new</span> <span class="n">Dictionary</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="kt">string</span><span class="p">,</span> <span class="kt">int</span><span class="p">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="p">{</span>
-</span><span class='line'>       <span class="p">{</span><span class="s">&quot;Ado&quot;</span><span class="p">,</span> <span class="m">0</span><span class="p">},</span>
-</span><span class='line'>       <span class="p">{</span><span class="s">&quot;A2o&quot;</span><span class="p">,</span> <span class="m">1</span><span class="p">},</span>
-</span><span class='line'>       <span class="p">{</span><span class="s">&quot;A2i&quot;</span><span class="p">,</span> <span class="m">2</span><span class="p">},</span>
-</span><span class='line'>       <span class="p">{</span><span class="s">&quot;B2o&quot;</span><span class="p">,</span> <span class="m">3</span><span class="p">},</span>
-</span><span class='line'>       <span class="p">{</span><span class="s">&quot;AdoX&quot;</span><span class="p">,</span> <span class="m">4</span><span class="p">},</span>
-</span><span class='line'>       <span class="p">{</span><span class="s">&quot;AdPX&quot;</span><span class="p">,</span> <span class="m">5</span><span class="p">}</span>
-</span><span class='line'>   <span class="p">},</span>
-</span><span class='line'>   <span class="n">key</span> <span class="p">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="p">-</span><span class="m">1</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;Ado&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;A2o&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;A2i&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;B2o&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;AdoX&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;AdPX&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'><span class="n">Test</span><span class="p">(</span><span class="s">&quot;xpto&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="n">Test</span><span class="p">(</span><span class="kt">string</span> <span class="n">key</span><span class="p">,</span> <span class="n">IDictionary</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="kt">string</span><span class="p">,</span> <span class="kt">int</span><span class="p">&gt;</span> <span class="n">dict</span><span class="p">)</span> <span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">key</span> <span class="p">+</span> <span class="s">&quot;: &quot;</span> <span class="p">+</span> <span class="n">dict</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
-</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:csharp %}
+public static void Main() {</p>
+
+<p>   var dict = StaticStringDictionary.Create(</p>
+
+<pre><code>   new Dictionary&lt;string, int&gt; {
+       {"Ado", 0},
+       {"A2o", 1},
+       {"A2i", 2},
+       {"B2o", 3},
+       {"AdoX", 4},
+       {"AdPX", 5}
+   },
+   key =&gt; -1);
+
+Test("Ado", dict);
+Test("A2o", dict);
+Test("A2i", dict);
+Test("B2o", dict);
+Test("AdoX", dict);
+Test("AdPX", dict);
+Test("xpto", dict);
+</code></pre>
+
+<p>}</p>
+
+<p>private static void Test(string key, IDictionary&lt;string, int> dict) {</p>
+
+<pre><code>Console.WriteLine(key + ": " + dict[key]);
+</code></pre>
+
+<p>}
+{% endcodeblock %}</p>
 
 <p>
     It should produce this output when run:</p>
 
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Ado: 0
-</span><span class='line'>A2o: 1
-</span><span class='line'>A2i: 2
-</span><span class='line'>B2o: 3
-</span><span class='line'>AdoX: 4
-</span><span class='line'>AdPX: 5
-</span><span class='line'>xpto: -1</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock %}
+Ado: 0
+A2o: 1
+A2i: 2
+B2o: 3
+AdoX: 4
+AdPX: 5
+xpto: -1
+{% endcodeblock %}</p>
 
 <p>
     I also found useful to define this variation when I also need to do reverse lookups:</p>
