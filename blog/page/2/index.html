@@ -9,7 +9,7 @@
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="When you need to change a public element of an eSpace, such as an Action or a Web Block, it&rsquo;s good to know before-hand where that element is &hellip;">
+  <meta name="description" content="Calling Screen Actions from custom JavaScript events Imagine you&rsquo;re using the Tabs_ClientSide from RichWidgets and you&rsquo;re showing a list &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,53 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/08/18/agile-platform-tips-amp-tricks-6">Agile Platform Tips & Tricks #6</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-18T00:00:00+01:00" pubdate data-updated="true">Aug 18<span>th</span>, 2010</time>
+        
+         | <a href="/blog/2010/08/18/agile-platform-tips-amp-tricks-6#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>
+	Calling Screen Actions from custom JavaScript events</h4>
+<p>
+	Imagine you&rsquo;re using the Tabs_ClientSide from RichWidgets and you&rsquo;re showing a list in each tab. Instead of loading all the lists when the screen is loaded, you want to only populate each list when the corresponding tab is activated. The Tabs_ClientSide already provides a way to call custom JavaScript code on tab activation, so if we could call a Screen Action from JavaScript code, we could make that Screen Action refresh the table on the corresponding tab. So, how can we do that?</p>
+<p>
+	The AJAX capabilities of the Agile Platform already allow you to trigger the execution of Screen Actions when some standard JavaScript events are raised. For example, if you specify a Screen Action in the OnChange property of an Input widget, when the end-user types in something in the correspondent input displayed by the browser, that Screen Action will be called at the server. To do this, the Agile Platform generates custom JavaScript code that will send an AJAX request to the server when the native onchange event of that input HTML element is triggered. So, if we add an hidden Input widget to the page and on the OnTabActivation parameter of the Tabs_ClientSide we put some JavaScript code to trigger that onchange event manually, we know that the platform will take care of calling the Screen Action specified in the OnChange of that Input widget. This way we can put there the logic to refresh the list inside the tab that was activated in that Screen Action. Unfortunately, we have no way of telling to pass the tab which was activated as a parameter of that Screen Action, and that forces us to have to an hidden Input for each tab, and decide which hidden Input to trigger in JavaScript.</p>
+<p>
+	Fortunately, there&rsquo;s a simpler way to do this. It involves using the OnNotify property of a Web Block widget, call it by using OsNotifyWidget JavaScript function,&nbsp; and in the associated Screen Action using the NotifyWidgetGetMessage built-in action to get the tab that was activated. Instead of explaining it in detail, I&rsquo;ve made a sample eSpace that exemplifies this scenario. Here it is:</p>
+<p>
+	<a href="/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -675,47 +722,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/08/28/expression-codedom-visualizer">Expression CodeDom Visualizer</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-08-28T00:00:00+01:00" pubdate data-updated="true">Aug 28<span>th</span>, 2008</time>
-        
-         | <a href="/blog/2008/08/28/expression-codedom-visualizer#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-	Can Erten created a very useful expression tree to CodeDom converter. He wrote about it here: <a href="http://www.canerten.com/meta-programming-with-expression-trees-lambdas-to-codedom-conversion/">Expression Trees-Lambdas to CodeDom Conversion</a>. I created a visual studio debugger visualizer based on it. You can find it in attachment. Just copy the assembly to My Documents\Visual Studio 2008\Visualizers and you&#39;re set. I also attached the full source code.</p>
-<p>
-	<a href="/userfiles/ExpressionCodeDomVisualizer.dll">ExpressionCodeDomVisualizer.dll</a>&nbsp;<a href="/userfiles/ExpressionCodeDomVisualizerSourceCode.zip">ExpressionCodeDomVisualizerSourceCode.zip</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -730,7 +736,7 @@
   
     <section>
   <h1>About me</h1>
-  <p>I&#8217;m a Software Developer interested in Functional Programming, Machine Learning, Robotics, and User Experience Design</p>
+  <p>I&#8217;m a Software Developer interested in Functional Programming, Data Science, and User Experience Design</p>
   <iframe src="http://githubbadge.appspot.com/badge/ovatsus?a=0" style="border: 0;height: 112px;width: 200px;overflow: hidden;" frameBorder=0></iframe>
 </section>
 <section>
@@ -744,6 +750,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/05/13/building-type-providers-part1">Building Type Providers - Part 1</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012">F#, Windows Phone 7 & Visual Studio 2012</a>
@@ -761,16 +771,12 @@
         <a href="/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food">Microsoft: please eat some more of your WPF-flavored dog food</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2011/09/25/migrating-from-subtext-to-blogenginenet">Migrating from SubText to BlogEngine.NET</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tags</h1>
   <span id="tag-cloud">
-    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 120.0%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
+    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 126.66666666666667%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/type-providers' style='font-size: 106.66666666666667%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
   </span>
 </section>
 

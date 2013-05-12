@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: F# | Code Beside]]></title>
   <link href="http://blog.codebeside.org/blog/tags/f-/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2013-04-11T13:37:39+01:00</updated>
+  <updated>2013-05-13T00:17:28+01:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -12,6 +12,80 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Building Type Providers - Part 1]]></title>
+    <link href="http://blog.codebeside.org/blog/2013/05/13/building-type-providers-part1"/>
+    <updated>2013-05-13T00:17:00+01:00</updated>
+    <id>http://blog.codebeside.org/blog/2013/05/13/building-type-providers-part1</id>
+    <content type="html"><![CDATA[<p>Type Providers are the biggest new feature of F# 3.0. They allow us to leverage the power of the static type system in areas that have typically been the territory of dynamic languages and stringly typing. A picture is worth a thousand words, so here's 12 pictures that show type providers in action:</p>
+
+<blockquote><p><a href="http://blogs.msdn.com/b/dsyme/archive/2013/01/30/twelve-type-providers-in-pictures.aspx">All your types are belong to us</a></p></blockquote>
+
+<p>There are already several good samples and articles about using type providers, but there still isn't a lot about creating type providers. Having worked recently on <a href="http://fsharp.github.com/FSharp.Data/">FSharp.Data</a> I decided to share some tips about building type providers.</p>
+
+<!-- More -->
+
+
+<h2>Getting Started</h2>
+
+<p>The basic steps to creating a type provider are:</p>
+
+<ul>
+<li><p>Get the <code>ProvidedTypes.fs</code> and <code>ProvidedTypes.fsi</code> files from the <a href="http://fsharp3sample.codeplex.com/">F# 3.0 Sample Pack</a> and add it to your project.</p></li>
+<li><p>Follow the instructions in <a href="http://msdn.microsoft.com/en-gb/library/hh361034.aspx">Tutorial: Creating a Type Provider</a> to create instances of <code>ProvidedTypeDefinition</code>, <code>ProvidedProperty</code>, <code>ProvidedMethod</code>, etc. in order to to define the API you want.</p></li>
+</ul>
+
+
+<p>After you've read that tutorial, let's carry on...</p>
+
+<h2>Hiding the underlying representation</h2>
+
+<p>In the simplest of cases, there's no underlying representation, so you just set the base class of your provided types to <code>obj</code>. You'll create some expressions by wrapping code in <code>&lt;@@ ... @@&gt;</code> to create quotations, and assign them to the <code>InvokeCode</code> and <code>GetterCode</code> properties of your provided methods and properties, completely ignoring the <code>this</code> argument that is passed to them. After compilation, there will be no mention whatsoever of your provided types, they will have been all erased, and the only thing left is that code you defined inside the quotations. Effectively, the type providers are only giving you syntactic sugar and IntelliSense over things you could already accomplish without using them.</p>
+
+<p>However, in most cases, there will be some underlying data representation, and you will probably want to create some types to hold that data. A big part of the logic will be in these types, and you'll specify them as the base classes of your provided types. In this case, the F# compiler will copy and embed those base types in the assembly that is consuming the type provider. This means that in addition to the syntactic sugar, the assembly that's referencing the type providers will also have some more additional code.</p>
+
+<p>As expected, all the members of the base types will appear on the IntelliSense of the provided types. In some situations, that's a good thing, and exactly what you wanted. On other cases (and I would guess most of the time), you intended those members to be just internal code to be used inside the implementation of the provided methods and properties, and you don't want them to show up, as after all Type Providers are mostly about providing a nice API to its users. You can see this effect on the current version of the <a href="http://www.tryfsharp.org/Learn/data-science#world-bank-type-provider">World Bank type provider on TryF#</a>. If you press the dot after <code>data</code>, you'll see that in addition to <code>Countries</code> and <code>Regions</code>, the IntelliSense pop-up will also include <code>_GetCountries</code>, <code>_GetRegions</code> and other members that aren't intended for direct use. The ideal would be for them not to show up. How can we do that?</p>
+
+<ul>
+<li>If you came from an OO background, the first thing you'd think would be to make those members protected, but there is no <code>protected</code> modifier in F#. Even if there was, you're not really creating a type and inheriting from the base type, it's all erased.</li>
+<li>You can't also make those members <code>internal</code>, because your runtime representation types are always considered to belong to the type provider assembly, and not to the assembly that is using the type provider, even when the F# compiler copies those types over.</li>
+<li>In C#, you can decorate methods and properties with <code>[System.ComponentModel.Browsable(false)]</code> to have them not show up on IntelliSense, but unfortunately that doesn't work in F#.</li>
+<li>You can create an interface with those members, and make your runtime representation types implement that interface. That way, they won't show up on IntelliSense because F# always does explicit interface implementation. This won't work for static members though.</li>
+<li>The constructors of the erased to types don't show up on the IntelliSense, so you can replace some static members like <code>Parse</code> and <code>Load</code> with constructors instead.</li>
+<li>If you define a <code>ProvidedMethod</code> with the same parameter types of one of the methods of the runtime representation type, just with a different return type, that method will effectively be hidden, and you won't need to do anything to hide it.</li>
+<li><code>ProvidedTypeDefinition</code> has a <code>HideObjectMethods</code> property that allows you to hide the <code>GetHashCode()</code>, <code>GetType()</code>, <code>ToString()</code> and <code>Equals</code> methods from IntelliSense, but if the base type overrides any of those methods, they will show up anyway. I still haven't found a workaround for this.</li>
+</ul>
+
+
+<p>The <a href="http://fsharp.github.com/FSharp.Data/">FSharp.Data</a> version of the World Bank type provider (and this also applies to the CSV, XML, JSON and Freebase type providers) uses interfaces and constructors to hide the unwanted members, so you don't see any <code>_Something</code> method.</p>
+
+<h2>Splitting into two assemblies</h2>
+
+<p>When the type provider starts to get bigger, you might want to separate the runtime and design-time components into two separate assemblies. You also need to do this when you want to support multiple .NET framework profiles (like Silverlight or Portable Class Libraries), where you can have a single design-time assembly, but a different runtime assembly for each profile.</p>
+
+<p>In this scenario, the design-time assembly can't just reference the runtime assembly, because there are multiple versions of them. And even if you're not supporting multiple profiles, the design-time assemblies of type providers are loaded inside the F# compiler process, which makes any assembly dependency for the design-time component to not work correctly. To work around this, usually there's no dependency between the design-time assembly and the runtime assembly, and instead we include all the files of the runtime assembly directly in the design-time assembly. This may increase the size of the design-time component, but it's not a big deal because that dll doesn't need to be included in the final application.</p>
+
+<p>But with this solution, comes a big problem: your quotations will stop working. Why? Because you're referencing the types of the wrong assembly. To overcome this, the <code>TypeProviderConfig</code> that is passed to your type provider has a <code>RuntimeAssembly</code> property which allows you to load the runtime component using <code>Assembly.LoadFrom</code>, get the types you need using <code>Assembly.GetType</code>, and construct your expressions manually from that. Most of the samples in the <a href="http://fsharp3sample.codeplex.com/">F# 3.0 Sample Pack</a> use this. Great, problem solved, right?</p>
+
+<p>Back in January, I started adding support for portable class libraries in <a href="http://fsharp.github.com/FSharp.Data/">FSharp.Data</a> because I wanted to use it on some Windows Phone and Windows 8 apps. After changing a couple of places from quotations to manually creating expression and using the reflection API, I though to myself:</p>
+
+<blockquote><p>"No! The code was nice and clean with type safe quotations, and now I'm turning it to this mess with error prone reflection calls using a stringly typed api. It's a huge step back. There has to be a better way."</p></blockquote>
+
+<p>And eventually after a couple of failed attempts and a lot of discussion on the github issue, I finally arrived at a solution: process the quotations to fix the type references to the right assembly. This is done by <code>AssemblyReplacer</code>, which you can find <a href="https://github.com/fsharp/FSharp.Data/blob/master/src/Providers/AssemblyReplacer.fs">here</a>. It's pretty much independent of the rest of <a href="http://fsharp.github.com/FSharp.Data/">FSharp.Data</a>, so you can just copy it over to your type provider project if you need it.</p>
+
+<p>There are places where even without splitting the type provider into a design-time and runtime assembly, it isn't possible to use quotations, and you still need to keep creating expressions manually. That only happens when you use generics parameterized by a type generated by the type provider. For those, cases <a href="http://tomasp.net/">Tomas</a> has created a nice dynamic operator (?) implementation in <code>QuotationBuilder</code> which is available <a href="https://github.com/fsharp/FSharp.Data/blob/master/src/Providers/QuotationBuilder.fs">here</a>.</p>
+
+<h2>Coming Next</h2>
+
+<ul>
+<li>Debugging type providers</li>
+<li>Supporting multiple .NET framework profiles</li>
+<li>Common errors found during type provider development</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[F#, Windows Phone 7 & Visual Studio 2012]]></title>
@@ -32,106 +106,200 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 
 <p>To make this work we must force the F# compiler to compile for Silverlight 4, which is no longer supported, so we need to modify the file <code>C:\Program Files (x86)\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.targets</code> and comment out the following lines:</p>
 
-<p>{% codeblock lang:xml %}
-&lt;Error</p>
-
-<pre><code>Condition="'$(SilverlightVersion)' != '' and '$(SilverlightVersion)' != 'v5.0'"
-Text="In this version of Visual Studio, F# for Silverlight can only target Silverlight v5.0. Use a prior version of Visual Studio to target previous versions of Silverlight with F#."
-</code></pre>
-
-<p>/>
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="ni">&amp;lt;</span>Error<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span>Condition=&quot;&#39;$(SilverlightVersion)&#39; != &#39;&#39; and &#39;$(SilverlightVersion)&#39; != &#39;v5.0&#39;&quot;
+</span><span class='line'>Text=&quot;In this version of Visual Studio, F# for Silverlight can only target Silverlight v5.0. Use a prior version of Visual Studio to target previous versions of Silverlight with F#.&quot;
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>/&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Then if you take Daniel Mohl's template, change the manifest to state it supports Visual Studio 2012, and upgrade the .csproj and .fsproj files, it all works. I've uploaded the updated template to the <a href="http://visualstudiogallery.msdn.microsoft.com/241d3a0a-a0a7-42f5-badf-bbbed30514c8">Visual Studio Gallery</a>.</p>
 
 <p>Here's a small sample of loading some data asynchronously and databinding to a record:</p>
 
-<p>{% codeblock F# Code lang:fsharp %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>F# Code  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">type</span> <span class="nc">Topic</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;{</span> <span class="nc">Id</span> <span class="o">:</span> <span class="kt">int</span>
+</span><span class='line'>  <span class="nc">Name</span> <span class="o">:</span> <span class="kt">string</span>
+</span><span class='line'>  <span class="nc">Icon</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">let</span> <span class="nc">PopulateTopics</span> <span class="o">(</span><span class="n">addTopic</span> <span class="o">:</span> <span class="nc">Action</span><span class="o">&lt;</span><span class="nc">Topic</span><span class="o">&gt;)</span> <span class="o">(</span><span class="n">onFinish</span> <span class="o">:</span> <span class="nc">Action</span><span class="o">)</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">let</span> <span class="n">synchronizationContext</span> <span class="o">=</span> <span class="nn">SynchronizationContext</span><span class="p">.</span><span class="nc">Current</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">doInUiThred</span> <span class="n">f</span> <span class="o">=</span>
+</span><span class='line'>    <span class="n">synchronizationContext</span><span class="o">.</span><span class="nc">Post</span> <span class="o">((</span><span class="k">fun</span> <span class="o">_</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">f</span><span class="bp">()</span><span class="o">),</span> <span class="k">null</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">async</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">let</span><span class="o">!</span> <span class="n">topics</span> <span class="o">=</span> <span class="o">(...)</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">topic</span> <span class="k">in</span> <span class="n">topics</span> <span class="k">do</span>
+</span><span class='line'>        <span class="n">doInUiThred</span> <span class="o">(</span><span class="k">fun</span> <span class="bp">()</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">addTopic</span><span class="o">.</span><span class="nc">Invoke</span> <span class="n">topic</span><span class="o">)</span>
+</span><span class='line'>    <span class="n">doInUiThred</span> <span class="o">(</span><span class="k">fun</span> <span class="bp">()</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">onFinish</span><span class="o">.</span><span class="nc">Invoke</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'><span class="o">}</span> <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Async</span><span class="p">.</span><span class="nc">Catch</span> <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Async</span><span class="p">.</span><span class="nc">Ignore</span> <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Async</span><span class="p">.</span><span class="nc">Start</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>type Topic =</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>XAML code  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;Grid&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>ScrollViewer<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>ItemsControl x:Name=&quot;topicsList&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>        <span class="ni">&amp;lt;</span>ItemsControl.ItemTemplate<span class="ni">&amp;gt;</span>
+</span><span class='line'>            <span class="ni">&amp;lt;</span>DataTemplate<span class="ni">&amp;gt;</span>
+</span><span class='line'>                <span class="ni">&amp;lt;</span>Button Click=&quot;OnTopicButtonClick&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>                    <span class="ni">&amp;lt;</span>Grid<span class="ni">&amp;gt;</span>
+</span><span class='line'>                        <span class="ni">&amp;lt;</span>Image Source=&quot;{Binding Icon}&quot; /<span class="ni">&amp;gt;</span>
+</span><span class='line'>                        <span class="ni">&amp;lt;</span>TextBlock Foreground=&quot;Black&quot;
+</span><span class='line'>                                   FontWeight=&quot;Bold&quot;
+</span><span class='line'>                                   FontSize=&quot;40&quot;
+</span><span class='line'>                                   TextWrapping=&quot;Wrap&quot;
+</span><span class='line'>                                   Text=&quot;{Binding Name}&quot; /<span class="ni">&amp;gt;</span>
+</span><span class='line'>                    <span class="ni">&amp;lt;</span>/Grid<span class="ni">&amp;gt;</span>
+</span><span class='line'>                <span class="ni">&amp;lt;</span>/Button<span class="ni">&amp;gt;</span>
+</span><span class='line'>            <span class="ni">&amp;lt;</span>/DataTemplate<span class="ni">&amp;gt;</span>
+</span><span class='line'>        <span class="ni">&amp;lt;</span>/ItemsControl.ItemTemplate<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>/ItemsControl<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>/ScrollViewer<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>TextBlock Margin=&quot;0,0,0,200&quot;
+</span><span class='line'>           HorizontalAlignment=&quot;Center&quot;
+</span><span class='line'>           VerticalAlignment=&quot;Center&quot;
+</span><span class='line'>           Text=&quot;Loading...&quot;
+</span><span class='line'>           Visibility=&quot;Collapsed&quot;
+</span><span class='line'>           x:Name=&quot;loading&quot; /<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;&lt;/Grid&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<pre><code>{ Id : int
-  Name : string
-  Icon : string }
-</code></pre>
-
-<p>let PopulateTopics (addTopic : Action<Topic>) (onFinish : Action) =</p>
-
-<pre><code>let synchronizationContext = SynchronizationContext.Current
-
-let doInUiThred f = 
-    synchronizationContext.Post ((fun _ -&gt; f()), null)
-
-async {
-    let! topics = (...)
-    for topic in topics do
-        doInUiThred (fun () -&gt; addTopic.Invoke topic)
-    doInUiThred (fun () -&gt; onFinish.Invoke())
-} |&gt; Async.Catch |&gt; Async.Ignore |&gt; Async.Start
-</code></pre>
-
-<p>{% endcodeblock %}</p>
-
-<p>{% codeblock XAML code lang:xml %}</p>
-
-<p><Grid></p>
-
-<pre><code>&lt;ScrollViewer&gt;
-    &lt;ItemsControl x:Name="topicsList"&gt;
-        &lt;ItemsControl.ItemTemplate&gt;
-            &lt;DataTemplate&gt;
-                &lt;Button Click="OnTopicButtonClick"&gt;
-                    &lt;Grid&gt;
-                        &lt;Image Source="{Binding Icon}" /&gt;
-                        &lt;TextBlock Foreground="Black"
-                                   FontWeight="Bold"
-                                   FontSize="40"
-                                   TextWrapping="Wrap"
-                                   Text="{Binding Name}" /&gt;
-                    &lt;/Grid&gt;
-                &lt;/Button&gt;
-            &lt;/DataTemplate&gt;
-        &lt;/ItemsControl.ItemTemplate&gt;
-    &lt;/ItemsControl&gt;
-&lt;/ScrollViewer&gt;
-&lt;TextBlock Margin="0,0,0,200" 
-           HorizontalAlignment="Center" 
-           VerticalAlignment="Center" 
-           Text="Loading..." 
-           Visibility="Collapsed" 
-           x:Name="loading" /&gt;
-</code></pre>
-
-<p></Grid></p>
-
-<p>{% endcodeblock %}</p>
-
-<p>{% codeblock C# Code lang:csharp %}</p>
-
-<p>private void OnLoaded(object sender, RoutedEventArgs e)
-{</p>
-
-<pre><code>loading.Visibility = Visibility.Visible;
-
-var topics = new ObservableCollection&lt;Topic&gt;();
-topicsList.ItemsSource = topics;
-
-PopulateTopics(
-    topic =&gt; topics.Add(topic),
-    () =&gt; loading.Visibility = Visibility.Collapsed);
-</code></pre>
-
-<p>}</p>
-
-<p>private void OnTopicButtonClick(object sender, RoutedEventArgs e)
-{</p>
-
-<pre><code>var topic = (Topic)((Button)sender).DataContext;
-NavigationService.Navigate(new Uri("/TopicPage.xaml?id=" + topic.Id, UriKind.Relative));
-</code></pre>
-
-<p>}
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>C# Code  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="p">&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">private</span> <span class="k">void</span> <span class="n">OnLoaded</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">RoutedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="n">loading</span><span class="p">.</span><span class="n">Visibility</span> <span class="p">=</span> <span class="n">Visibility</span><span class="p">.</span><span class="n">Visible</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">var</span> <span class="n">topics</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ObservableCollection</span><span class="p">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">Topic</span><span class="p">&amp;</span><span class="n">gt</span><span class="p">;();</span>
+</span><span class='line'><span class="n">topicsList</span><span class="p">.</span><span class="n">ItemsSource</span> <span class="p">=</span> <span class="n">topics</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">PopulateTopics</span><span class="p">(</span>
+</span><span class='line'>    <span class="n">topic</span> <span class="p">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">topics</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">topic</span><span class="p">),</span>
+</span><span class='line'>    <span class="p">()</span> <span class="p">=&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="n">loading</span><span class="p">.</span><span class="n">Visibility</span> <span class="p">=</span> <span class="n">Visibility</span><span class="p">.</span><span class="n">Collapsed</span><span class="p">);</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="k">private</span> <span class="k">void</span> <span class="n">OnTopicButtonClick</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">RoutedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="kt">var</span> <span class="n">topic</span> <span class="p">=</span> <span class="p">(</span><span class="n">Topic</span><span class="p">)((</span><span class="n">Button</span><span class="p">)</span><span class="n">sender</span><span class="p">).</span><span class="n">DataContext</span><span class="p">;</span>
+</span><span class='line'><span class="n">NavigationService</span><span class="p">.</span><span class="n">Navigate</span><span class="p">(</span><span class="k">new</span> <span class="n">Uri</span><span class="p">(</span><span class="s">&quot;/TopicPage.xaml?id=&quot;</span> <span class="p">+</span> <span class="n">topic</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span> <span class="n">UriKind</span><span class="p">.</span><span class="n">Relative</span><span class="p">));</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   
@@ -159,65 +327,99 @@ NavigationService.Navigate(new Uri("/TopicPage.xaml?id=" + topic.Id, UriKind.Rel
     I&rsquo;m using <a href="http://numerics.mathdotnet.com/">Math.NET Numerics</a> for the linear algebra and statistics, and while some operations are not as simple as in Octave, being able to use higher order functions instead of for loops compensates for it. As an example, look at the code for feature normalization in Octave:</p>
 
 
-<p>{% codeblock lang:matlab %}
-function [X_norm, mu, sigma] = featureNormalize(X)</p>
-
-<p>X_norm = X;</p>
-
-<p>mu = mean(X);
-sigma = std(X);</p>
-
-<p>m = size(X, 1);
-for i = 1:m</p>
-
-<pre><code>X_norm(i,:) = (X(i,:) - mu) ./ sigma;
-</code></pre>
-
-<p>end</p>
-
-<p>end
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='matlab'><span class='line'><span class="k">function</span><span class="w"> </span>[X_norm, mu, sigma] <span class="p">=</span><span class="w"> </span><span class="nf">featureNormalize</span><span class="p">(</span>X<span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">X_norm</span> <span class="p">=</span> <span class="n">X</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">mu</span> <span class="p">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+</span><span class='line'><span class="n">sigma</span> <span class="p">=</span> <span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">);</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">m</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> 1<span class="p">);</span>
+</span><span class='line'><span class="k">for</span> <span class="nb">i</span> <span class="p">=</span> 1<span class="p">:</span><span class="n">m</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">X_norm</span><span class="p">(</span><span class="nb">i</span><span class="p">,:)</span> <span class="p">=</span> <span class="p">(</span><span class="n">X</span><span class="p">(</span><span class="nb">i</span><span class="p">,:)</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">./</span> <span class="n">sigma</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>
     And here&rsquo;s the equivalent F# code:</p>
 
 
-<p>{% codeblock lang:fsharp %}
-let featureNormalize (X: #Matrix<float>) =</p>
-
-<pre><code>let μ = 
-    X.ColumnEnumerator() 
-    |&gt; Seq.map (fun (j, col) -&gt; col.Mean()) 
-    |&gt; DenseVector.ofSeq
-
-let σ = 
-    X.ColumnEnumerator() 
-    |&gt; Seq.map (fun (j, col) -&gt; col.StandardDeviation()) 
-    |&gt; DenseVector.ofSeq    
-
-let X = 
-    X |&gt; Matrix.mapRows (fun i row -&gt; (row - μ) ./ σ)
-
-(X, μ, σ)
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">let</span> <span class="n">featureNormalize</span> <span class="o">(</span><span class="nc">X</span><span class="o">:</span> <span class="o">#</span><span class="nc">Matrix</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;)</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">let</span> <span class="err">μ</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnEnumerator</span><span class="bp">()</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="n">col</span><span class="o">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">col</span><span class="o">.</span><span class="nc">Mean</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">DenseVector</span><span class="p">.</span><span class="n">ofSeq</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="err">σ</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnEnumerator</span><span class="bp">()</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="n">col</span><span class="o">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">col</span><span class="o">.</span><span class="nc">StandardDeviation</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">DenseVector</span><span class="p">.</span><span class="n">ofSeq</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="nc">X</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nc">X</span> <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Matrix</span><span class="p">.</span><span class="n">mapRows</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="n">row</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">(</span><span class="n">row</span> <span class="o">-</span> <span class="err">μ</span><span class="o">)</span> <span class="o">./</span> <span class="err">σ</span><span class="o">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">(</span><span class="nc">X</span><span class="o">,</span> <span class="err">μ</span><span class="o">,</span> <span class="err">σ</span><span class="o">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>
     Even though calculating the mean and standard deviation is a little more elaborate than using just a built-in function call, the actual normalization code is more straightforward, so we&rsquo;re not really loosing any productivity by using F#, considering that we have the same kind of development interactivity thanks to F# Interactive. Other nice touches in F# are the ability to use greek letters and the possibility of separating the data from the algorithm parameters by means of the pipelining operator (|&gt;). By leaving all the data parameters at the end and aggregating them into a tuple, we can turn this code:</p>
 
 
-<p>{% codeblock lang:fsharp %}
-LinearRegression.plotGradientDescentIterations α num_iters XNorm y
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="nn">LinearRegression</span><span class="p">.</span><span class="n">plotGradientDescentIterations</span> <span class="err">α</span> <span class="n">num_iters</span> <span class="nc">XNorm</span> <span class="n">y</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>
     into this:</p>
 
 
-<p>{% codeblock lang:fsharp %}
-(XNorm, y) |> LinearRegression.plotGradientDescentIterations α num_iters
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="o">(</span><span class="nc">XNorm</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span> <span class="o">|&gt;</span> <span class="nn">LinearRegression</span><span class="p">.</span><span class="n">plotGradientDescentIterations</span> <span class="err">α</span> <span class="n">num_iters</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>
     which I think is clearer.</p>
@@ -259,43 +461,71 @@ LinearRegression.plotGradientDescentIterations α num_iters XNorm y
     As some people have pointed out in the comments, the Octave version of feature normalization could also be done without iteration:</p>
 
 
-<p>{% codeblock lang:matlab %}
-function [X_norm, mu, sigma] = featureNormalize(X)</p>
-
-<p>mu = mean(X);
-sigma = std(X);
-m = size(X, 1);
-X_norm = (X - repmat(mu, m, 1)) / diag(sigma);</p>
-
-<p>end
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='matlab'><span class='line'><span class="k">function</span><span class="w"> </span>[X_norm, mu, sigma] <span class="p">=</span><span class="w"> </span><span class="nf">featureNormalize</span><span class="p">(</span>X<span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">mu</span> <span class="p">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+</span><span class='line'><span class="n">sigma</span> <span class="p">=</span> <span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">);</span>
+</span><span class='line'><span class="n">m</span> <span class="p">=</span> <span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> 1<span class="p">);</span>
+</span><span class='line'><span class="n">X_norm</span> <span class="p">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="nb">repmat</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> 1<span class="p">))</span> <span class="o">/</span> <span class="nb">diag</span><span class="p">(</span><span class="n">sigma</span><span class="p">);</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>
     In this case the corresponding F# code would be:</p>
 
 
-<p>{% codeblock lang:fsharp %}
-let featureNormalize (X: Matrix<float>) =</p>
-
-<pre><code>let μ = 
-    X.ColumnEnumerator() 
-    |&gt; Seq.map (fun (j, col) -&gt; col.Mean()) 
-    |&gt; DenseVector.ofSeq
-
-let σ = 
-    X.ColumnEnumerator() 
-    |&gt; Seq.map (fun (j, col) -&gt; col.StandardDeviation()) 
-    |&gt; DenseVector.ofSeq    
-
-let μExpanded = DenseMatrix.initRow X.RowCount X.ColumnCount (fun _ -&gt; μ)
-let σDiag = DenseMatrix.diag σ
-
-let X = (X - μExpanded) * σDiag.Inverse()
-
-(X, μ, σ)
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">let</span> <span class="n">featureNormalize</span> <span class="o">(</span><span class="nc">X</span><span class="o">:</span> <span class="nc">Matrix</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;)</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">let</span> <span class="err">μ</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnEnumerator</span><span class="bp">()</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="n">col</span><span class="o">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">col</span><span class="o">.</span><span class="nc">Mean</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">DenseVector</span><span class="p">.</span><span class="n">ofSeq</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="err">σ</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnEnumerator</span><span class="bp">()</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="n">col</span><span class="o">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">col</span><span class="o">.</span><span class="nc">StandardDeviation</span><span class="bp">()</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">DenseVector</span><span class="p">.</span><span class="n">ofSeq</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="err">μ</span><span class="nc">Expanded</span> <span class="o">=</span> <span class="nn">DenseMatrix</span><span class="p">.</span><span class="n">initRow</span> <span class="nn">X</span><span class="p">.</span><span class="nc">RowCount</span> <span class="nn">X</span><span class="p">.</span><span class="nc">ColumnCount</span> <span class="o">(</span><span class="k">fun</span> <span class="o">_</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="err">μ</span><span class="o">)</span>
+</span><span class='line'><span class="k">let</span> <span class="err">σ</span><span class="nc">Diag</span> <span class="o">=</span> <span class="nn">DenseMatrix</span><span class="p">.</span><span class="n">diag</span> <span class="err">σ</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="nc">X</span> <span class="o">=</span> <span class="o">(</span><span class="nc">X</span> <span class="o">-</span> <span class="err">μ</span><span class="nc">Expanded</span><span class="o">)</span> <span class="o">*</span> <span class="err">σ</span><span class="nn">Diag</span><span class="p">.</span><span class="nc">Inverse</span><span class="bp">()</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">(</span><span class="nc">X</span><span class="o">,</span> <span class="err">μ</span><span class="o">,</span> <span class="err">σ</span><span class="o">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   

@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Building Type Providers - Part 1 - Code Beside</title>
+  <meta name="author" content="Gustavo Guerra">
+
+  
+  <meta name="description" content="Type Providers are the biggest new feature of F# 3.0. They allow us to leverage the power of the static type system in areas that have typically been &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.codebeside.org/blog/2013/05/13/building-type-providers-part1">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="http://feeds.feedburner.com/CodeBeside" rel="alternate" title="Code Beside" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-5385973-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Code Beside</a></h1>
+  
+  <div style="float:right; margin-top:20px; margin-right:20px">
+    <a href="http://twitter.com/ovatsus" title="Twitter"><img src="/images/ico_twitter.png" /></a>
+    <a href="http://github.com/ovatsus" title="GitHub"/><img src="/images/ico_github.png" /></a>
+    <a href="http://www.linkedin.com/in/ovatsus" title="LinkedIn"><img src="/images/ico_linkedin.png" /></a>
+    <a href="http://feeds.feedburner.com/CodeBeside" title="subscribe via RSS"><img src="/images/ico_rss.png" /></a>
+  </div>
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <!--<li><a href="http://feeds.feedburner.com/CodeBeside" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>-->
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.codebeside.org" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="http://www.google.com/recaptcha/mailhide/d?k=01fvxbLCjfbApKdVLPRXZpew==&c=-9MautyEaQLUV3lZJtarnYj7m_iIE1vmrl9MSiLGGbg=">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Building Type Providers - Part 1</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-13T00:17:00+01:00" pubdate data-updated="true">May 13<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Type Providers are the biggest new feature of F# 3.0. They allow us to leverage the power of the static type system in areas that have typically been the territory of dynamic languages and stringly typing. A picture is worth a thousand words, so here&#8217;s 12 pictures that show type providers in action:</p>
+
+<blockquote><p><a href="http://blogs.msdn.com/b/dsyme/archive/2013/01/30/twelve-type-providers-in-pictures.aspx">All your types are belong to us</a></p></blockquote>
+
+<p>There are already several good samples and articles about using type providers, but there still isn&#8217;t a lot about creating type providers. Having worked recently on <a href="http://fsharp.github.com/FSharp.Data/">FSharp.Data</a> I decided to share some tips about building type providers.</p>
+
+<!-- More -->
+
+
+<h2>Getting Started</h2>
+
+<p>The basic steps to creating a type provider are:</p>
+
+<ul>
+<li><p>Get the <code>ProvidedTypes.fs</code> and <code>ProvidedTypes.fsi</code> files from the <a href="http://fsharp3sample.codeplex.com/">F# 3.0 Sample Pack</a> and add it to your project.</p></li>
+<li><p>Follow the instructions in <a href="http://msdn.microsoft.com/en-gb/library/hh361034.aspx">Tutorial: Creating a Type Provider</a> to create instances of <code>ProvidedTypeDefinition</code>, <code>ProvidedProperty</code>, <code>ProvidedMethod</code>, etc. in order to to define the API you want.</p></li>
+</ul>
+
+
+<p>After you&#8217;ve read that tutorial, let&#8217;s carry on&#8230;</p>
+
+<h2>Hiding the underlying representation</h2>
+
+<p>In the simplest of cases, there&#8217;s no underlying representation, so you just set the base class of your provided types to <code>obj</code>. You&#8217;ll create some expressions by wrapping code in <code>&lt;@@ ... @@&gt;</code> to create quotations, and assign them to the <code>InvokeCode</code> and <code>GetterCode</code> properties of your provided methods and properties, completely ignoring the <code>this</code> argument that is passed to them. After compilation, there will be no mention whatsoever of your provided types, they will have been all erased, and the only thing left is that code you defined inside the quotations. Effectively, the type providers are only giving you syntactic sugar and IntelliSense over things you could already accomplish without using them.</p>
+
+<p>However, in most cases, there will be some underlying data representation, and you will probably want to create some types to hold that data. A big part of the logic will be in these types, and you&#8217;ll specify them as the base classes of your provided types. In this case, the F# compiler will copy and embed those base types in the assembly that is consuming the type provider. This means that in addition to the syntactic sugar, the assembly that&#8217;s referencing the type providers will also have some more additional code.</p>
+
+<p>As expected, all the members of the base types will appear on the IntelliSense of the provided types. In some situations, that&#8217;s a good thing, and exactly what you wanted. On other cases (and I would guess most of the time), you intended those members to be just internal code to be used inside the implementation of the provided methods and properties, and you don&#8217;t want them to show up, as after all Type Providers are mostly about providing a nice API to its users. You can see this effect on the current version of the <a href="http://www.tryfsharp.org/Learn/data-science#world-bank-type-provider">World Bank type provider on TryF#</a>. If you press the dot after <code>data</code>, you&#8217;ll see that in addition to <code>Countries</code> and <code>Regions</code>, the IntelliSense pop-up will also include <code>_GetCountries</code>, <code>_GetRegions</code> and other members that aren&#8217;t intended for direct use. The ideal would be for them not to show up. How can we do that?</p>
+
+<ul>
+<li>If you came from an OO background, the first thing you&#8217;d think would be to make those members protected, but there is no <code>protected</code> modifier in F#. Even if there was, you&#8217;re not really creating a type and inheriting from the base type, it&#8217;s all erased.</li>
+<li>You can&#8217;t also make those members <code>internal</code>, because your runtime representation types are always considered to belong to the type provider assembly, and not to the assembly that is using the type provider, even when the F# compiler copies those types over.</li>
+<li>In C#, you can decorate methods and properties with <code>[System.ComponentModel.Browsable(false)]</code> to have them not show up on IntelliSense, but unfortunately that doesn&#8217;t work in F#.</li>
+<li>You can create an interface with those members, and make your runtime representation types implement that interface. That way, they won&#8217;t show up on IntelliSense because F# always does explicit interface implementation. This won&#8217;t work for static members though.</li>
+<li>The constructors of the erased to types don&#8217;t show up on the IntelliSense, so you can replace some static members like <code>Parse</code> and <code>Load</code> with constructors instead.</li>
+<li>If you define a <code>ProvidedMethod</code> with the same parameter types of one of the methods of the runtime representation type, just with a different return type, that method will effectively be hidden, and you won&#8217;t need to do anything to hide it.</li>
+<li><code>ProvidedTypeDefinition</code> has a <code>HideObjectMethods</code> property that allows you to hide the <code>GetHashCode()</code>, <code>GetType()</code>, <code>ToString()</code> and <code>Equals</code> methods from IntelliSense, but if the base type overrides any of those methods, they will show up anyway. I still haven&#8217;t found a workaround for this.</li>
+</ul>
+
+
+<p>The <a href="http://fsharp.github.com/FSharp.Data/">FSharp.Data</a> version of the World Bank type provider (and this also applies to the CSV, XML, JSON and Freebase type providers) uses interfaces and constructors to hide the unwanted members, so you don&#8217;t see any <code>_Something</code> method.</p>
+
+<h2>Splitting into two assemblies</h2>
+
+<p>When the type provider starts to get bigger, you might want to separate the runtime and design-time components into two separate assemblies. You also need to do this when you want to support multiple .NET framework profiles (like Silverlight or Portable Class Libraries), where you can have a single design-time assembly, but a different runtime assembly for each profile.</p>
+
+<p>In this scenario, the design-time assembly can&#8217;t just reference the runtime assembly, because there are multiple versions of them. And even if you&#8217;re not supporting multiple profiles, the design-time assemblies of type providers are loaded inside the F# compiler process, which makes any assembly dependency for the design-time component to not work correctly. To work around this, usually there&#8217;s no dependency between the design-time assembly and the runtime assembly, and instead we include all the files of the runtime assembly directly in the design-time assembly. This may increase the size of the design-time component, but it&#8217;s not a big deal because that dll doesn&#8217;t need to be included in the final application.</p>
+
+<p>But with this solution, comes a big problem: your quotations will stop working. Why? Because you&#8217;re referencing the types of the wrong assembly. To overcome this, the <code>TypeProviderConfig</code> that is passed to your type provider has a <code>RuntimeAssembly</code> property which allows you to load the runtime component using <code>Assembly.LoadFrom</code>, get the types you need using <code>Assembly.GetType</code>, and construct your expressions manually from that. Most of the samples in the <a href="http://fsharp3sample.codeplex.com/">F# 3.0 Sample Pack</a> use this. Great, problem solved, right?</p>
+
+<p>Back in January, I started adding support for portable class libraries in <a href="http://fsharp.github.com/FSharp.Data/">FSharp.Data</a> because I wanted to use it on some Windows Phone and Windows 8 apps. After changing a couple of places from quotations to manually creating expression and using the reflection API, I though to myself:</p>
+
+<blockquote><p>&#8220;No! The code was nice and clean with type safe quotations, and now I&#8217;m turning it to this mess with error prone reflection calls using a stringly typed api. It&#8217;s a huge step back. There has to be a better way.&#8221;</p></blockquote>
+
+<p>And eventually after a couple of failed attempts and a lot of discussion on the github issue, I finally arrived at a solution: process the quotations to fix the type references to the right assembly. This is done by <code>AssemblyReplacer</code>, which you can find <a href="https://github.com/fsharp/FSharp.Data/blob/master/src/Providers/AssemblyReplacer.fs">here</a>. It&#8217;s pretty much independent of the rest of <a href="http://fsharp.github.com/FSharp.Data/">FSharp.Data</a>, so you can just copy it over to your type provider project if you need it.</p>
+
+<p>There are places where even without splitting the type provider into a design-time and runtime assembly, it isn&#8217;t possible to use quotations, and you still need to keep creating expressions manually. That only happens when you use generics parameterized by a type generated by the type provider. For those, cases <a href="http://tomasp.net/">Tomas</a> has created a nice dynamic operator (?) implementation in <code>QuotationBuilder</code> which is available <a href="https://github.com/fsharp/FSharp.Data/blob/master/src/Providers/QuotationBuilder.fs">here</a>.</p>
+
+<h2>Coming Next</h2>
+
+<ul>
+<li>Debugging type providers</li>
+<li>Supporting multiple .NET framework profiles</li>
+<li>Common errors found during type provider development</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Gustavo Guerra</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-13T00:17:00+01:00" pubdate data-updated="true">May 13<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/tags/f-/'>F#</a>, <a class='category' href='/blog/tags/type-providers/'>Type Providers</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.codebeside.org/blog/2013/05/13/building-type-providers-part1" data-via="ovatsus" data-counturl="http://blog.codebeside.org/blog/2013/05/13/building-type-providers-part1" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012" title="Previous Post: F#, Windows Phone 7 & Visual Studio 2012">&laquo; F#, Windows Phone 7 & Visual Studio 2012</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About me</h1>
+  <p>I'm a Software Developer interested in Functional Programming, Data Science, and User Experience Design</p>
+  <iframe src="http://githubbadge.appspot.com/badge/ovatsus?a=0" style="border: 0;height: 112px;width: 200px;overflow: hidden;" frameBorder=0></iframe>
+</section>
+<section>
+  <h1>Projects</h1>
+  <ul>
+    <li><a href="http://fsharp.github.io/FSharp.Data/">FSharp.Data</a></li>
+    <li><a href="http://www.windowsphone.com/en-gb/store/app/learn-on-the-go/aca60941-2945-49e7-afd2-adbe5625df12">Learn On The Go</a></li>
+    <li><a href="http://www.windowsphone.com/en-gb/store/app/uk-trains/ef62d461-861c-4a9f-9198-8768532cc6aa">UK Trains</a></li>
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/05/13/building-type-providers-part1">Building Type Providers - Part 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012">F#, Windows Phone 7 & Visual Studio 2012</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning">F# as a Octave/Matlab replacement for Machine Learning</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/02/introducing-presharp">Introducing PreSharp</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food">Microsoft: please eat some more of your WPF-flavored dog food</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Tags</h1>
+  <span id="tag-cloud">
+    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 126.66666666666667%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/type-providers' style='font-size: 106.66666666666667%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
+  </span>
+</section>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("ovatsus", 5, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/ovatsus" class="twitter-follow-button" data-show-count="false">Follow @ovatsus</a>
+  
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Gustavo Guerra -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
+  <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'codebesideblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.codebeside.org/blog/2013/05/13/building-type-providers-part1';
+        var disqus_url = 'http://blog.codebeside.org/blog/2013/05/13/building-type-providers-part1';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
