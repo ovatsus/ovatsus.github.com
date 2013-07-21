@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: F# | Code Beside]]></title>
   <link href="http://blog.codebeside.org/blog/tags/f-/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2013-07-21T22:13:07+01:00</updated>
+  <updated>2013-07-21T22:15:09+01:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[FSharp.Data 1.1.9 released]]></title>
     <link href="http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released"/>
-    <updated>2013-07-21T22:03:00+01:00</updated>
+    <updated>2013-07-21T22:14:00+01:00</updated>
     <id>http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released</id>
     <content type="html"><![CDATA[<p>We've just released version <a href="http://www.nuget.org/packages/FSharp.Data/1.1.9">1.1.9</a> of <a href="https://github.com/fsharp/FSharp.Data">FSharp.Data</a>, and I realized we've not been announcing new releases since version 1.1.1 when Thomas <a href="http://tomasp.net/blog/fsharp-data.aspx">first announced it</a>, so I though I'd rectify that. In addition to bug fixes, here what's has been added to FSharp.Data since then:</p>
 
