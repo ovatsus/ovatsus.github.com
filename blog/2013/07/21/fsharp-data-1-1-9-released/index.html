@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Tag: Type Providers - Code Beside</title>
+  <title>FSharp.Data 1.1.9 released - Code Beside</title>
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="Category: Type Providers">
+  <meta name="description" content="We&#8217;ve just released version 1.1.9 of FSharp.Data, and I realized we&#8217;ve not been announcing new releases since version 1.1.1 when Thomas &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.codebeside.orgblog/tags/type-providers/">
+  <link rel="canonical" href="http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -80,50 +80,106 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Tag: Type Providers</h1>
+    
+      <h1 class="entry-title">FSharp.Data 1.1.9 Released</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-21T22:03:00+01:00" pubdate data-updated="true">Jul 21<span>st</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>We&#8217;ve just released version 1.1.9 of <a href="https://github.com/fsharp/FSharp.Data">FSharp.Data</a>, and I realized we&#8217;ve not been announcing new releases since version 1.1.1 when Thomas <a href="http://tomasp.net/blog/fsharp-data.aspx">first announced</a> FSharp.Data, so I though I&#8217;d rectify that. In addition to bug fixes, here what&#8217;s has been added to FSharp.Data since then:</p>
 
-  
-  <h2>2013</h2>
-
-<article>
-  
-<h1><a href="/blog/2013/07/21/fsharp-data-1-1-9-released">FSharp.Data 1.1.9 released</a></h1>
-<time datetime="2013-07-21T22:03:00+01:00" pubdate><span class='month'>Jul</span> <span class='day'>21</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/tags/f-/'>F#</a>, <a class='category' href='/blog/tags/type-providers/'>Type Providers</a></span>
-</footer>
-
-
-</article>
+<ul>
+<li>The behaviour of CsvProvider can be fine tuned by using the HasHeaders, Schema, IgnoreErrors, SafeMode, and PreferOptionals parameters. See the CsvProvider documentation <a href="http://fsharp.github.io/FSharp.Data/library/CsvProvider.html">here</a>.</li>
+<li>The CSV Parser and Reader can now be used standalone. See the CsvFile documentation <a href="http://fsharp.github.io/FSharp.Data/library/CsvFile.html">here</a>.</li>
+<li>Guid types are now supported in CsvProvider, JsonProvider, and XmlProvider.</li>
+<li>Support to disable caching for CSV files too big to fit in memory.</li>
+<li>Support for cookies, binary files and client certificates in FSharp.Net.Http.</li>
+<li>Save, Filter, Take, TakeWhile, Skip, SkipWhile, and Truncate operations for CsvProvider and CsvFile.</li>
+<li>Support for Windows Phone 7.</li>
+</ul>
 
 
-
-<article>
-  
-<h1><a href="/blog/2013/05/13/building-type-providers-part1">Building Type Providers - Part 1</a></h1>
-<time datetime="2013-05-13T00:17:00+01:00" pubdate><span class='month'>May</span> <span class='day'>13</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/tags/f-/'>F#</a>, <a class='category' href='/blog/tags/type-providers/'>Type Providers</a></span>
-</footer>
-
-
-</article>
-
+<p>There&#8217;s still a lot of room for improvement, and we love pull requests, so please contribute, even if it&#8217;s only fixing a type in the docs. A getting started guide is available <a href="http://fsharp.github.io/FSharp.Data/contributing.html">here</a>.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Gustavo Guerra</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-21T22:03:00+01:00" pubdate data-updated="true">Jul 21<span>st</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/tags/f-/'>F#</a>, <a class='category' href='/blog/tags/type-providers/'>Type Providers</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released" data-via="ovatsus" data-counturl="http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/05/13/building-type-providers-part1" title="Previous Post: Building Type Providers - Part 1">&laquo; Building Type Providers - Part 1</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -213,7 +269,10 @@
       var disqus_shortname = 'codebesideblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released';
+        var disqus_url = 'http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

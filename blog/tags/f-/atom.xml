@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: F# | Code Beside]]></title>
   <link href="http://blog.codebeside.org/blog/tags/f-/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2013-05-13T00:17:28+01:00</updated>
+  <updated>2013-07-21T22:09:46+01:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -12,6 +12,28 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[FSharp.Data 1.1.9 released]]></title>
+    <link href="http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released"/>
+    <updated>2013-07-21T22:03:00+01:00</updated>
+    <id>http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released</id>
+    <content type="html"><![CDATA[<p>We've just released version 1.1.9 of <a href="https://github.com/fsharp/FSharp.Data">FSharp.Data</a>, and I realized we've not been announcing new releases since version 1.1.1 when Thomas <a href="http://tomasp.net/blog/fsharp-data.aspx">first announced</a> FSharp.Data, so I though I'd rectify that. In addition to bug fixes, here what's has been added to FSharp.Data since then:</p>
+
+<ul>
+<li>The behaviour of CsvProvider can be fine tuned by using the HasHeaders, Schema, IgnoreErrors, SafeMode, and PreferOptionals parameters. See the CsvProvider documentation <a href="http://fsharp.github.io/FSharp.Data/library/CsvProvider.html">here</a>.</li>
+<li>The CSV Parser and Reader can now be used standalone. See the CsvFile documentation <a href="http://fsharp.github.io/FSharp.Data/library/CsvFile.html">here</a>.</li>
+<li>Guid types are now supported in CsvProvider, JsonProvider, and XmlProvider.</li>
+<li>Support to disable caching for CSV files too big to fit in memory.</li>
+<li>Support for cookies, binary files and client certificates in FSharp.Net.Http.</li>
+<li>Save, Filter, Take, TakeWhile, Skip, SkipWhile, and Truncate operations for CsvProvider and CsvFile.</li>
+<li>Support for Windows Phone 7.</li>
+</ul>
+
+
+<p>There's still a lot of room for improvement, and we love pull requests, so please contribute, even if it's only fixing a type in the docs. A getting started guide is available <a href="http://fsharp.github.io/FSharp.Data/contributing.html">here</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Building Type Providers - Part 1]]></title>

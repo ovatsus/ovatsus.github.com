@@ -9,7 +9,7 @@
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="Calling Screen Actions from custom JavaScript events Imagine you&rsquo;re using the Tabs_ClientSide from RichWidgets and you&rsquo;re showing a list &hellip;">
+  <meta name="description" content="How to change the page styles dynamically at runtime [Edit 01/09/2001: Updated the sample to also override the colors in the popups] Service Studio &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,77 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/08/23/agile-platform-tips-amp-tricks-7">Agile Platform Tips & Tricks #7</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-08-23T00:00:00+01:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2010</time>
+        
+         | <a href="/blog/2010/08/23/agile-platform-tips-amp-tricks-7#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>
+	How to change the page styles dynamically at runtime</h4>
+<p>
+	<em>[Edit 01/09/2001: Updated the sample to also override the colors in the popups]</em></p>
+<p>
+	Service Studio gives you a few good options to define style sheets for you pages and emails. Besides the global style sheet that applies to the whole eSpace, you can add a custom style sheet to each web screen and email, and you can even define a custom style sheet for each web block. The platform will take care of including all the style sheets in the html of the page/email according to the following order:</p>
+<ol>
+	<li>
+		The style sheet of all the web blocks directly or indirectly included in the page/email (including referenced ones), from the inner most blocks to the outermost blocks in case of nesting</li>
+	<li>
+		The eSpace style sheet</li>
+	<li>
+		The style sheet of the web screen or email.</li>
+</ol>
+<p>
+	In web screens, all those style sheets are deployed to separate files and referenced by the page, while in emails, their content is merged together and included inline in the html for optimal display in the majority of email clients. The platform also applies some post processing to the content of the style sheets to optimize their usage in content delivery networks.</p>
+<p>
+	All these style sheets are statically defined at design time and can&rsquo;t be dynamically changed at runtime, but it&rsquo;s possible to include more style sheets at runtime that override the static ones. That allows us to do cool things like giving a specific user a different style sheet, changing the color scheme to red when some critical situation is happening, or even letting the user choose the style sheet of his preference, like this:</p>
+<p>
+	&nbsp;<a href="/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
+<p>
+	To accomplish this, we need to do two things:</p>
+<ol>
+	<li>
+		Make sure the extra style sheets are deployed together with the application</li>
+	<li>
+		Manipulate the html returned to the browser to include a &lt;link rel=&rdquo;stylesheet&rdquo;&gt; tag in the &lt;head&gt; section</li>
+</ol>
+<p>
+	For #1, we can create the .css text files outside Service Studio and then import them as resources by using the Import Resource operation available in the eSpace tree context menu. However, that&rsquo;s not a very manageable solution. An alternative way is to create a set of web blocks that we don&rsquo;t use in any page, and use them just to define these style sheets. The platform will still deploy their style sheet files, even if the blocks themselves aren&rsquo;t used, and we can then reference those files in the page.</p>
+<p>
+	For #2, the AddStyleSheetTag action from the HTTPRequestHandler extension seems an obvious choice, but that will put the &lt;link&gt; tag at the beginning of the &lt;head&gt; section. As we want our dynamic style sheets to override the static style sheets, we must include them at the end, so this option doesn&rsquo;t work for us. Fortunately, we can also do this easily by using a little bit of JavaScript. For a complete example, take a look at this eSpace:</p>
+<p>
+	<a href="/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -604,124 +675,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2008/08/28/staticstringdictionary-fast-switching-with-linq-revisited">StaticStringDictionary - Fast Switching With LINQ Revisited</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2008-08-28T00:00:00+01:00" pubdate data-updated="true">Aug 28<span>th</span>, 2008</time>
-        
-         | <a href="/blog/2008/08/28/staticstringdictionary-fast-switching-with-linq-revisited#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-	Expression trees are one of the more powerful features of C#. They let you manipulate code in ways that almost remind you of LISP macros (but at runtime instead of compile time). Since I discovered them, I managed to eliminate almost completely the usage of reflection in my code, replacing it with much faster code using techniques similar to what Roger Alsing described in <a href="http://rogeralsing.com/2008/02/28/linq-expressions-creating-objects/">Linq Expressions - Creating objects</a>. Expression trees also made possible something that I find myself using a lot these days: what Jomo Fisher described in <a href="http://blogs.msdn.com/jomo_fisher/archive/2007/03/28/fast-switching-with-linq.aspx">Fast Switching with LINQ</a>. It&#39;s a great example of the powerful things C# allows you to do with a little creativity. As I used it more and more, I collected a few modifications to the original code, so I though in sharing them here. I named it StaticStringDictionary.</p>
-<p>
-	The main difference of this version from the original code is that I don&#39;t assume that the key being looked up is in the dictionary. That forces me to call string.Equals at the end to check if the key is the correct one. If string.Equals returns false, a fallback function is used. This also invalidates the optimization in the original code that took advantage of different keys with the same value. I also made StaticStringDictionary&lt;T&gt; implement IDictionary&lt;string, T&gt; so it would be easier to adapt existing code.</p>
-<p>
-	Unfortunately I also stumbled over some problems with certain dictionaries, similar to the ones that Raptor-75 wrote about in the comments of the original article. After a few hours of debugging together with Rui Eug&eacute;nio (and also with the help of <a href="http://blogs.msdn.com/charlie/archive/2008/01/31/expression-tree-basics.aspx">Expression Tree Visualizer</a> and <a href="http://www.manuelabadia.com/blog/PermaLink,guid,9160035f-490f-46bd-ab55-516b5c7545af.aspx">StructsViz DebuggerVisualizer</a>), we managed to fix all the problems we found. The comparer was changed to ensure the characters of indices already tested are ignored for the ordering, and in some situations the algorithm has to some backtracking.</p>
-<p>
-	Without further due, here&#39;s the code:</p>
-<script src="https://gist.github.com/1225796.js"></script>
-<p>
-	And here&#39;s the test case for Raptor-75&#39;s problem:</p>
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="kt">var</span> <span class="n">dict</span> <span class="p">=</span> <span class="n">StaticStringDictionary</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span>
-</span><span class='line'>       <span class="k">new</span> <span class="n">Dictionary</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="kt">int</span><span class="p">&gt;</span> <span class="p">{</span>
-</span><span class='line'>           <span class="p">{</span><span class="s">&quot;Ado&quot;</span><span class="p">,</span> <span class="m">0</span><span class="p">},</span>
-</span><span class='line'>           <span class="p">{</span><span class="s">&quot;A2o&quot;</span><span class="p">,</span> <span class="m">1</span><span class="p">},</span>
-</span><span class='line'>           <span class="p">{</span><span class="s">&quot;A2i&quot;</span><span class="p">,</span> <span class="m">2</span><span class="p">},</span>
-</span><span class='line'>           <span class="p">{</span><span class="s">&quot;B2o&quot;</span><span class="p">,</span> <span class="m">3</span><span class="p">},</span>
-</span><span class='line'>           <span class="p">{</span><span class="s">&quot;AdoX&quot;</span><span class="p">,</span> <span class="m">4</span><span class="p">},</span>
-</span><span class='line'>           <span class="p">{</span><span class="s">&quot;AdPX&quot;</span><span class="p">,</span> <span class="m">5</span><span class="p">}</span>
-</span><span class='line'>       <span class="p">},</span>
-</span><span class='line'>       <span class="n">key</span> <span class="p">=&gt;</span> <span class="p">-</span><span class="m">1</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;Ado&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;A2o&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;A2i&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;B2o&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;AdoX&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;AdPX&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">Test</span><span class="p">(</span><span class="s">&quot;xpto&quot;</span><span class="p">,</span> <span class="n">dict</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">Test</span><span class="p">(</span><span class="kt">string</span> <span class="n">key</span><span class="p">,</span> <span class="n">IDictionary</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">,</span> <span class="kt">int</span><span class="p">&gt;</span> <span class="n">dict</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">key</span> <span class="p">+</span> <span class="s">&quot;: &quot;</span> <span class="p">+</span> <span class="n">dict</span><span class="p">[</span><span class="n">key</span><span class="p">]);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-<p>
-	It should produce this output when run:</p>
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Ado: 0
-</span><span class='line'>A2o: 1
-</span><span class='line'>A2i: 2
-</span><span class='line'>B2o: 3
-</span><span class='line'>AdoX: 4
-</span><span class='line'>AdPX: 5
-</span><span class='line'>xpto: -1</span></code></pre></td></tr></table></div></figure>
-<p>
-	I also found useful to define this variation when I also need to do reverse lookups:</p>
-<script src="https://gist.github.com/1225797.js"></script>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -736,20 +689,25 @@
   
     <section>
   <h1>About me</h1>
-  <p>I&#8217;m a Software Developer interested in Functional Programming, Data Science, and User Experience Design</p>
+  <p>I&#8217;m a Software Developer interested in Functional Programming, Machine Learning, and User Experience Design</p>
   <iframe src="http://githubbadge.appspot.com/badge/ovatsus?a=0" style="border: 0;height: 112px;width: 200px;overflow: hidden;" frameBorder=0></iframe>
 </section>
 <section>
   <h1>Projects</h1>
   <ul>
     <li><a href="http://fsharp.github.io/FSharp.Data/">FSharp.Data</a></li>
-    <li><a href="http://www.windowsphone.com/en-gb/store/app/learn-on-the-go/aca60941-2945-49e7-afd2-adbe5625df12">Learn On The Go</a></li>
     <li><a href="http://www.windowsphone.com/en-gb/store/app/uk-trains/ef62d461-861c-4a9f-9198-8768532cc6aa">UK Trains</a></li>
+    <li><a href="http://www.windowsphone.com/en-gb/store/app/learn-on-the-go/aca60941-2945-49e7-afd2-adbe5625df12">Learn On The Go</a></li>
+    <li><a href="https://github.com/dungpa/fantomas">Fantomas</a></li>
   </ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/21/fsharp-data-1-1-9-released">FSharp.Data 1.1.9 released</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/05/13/building-type-providers-part1">Building Type Providers - Part 1</a>
@@ -767,16 +725,12 @@
         <a href="/blog/2011/10/02/introducing-presharp">Introducing PreSharp</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food">Microsoft: please eat some more of your WPF-flavored dog food</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tags</h1>
   <span id="tag-cloud">
-    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 126.66666666666667%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/type-providers' style='font-size: 106.66666666666667%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
+    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 133.33333333333334%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/type-providers' style='font-size: 113.33333333333333%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
   </span>
 </section>
 

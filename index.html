@@ -9,7 +9,7 @@
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="Type Providers are the biggest new feature of F# 3.0. They allow us to leverage the power of the static type system in areas that have typically been &hellip;">
+  <meta name="description" content="We&#8217;ve just released version 1.1.9 of FSharp.Data, and I realized we&#8217;ve not been announcing new releases since version 1.1.1 when Thomas &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,57 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/21/fsharp-data-1-1-9-released">FSharp.Data 1.1.9 Released</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-21T22:03:00+01:00" pubdate data-updated="true">Jul 21<span>st</span>, 2013</time>
+        
+         | <a href="/blog/2013/07/21/fsharp-data-1-1-9-released#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>We&#8217;ve just released version 1.1.9 of <a href="https://github.com/fsharp/FSharp.Data">FSharp.Data</a>, and I realized we&#8217;ve not been announcing new releases since version 1.1.1 when Thomas <a href="http://tomasp.net/blog/fsharp-data.aspx">first announced</a> FSharp.Data, so I though I&#8217;d rectify that. In addition to bug fixes, here what&#8217;s has been added to FSharp.Data since then:</p>
+
+<ul>
+<li>The behaviour of CsvProvider can be fine tuned by using the HasHeaders, Schema, IgnoreErrors, SafeMode, and PreferOptionals parameters. See the CsvProvider documentation <a href="http://fsharp.github.io/FSharp.Data/library/CsvProvider.html">here</a>.</li>
+<li>The CSV Parser and Reader can now be used standalone. See the CsvFile documentation <a href="http://fsharp.github.io/FSharp.Data/library/CsvFile.html">here</a>.</li>
+<li>Guid types are now supported in CsvProvider, JsonProvider, and XmlProvider.</li>
+<li>Support to disable caching for CSV files too big to fit in memory.</li>
+<li>Support for cookies, binary files and client certificates in FSharp.Net.Http.</li>
+<li>Save, Filter, Take, TakeWhile, Skip, SkipWhile, and Truncate operations for CsvProvider and CsvFile.</li>
+<li>Support for Windows Phone 7.</li>
+</ul>
+
+
+<p>There&#8217;s still a lot of room for improvement, and we love pull requests, so please contribute, even if it&#8217;s only fixing a type in the docs. A getting started guide is available <a href="http://fsharp.github.io/FSharp.Data/contributing.html">here</a>.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -646,77 +697,6 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/08/23/agile-platform-tips-amp-tricks-7">Agile Platform Tips & Tricks #7</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-08-23T00:00:00+01:00" pubdate data-updated="true">Aug 23<span>rd</span>, 2010</time>
-        
-         | <a href="/blog/2010/08/23/agile-platform-tips-amp-tricks-7#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>
-	How to change the page styles dynamically at runtime</h4>
-<p>
-	<em>[Edit 01/09/2001: Updated the sample to also override the colors in the popups]</em></p>
-<p>
-	Service Studio gives you a few good options to define style sheets for you pages and emails. Besides the global style sheet that applies to the whole eSpace, you can add a custom style sheet to each web screen and email, and you can even define a custom style sheet for each web block. The platform will take care of including all the style sheets in the html of the page/email according to the following order:</p>
-<ol>
-	<li>
-		The style sheet of all the web blocks directly or indirectly included in the page/email (including referenced ones), from the inner most blocks to the outermost blocks in case of nesting</li>
-	<li>
-		The eSpace style sheet</li>
-	<li>
-		The style sheet of the web screen or email.</li>
-</ol>
-<p>
-	In web screens, all those style sheets are deployed to separate files and referenced by the page, while in emails, their content is merged together and included inline in the html for optimal display in the majority of email clients. The platform also applies some post processing to the content of the style sheets to optimize their usage in content delivery networks.</p>
-<p>
-	All these style sheets are statically defined at design time and can&rsquo;t be dynamically changed at runtime, but it&rsquo;s possible to include more style sheets at runtime that override the static ones. That allows us to do cool things like giving a specific user a different style sheet, changing the color scheme to red when some critical situation is happening, or even letting the user choose the style sheet of his preference, like this:</p>
-<p>
-	&nbsp;<a href="/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
-<p>
-	To accomplish this, we need to do two things:</p>
-<ol>
-	<li>
-		Make sure the extra style sheets are deployed together with the application</li>
-	<li>
-		Manipulate the html returned to the browser to include a &lt;link rel=&rdquo;stylesheet&rdquo;&gt; tag in the &lt;head&gt; section</li>
-</ol>
-<p>
-	For #1, we can create the .css text files outside Service Studio and then import them as resources by using the Import Resource operation available in the eSpace tree context menu. However, that&rsquo;s not a very manageable solution. An alternative way is to create a set of web blocks that we don&rsquo;t use in any page, and use them just to define these style sheets. The platform will still deploy their style sheet files, even if the blocks themselves aren&rsquo;t used, and we can then reference those files in the page.</p>
-<p>
-	For #2, the AddStyleSheetTag action from the HTTPRequestHandler extension seems an obvious choice, but that will put the &lt;link&gt; tag at the beginning of the &lt;head&gt; section. As we want our dynamic style sheets to override the static style sheets, we must include them at the end, so this option doesn&rsquo;t work for us. Fortunately, we can also do this easily by using a little bit of JavaScript. For a complete example, take a look at this eSpace:</p>
-<p>
-	<a href="/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -729,20 +709,25 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   
     <section>
   <h1>About me</h1>
-  <p>I&#8217;m a Software Developer interested in Functional Programming, Data Science, and User Experience Design</p>
+  <p>I&#8217;m a Software Developer interested in Functional Programming, Machine Learning, and User Experience Design</p>
   <iframe src="http://githubbadge.appspot.com/badge/ovatsus?a=0" style="border: 0;height: 112px;width: 200px;overflow: hidden;" frameBorder=0></iframe>
 </section>
 <section>
   <h1>Projects</h1>
   <ul>
     <li><a href="http://fsharp.github.io/FSharp.Data/">FSharp.Data</a></li>
-    <li><a href="http://www.windowsphone.com/en-gb/store/app/learn-on-the-go/aca60941-2945-49e7-afd2-adbe5625df12">Learn On The Go</a></li>
     <li><a href="http://www.windowsphone.com/en-gb/store/app/uk-trains/ef62d461-861c-4a9f-9198-8768532cc6aa">UK Trains</a></li>
+    <li><a href="http://www.windowsphone.com/en-gb/store/app/learn-on-the-go/aca60941-2945-49e7-afd2-adbe5625df12">Learn On The Go</a></li>
+    <li><a href="https://github.com/dungpa/fantomas">Fantomas</a></li>
   </ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/21/fsharp-data-1-1-9-released">FSharp.Data 1.1.9 released</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/05/13/building-type-providers-part1">Building Type Providers - Part 1</a>
@@ -760,16 +745,12 @@ shipped as part of the standalone F# redistribution. There were even some nice <
         <a href="/blog/2011/10/02/introducing-presharp">Introducing PreSharp</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food">Microsoft: please eat some more of your WPF-flavored dog food</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tags</h1>
   <span id="tag-cloud">
-    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 126.66666666666667%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/type-providers' style='font-size: 106.66666666666667%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
+    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 133.33333333333334%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/type-providers' style='font-size: 113.33333333333333%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
   </span>
 </section>
 
