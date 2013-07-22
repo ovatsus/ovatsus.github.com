@@ -4,7 +4,7 @@
   <title><![CDATA[Code Beside]]></title>
   <link href="http://blog.codebeside.org/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2013-07-21T22:51:51+01:00</updated>
+  <updated>2013-07-22T17:18:51+01:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -16,9 +16,9 @@
   <entry>
     <title type="html"><![CDATA[FSharp.Data 1.1.9 released]]></title>
     <link href="http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released"/>
-    <updated>2013-07-21T22:14:00+01:00</updated>
+    <updated>2013-07-22T17:18:51+01:00</updated>
     <id>http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released</id>
-    <content type="html"><![CDATA[<p>We&#8217;ve just released version <a href="http://www.nuget.org/packages/FSharp.Data/1.1.9">1.1.9</a> of <a href="https://github.com/fsharp/FSharp.Data">FSharp.Data</a>, and I realized we&#8217;ve not been announcing new releases since version 1.1.1 when Tomas <a href="http://tomasp.net/blog/fsharp-data.aspx">first announced it</a>, so I though I&#8217;d rectify that. In addition to bug fixes, here what&#8217;s has been added to FSharp.Data since then:</p>
+    <content type="html"><![CDATA[<p>We&#8217;ve just released version <a href="http://www.nuget.org/packages/FSharp.Data/1.1.9">1.1.9</a> of <a href="http://fsharp.github.io/FSharp.Data/">FSharp.Data</a>, and I realized we&#8217;ve not been announcing new releases since version 1.1.1 when Tomas <a href="http://tomasp.net/blog/fsharp-data.aspx">first announced it</a>, so I though I&#8217;d rectify that. In addition to bug fixes, here what&#8217;s has been added to FSharp.Data since then:</p>
 
 <ul>
 <li>The behaviour of CsvProvider can be fine tuned by using the HasHeaders, Schema, IgnoreErrors, SafeMode, and PreferOptionals parameters. See the CsvProvider documentation <a href="http://fsharp.github.io/FSharp.Data/library/CsvProvider.html">here</a>.</li>
@@ -31,7 +31,7 @@
 </ul>
 
 
-<p>There&#8217;s still a lot of room for improvement, and we love pull requests, so please contribute, even if it&#8217;s only fixing a type in the docs. A getting started guide is available <a href="http://fsharp.github.io/FSharp.Data/contributing.html">here</a>.</p>
+<p>There&#8217;s still a lot of room for improvement, and we love pull requests, so please contribute, even if it&#8217;s only fixing a typo in the docs. A getting started guide is available <a href="http://fsharp.github.io/FSharp.Data/contributing.html">here</a>.</p>
 ]]></content>
   </entry>
   
