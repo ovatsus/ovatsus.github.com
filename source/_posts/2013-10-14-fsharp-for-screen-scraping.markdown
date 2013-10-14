@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "F# for Screen Scraping"
-date: 2013-10-14 23:55
+date: 2013-10-14 23:56
 comments: true
 categories: [F#, Screen Scraping, HtmlAgilityPack]
 ---
@@ -13,6 +13,8 @@ One of the many things F# is great for is screen scraping. Here's why:
 * F# Interactive really shines in iterative processes like this, where you try something out, see it didn't work quite well, and keep adjusting until you get it right. Doing a full compile-run cycle on each iteration instead of simply evaluating in the REPL would make this task take much longer 
 
 [Html Agility Pack](http://htmlagilitypack.codeplex.com/) is the obvious candidate to use for screen scraping in .NET, but like other LINQ-like libraries that rely heavily on extension methods, its API isn't ideal for use in F#. A simple wrapper will take care of that problem: 
+
+<!-- More -->
 
 {% codeblock lang:fsharp An F# wrapper for HtmlAgilityPack - HtmlAgilityPack.FSharp.fs %} 
 module HtmlAgilityPack.FSharp
