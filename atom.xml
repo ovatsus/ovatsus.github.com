@@ -4,7 +4,7 @@
   <title><![CDATA[Code Beside]]></title>
   <link href="http://blog.codebeside.org/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2013-10-14T23:53:22+01:00</updated>
+  <updated>2013-10-14T23:55:00+01:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[F# for Screen Scraping]]></title>
     <link href="http://blog.codebeside.org/blog/2013/10/14/fsharp-for-screen-scraping"/>
-    <updated>2013-10-14T23:55:00+01:00</updated>
+    <updated>2013-10-14T23:56:00+01:00</updated>
     <id>http://blog.codebeside.org/blog/2013/10/14/fsharp-for-screen-scraping</id>
     <content type="html"><![CDATA[<p>One of the many things F# is great for is screen scraping. Here&#8217;s why:</p>
 
@@ -28,6 +28,11 @@
 
 
 <p><a href="http://htmlagilitypack.codeplex.com/">Html Agility Pack</a> is the obvious candidate to use for screen scraping in .NET, but like other LINQ-like libraries that rely heavily on extension methods, its API isn&#8217;t ideal for use in F#. A simple wrapper will take care of that problem:</p>
+
+<!-- More -->
+
+
+
 
 <figure class='code'><figcaption><span>An F# wrapper for HtmlAgilityPack - HtmlAgilityPack.FSharp.fs </span></figcaption>
  <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
