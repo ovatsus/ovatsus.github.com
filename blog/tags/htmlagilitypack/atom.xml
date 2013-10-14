@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: HtmlAgilityPack | Code Beside]]></title>
   <link href="http://blog.codebeside.org/blog/tags/htmlagilitypack/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2013-10-14T23:55:00+01:00</updated>
+  <updated>2013-10-14T23:57:12+01:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[F# for Screen Scraping]]></title>
     <link href="http://blog.codebeside.org/blog/2013/10/14/fsharp-for-screen-scraping"/>
-    <updated>2013-10-14T23:56:00+01:00</updated>
+    <updated>2013-10-14T23:58:00+01:00</updated>
     <id>http://blog.codebeside.org/blog/2013/10/14/fsharp-for-screen-scraping</id>
     <content type="html"><![CDATA[<p>One of the many things F# is great for is screen scraping. Here's why:</p>
 
