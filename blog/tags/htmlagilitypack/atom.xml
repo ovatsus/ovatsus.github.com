@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: HtmlAgilityPack | Code Beside]]></title>
   <link href="http://blog.codebeside.org/blog/tags/htmlagilitypack/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2013-10-14T23:49:59+01:00</updated>
+  <updated>2013-10-14T23:53:22+01:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[F# for Screen Scraping]]></title>
     <link href="http://blog.codebeside.org/blog/2013/10/14/fsharp-for-screen-scraping"/>
-    <updated>2013-10-14T23:50:00+01:00</updated>
+    <updated>2013-10-14T23:55:00+01:00</updated>
     <id>http://blog.codebeside.org/blog/2013/10/14/fsharp-for-screen-scraping</id>
     <content type="html"><![CDATA[<p>One of the many things F# is great for is screen scraping. Here's why:</p>
 
@@ -513,7 +513,7 @@
 
 <p>Another neat feature of F# for scripting (I wouldn't recommend incorporating it in production code), is the ability to de-structure arrays in one liners, as done in <code>let [| "ll" ; coords |] =</code> and <code>let [| lat; long |] =</code>. The compiler will emit a warning saying that the match is not exhaustive, telling us that this might backfire if there are less than two elements in the array, but for the purpose of a one shot script to download some data it's fine.</p>
 
-<p>And to give a second example, here's a snippet from my Learn On The Go app that processes the html of the lecture videos page page of a Coursera course:</p>
+<p>And to give a second example, here's a snippet from my Learn On The Go app that processes the html of the lecture videos page of a Coursera course:</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
