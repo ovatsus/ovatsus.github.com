@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "F# for Screen Scraping"
-date: 2013-10-14 23:56
+date: 2013-10-14 23:58
 comments: true
 categories: [F#, Screen Scraping, HtmlAgilityPack]
 ---
