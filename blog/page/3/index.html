@@ -9,7 +9,7 @@
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="Expression trees are one of the more powerful features of C#. They let you manipulate code in ways that almost remind you of LISP macros (but at &hellip;">
+  <meta name="description" content="Updated on 2008/09/17: Fixed problem when skipping elements. Updated on 2008/09/15: Fixed problem when trying to read missing attributes. One of new &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,99 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/09/08/streaming-xml-input-with-xelementreader">Streaming XML Input With XElementReader</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-08T00:00:00+01:00" pubdate data-updated="true">Sep 8<span>th</span>, 2008</time>
+        
+         | <a href="/blog/2008/09/08/streaming-xml-input-with-xelementreader#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+	<strong>Updated on 2008/09/17</strong>: Fixed problem when skipping elements.<br />
+	<strong>Updated on 2008/09/15</strong>: Fixed problem when trying to read missing attributes.</p>
+<p>
+	One of new features introduced in .NET 3.5 that I welcomed the most was LINQ to XML. The old DOM API was a bit clumsy to use, and the simple fact that you don&#39;t need owner documents any more makes the new XElement much more flexible and pleasant to work with than the old XmlElement.</p>
+<p>
+	Also new is an API for streaming XML output, XStreamingElement, that by using deferred execution gives you SAX-like performance on a DOM-like API. There&#39;s no streaming XML input API, though, so although you can now get away with not having to use XmlWriter any more, you&#39;ll still need to use XmlReader when you want good performance on large documents. During the LINQ to XML development, the XML Team considered such an API, but they decided not to do it for Orcas.</p>
+<p>
+	Fortunately, Ralf L&auml;mmel proposed such an API in <a href="http://homepages.cwi.nl/~ralf/api-streaming-xml/">API-based XML streaming with FLWOR power and functional updates</a>. I contacted him too ask if he could publicly release the code of his prototype, but he said he couldn&#39;t do it. Nevertheless, he kindly offered to help me develop a similar library myself, so with his help I implemented a small subset of the functionality he described in the paper. It took a while to get the corner cases right, but this is being used in a real-world scenario for some months now, so I think it&#39;s stable enough.</p>
+<p>
+	The interface is the following:</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="kt">string</span> <span class="n">path</span><span class="p">);</span>
+</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">TextReader</span> <span class="n">reader</span><span class="p">);</span>
+</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">XmlReader</span> <span class="n">reader</span><span class="p">);</span>
+</span><span class='line'><span class="n">XElementReader</span><span class="p">(</span><span class="n">Stream</span> <span class="n">stream</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">XName</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="kt">string</span> <span class="n">Value</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">XAttribute</span> <span class="nf">Attribute</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XAttribute</span><span class="p">&gt;</span> <span class="n">Attributes</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">XElementReader</span> <span class="nf">FirstElement</span><span class="p">();</span>
+</span><span class='line'><span class="n">XElementReader</span> <span class="nf">Element</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XElementReader</span><span class="p">&gt;</span> <span class="n">Elements</span><span class="p">();</span>
+</span><span class='line'><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">XElementReader</span><span class="p">&gt;</span> <span class="n">Elements</span><span class="p">(</span><span class="n">XName</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">XElement</span> <span class="nf">ToXElement</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+<p></p>
+<p>
+	Although XElementReader looks a lot like a subset of XElement, you still have to remember that it&#39;s using a XmlReader underneath, so after you try to get to any child element, you have changed the reader position.</p>
+<p>
+	For example, if you have an element like &lt;Root&gt;&lt;A/&gt;&lt;B/&gt;&lt;A/&gt;&lt;B/&gt;&lt;/Root&gt; and call .Element(&quot;A&quot;) twice and then .Element(&quot;B&quot;) twice, the second call for B will return null. If you instead call .Elements(&quot;A&quot;) and then .Elements(&quot;B&quot;), you&#39;ll get two A elements, but no B elements at all. So to do this right, you have iterate on .Elements() and check the .Name property to see if you&#39;re in an A or in a B element.</p>
+<p>
+	This read once nature sometimes also complicates debugging. To help with that, you can define XML_DEBUG_MODE to force XElementReader to use a XElement behind the covers instead of a XmlReader, so you can add watches freely without worrying about side effects. But remember to fully test with this conditional compilation symbol off.</p>
+<p>
+	Here&#39;s the full code:</p>
+<script src="https://gist.github.com/1225799.js"></script>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -319,14 +412,18 @@
   <h1>Projects</h1>
   <ul>
     <li><a href="http://fsharp.github.io/FSharp.Data/">FSharp.Data</a></li>
-    <li><a href="http://www.windowsphone.com/en-gb/store/app/uk-trains/ef62d461-861c-4a9f-9198-8768532cc6aa">UK Trains</a></li>
-    <li><a href="http://www.windowsphone.com/en-gb/store/app/learn-on-the-go/aca60941-2945-49e7-afd2-adbe5625df12">Learn On The Go</a></li>
-    <li><a href="https://github.com/dungpa/fantomas">Fantomas</a></li>
+    <li><a href="http://visualstudiogallery.msdn.microsoft.com/24ef5c87-b4e3-4c3b-b126-1064cc66e148">Fantomas</a></li>
+    <li><a href="http://windowsphone.com/s?appId=ef62d461-861c-4a9f-9198-8768532cc6aa"><img src="https://f.cloud.github.com/assets/738761/901479/21504cbe-fb80-11e2-8282-8331c5465d67.png" style="margin:-7px 0px -7px -7px;width:40px;vertical-align:middle;height:40px;border:0;box-shadow:none" />UK Trains</a></li>
+    <li><a href="http://windowsphone.com/s?appId=aca60941-2945-49e7-afd2-adbe5625df12"><img src="https://f.cloud.github.com/assets/738761/901479/21504cbe-fb80-11e2-8282-8331c5465d67.png" style="margin:-7px 0px -7px -7px;width:40px;vertical-align:middle;height:40px;border:0;box-shadow:none" />Learn On The Go</a></li>
   </ul>
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/14/fsharp-for-screen-scraping">F# for Screen Scraping</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/07/21/fsharp-data-1-1-9-released">FSharp.Data 1.1.9 released</a>
@@ -344,16 +441,12 @@
         <a href="/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning">F# as a Octave/Matlab replacement for Machine Learning</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2011/10/02/introducing-presharp">Introducing PreSharp</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tags</h1>
   <span id="tag-cloud">
-    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 133.33333333333334%'>F#</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/type-providers' style='font-size: 113.33333333333333%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
+    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 140.0%'>F#</a> <a href='/blog/tags/htmlagilitypack' style='font-size: 106.66666666666667%'>HtmlAgilityPack</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/screen-scraping' style='font-size: 106.66666666666667%'>Screen Scraping</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/type-providers' style='font-size: 113.33333333333333%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
   </span>
 </section>
 
