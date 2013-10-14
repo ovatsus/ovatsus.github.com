@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "F# for Screen Scraping"
-date: 2013-10-14 23:50
+date: 2013-10-14 23:55
 comments: true
 categories: [F#, Screen Scraping, HtmlAgilityPack]
 ---
@@ -206,7 +206,7 @@ You can also see that the same pattern was used for making the `String.Split` fu
 
 Another neat feature of F# for scripting (I wouldn't recommend incorporating it in production code), is the ability to de-structure arrays in one liners, as done in `let [| "ll" ; coords |] =` and `let [| lat; long |] =`. The compiler will emit a warning saying that the match is not exhaustive, telling us that this might backfire if there are less than two elements in the array, but for the purpose of a one shot script to download some data it's fine.
 
-And to give a second example, here's a snippet from my Learn On The Go app that processes the html of the lecture videos page page of a Coursera course:
+And to give a second example, here's a snippet from my Learn On The Go app that processes the html of the lecture videos page of a Coursera course:
 
 {% codeblock lang:fsharp %}
 let lectureSections = 
