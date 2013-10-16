@@ -11,6 +11,67 @@ categories: [F#, Type Providers]
 
 
 
+Don't use |> 
+Non primitive param passed to quotation 
+
+
+
+In the [previous post](http://blog.codebeside.org/blog/2013/05/13/building-type-providers-part1/), we talked
+about several ways to hide the underlying representation of type providers.
+[Ross McKinlay](http://www.pinksquirrellabs.com/) commented on an alternative way that allows to completely
+hide it: we can declare the base class to be just `obj`, on the constructor pass the real underlying
+representation boxed, and then allways cast it back on all members. Example:
+
+    ProvidedConstructor([], InvokeCode = fun _ -> <@@ RealRepresentation() |> box @@>)
+    
+    ProvidedProperty("MyProp", t, GetterCode = (fun args -> <@@ ((%%args.[0]:obj) :?> RealRepresentation).MyProp @@>)
+
+
+## Debugging type providers ##
+
+* Locking of .DesignTime.dll
+* Attaching or setting external program to VS
+* https://github.com/fsharp/FSharp.Data/blob/master/src/Providers/Debug.fs
+* [DESIGNTIME]
+* Using Test.fsx in FSI (signatureOnly, ignoreOutput, generate, prettyPrint, prettyPrintWithMaxDepth)
+* Renaming to Test.fs and running
+
+#### Testing the full flow
+ * Open FSharpx.WithTypeProviders.sln with Visual Studio 2012
+ * Set FSharpx.TypeProviders as startup project
+ * In the properties of FSharpx.TypeProviders:
+    * Set the start action to "external program" and "C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe"
+    * Set the command line argument to "C:\code\fsharpx\FSharpx.TypeProviders.Tests.sln" (adjust the path to match to your system)
+ * Run the project --&gt; A new Visual Studio 2012 instance should opened with FSharpx.TypeProviders.Tests.sln
+ * When opening the relevant files or compiling if there are breakpoints in the type provider code they will be hit
+
+#### Previewing the types that will be generated
+ * On each type provider project there's a test .fsx file that will allow you to see the types and members that will be generated in F# interactive without having to run another instance of Visual Studio, by using the generate and prettyPrint functions
+ * If you want to use the debugger, you can also temporarily change the output type from Class Library to Console Application, rename the that .fsx file to .fs and run the project. You can use the this output as a form of regression testing when refactoring type providers
+   * Note that if you do something similar but in a different project, VS will lock the type provider dll and you'll need to restart VS on each run. If you do this inside the same project this problem doesn't occur
+ * This will only simulate the process and won't be exactly the same as running the type providers for real
+ *
+
+## Supporting multiple .NET framework profiles ##
+
+* Replacing FSharp.Core types in addition to your types
+* Problems with replaceUnionCase and replaceRecords (FSharpValue and FSharpType fails)
+* Using Delegates instead of funcs
+* Assembly resolution paths https://github.com/fsharp/FSharp.Data/blob/master/src/Providers/Helpers.fs#L207
+
+## Common errors found during type provider development ##
+* Splicing error
+* A reference to the type <mytype> was found, but the type could not be found in that assembly
+
+
+
+
+
+
+
+
+
+
 Type Providers are the biggest new feature of F# 3.0. They allow us to leverage the power of the static type system in areas that have typically been the territory of dynamic languages and stringly typing. A picture is worth a thousand words, so here's 12 pictures that show type providers in action:
 
 > [All your types are belong to us](http://blogs.msdn.com/b/dsyme/archive/2013/01/30/twelve-type-providers-in-pictures.aspx)
