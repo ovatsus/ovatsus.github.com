@@ -10,7 +10,7 @@ One of the many things F# is great for is screen scraping. Here's why:
 
 * Downloading multiple pages asynchronously and in parallel is trivial with F#'s async support 
 * Navigating the HTML DOM is a great fit for higher order data processing combined with partial application
-* F# Interactive really shines in iterative processes like this, where you try something out, see it didn't work quite well, and keep adjusting until you get it right. Doing a full compile-run cycle on each iteration instead of simply evaluating in the REPL would make this task take much longer 
+* F# Interactive really shines in iterative processes like this, where you try something out, see it didn't work quite well, and keep adjusting until you get it right. Doing a full compile-run cycle on each iteration instead of simply evaluating in the REPL would make this task take much more time-consuming
 
 [Html Agility Pack](http://htmlagilitypack.codeplex.com/) is the obvious candidate to use for screen scraping in .NET, but like other LINQ-like libraries that rely heavily on extension methods, its API isn't ideal for use in F#. A simple wrapper will take care of that problem: 
 
