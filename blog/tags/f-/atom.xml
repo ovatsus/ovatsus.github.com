@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: F# | Code Beside]]></title>
   <link href="http://blog.codebeside.org/blog/tags/f-/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2013-10-26T17:27:22+01:00</updated>
+  <updated>2013-10-26T17:30:42+01:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -23,7 +23,7 @@
 <ul>
 <li>Downloading multiple pages asynchronously and in parallel is trivial with F#'s async support</li>
 <li>Navigating the HTML DOM is a great fit for higher order data processing combined with partial application</li>
-<li>F# Interactive really shines in iterative processes like this, where you try something out, see it didn't work quite well, and keep adjusting until you get it right. Doing a full compile-run cycle on each iteration instead of simply evaluating in the REPL would make this task take much longer</li>
+<li>F# Interactive really shines in iterative processes like this, where you try something out, see it didn't work quite well, and keep adjusting until you get it right. Doing a full compile-run cycle on each iteration instead of simply evaluating in the REPL would make this task take much more time-consuming</li>
 </ul>
 
 
