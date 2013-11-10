@@ -4,7 +4,7 @@
   <title><![CDATA[Code Beside]]></title>
   <link href="http://blog.codebeside.org/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2013-10-26T17:42:23+01:00</updated>
+  <updated>2013-11-10T21:47:37+00:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -12,6 +12,35 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Higher order list operations across languages]]></title>
+    <link href="http://blog.codebeside.org/blog/2013/11/10/higher-order-list-operations-across-languages"/>
+    <updated>2013-11-10T21:48:00+00:00</updated>
+    <id>http://blog.codebeside.org/blog/2013/11/10/higher-order-list-operations-across-languages</id>
+    <content type="html"><![CDATA[<p>Did this table out of curiosity, decided to share it:</p>
+
+<pre>
+----------------------------------------------------------------------------------------------
+| F#         | C#         | Scala       | Clojure | Python | Ruby     | Haskell   | SQL      |
+|------------|------------|-------------|---------|--------|----------|-----------|----------|
+| map        | Select     | map         | map     | map    | collect  | map       | Select   |
+| filter     | Where      | filter      | filter  | filter | select   | filter    | Where    |
+| fold       | Aggregate  | foldLeft    | reduce  | reduce | inject   | foldl     |          |
+| foldBack   |            | foldRight   |         |        |          | foldr     |          |
+| reduce     | Aggregate  | reduceLeft  | reduce  | reduce | inject   | foldl1    |          |
+| reduceBack |            | reduceRight |         |        |          | foldr1    |          |
+| collect    | SelectMany | flatMap     | mapcat  |        | flat_map | concatMap | From     |
+| exists     | Any        | exists      | some    | any    | any?     | any       | Exists   |
+| forall     | All        | forall      | every?  | all    | all?     | all       |          |
+| sortBy     | OrderBy    | sortBy      | sort-by | sorted | sort_by  | sortBy    | Order By |
+----------------------------------------------------------------------------------------------
+</pre>
+
+
+<p>PS: please correct me if I got something wrong</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[F# for Screen Scraping]]></title>
@@ -1832,20 +1861,6 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 	There&rsquo;s a lot more, so go and try the <a href="http://www.outsystems.com/download">community edition</a>, and let yourself be pleasantly surprised.</p>
 <p align="justify">
 	This is just the tip of the iceberg, as much of the potential of the new system is still not being used, so stay tuned for the next chapters. The next versions will be even more groundbreaking.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Extension Properties]]></title>
-    <link href="http://blog.codebeside.org/blog/2008/09/10/extension-properties"/>
-    <updated>2008-09-10T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2008/09/10/extension-properties</id>
-    <content type="html"><![CDATA[<p>
-	After you start to use extension methods and see all their benefits, you start thinking about how nice it would be to also have extension properties. When Scott Guthrie first announced them in <a href="http://weblogs.asp.net/scottgu/archive/2007/03/13/new-orcas-language-feature-extension-methods.aspx" title="">New &quot;Orcas&quot; Language Feature: Extension Methods</a>, someone immediately asked about extension properties. It just seems the feature is incomplete without both.</p>
-<p>
-	One particular area that would benefit greatly from extension properties would be WPF. Every time you define an attached property, you usually create a static getter and a static setter for it. If you could package that up in an extension property, attached properties would be much nicer to use.</p>
-<p>
-	There have been some hints that the C# language team is considering extension properties for the future, so maybe we&#39;ll get them in C# 4.0. But if you don&#39;t want to wait until 2010, you can have extension properties right now if you use F#. Check out Matthew Podwysocki&#39;s <a href="http://weblogs.asp.net/podwysocki/archive/2008/09/09/object-oriented-f-extension-everything.aspx">Object Oriented F# - Extension Everything</a>.</p>
 ]]></content>
   </entry>
   

@@ -9,7 +9,7 @@
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="Updated on 2008/09/17: Fixed problem when skipping elements. Updated on 2008/09/15: Fixed problem when trying to read missing attributes. One of new &hellip;">
+  <meta name="description" content="After you start to use extension methods and see all their benefits, you start thinking about how nice it would be to also have extension properties &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,10 +28,6 @@
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<!-- start Mixpanel --><script type="text/javascript">(function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f);b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==
-typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");for(g=0;g<i.length;g++)f(c,i[g]);
-b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
-mixpanel.init("64e55268f1c289526e782c55fad33528");</script><!-- end Mixpanel -->
 
   
   <script type="text/javascript">
@@ -85,6 +81,49 @@ mixpanel.init("64e55268f1c289526e782c55fad33528");</script><!-- end Mixpanel -->
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2008/09/10/extension-properties">Extension Properties</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-09-10T00:00:00+01:00" pubdate data-updated="true">Sep 10<span>th</span>, 2008</time>
+        
+         | <a href="/blog/2008/09/10/extension-properties#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+	After you start to use extension methods and see all their benefits, you start thinking about how nice it would be to also have extension properties. When Scott Guthrie first announced them in <a href="http://weblogs.asp.net/scottgu/archive/2007/03/13/new-orcas-language-feature-extension-methods.aspx" title="">New &quot;Orcas&quot; Language Feature: Extension Methods</a>, someone immediately asked about extension properties. It just seems the feature is incomplete without both.</p>
+<p>
+	One particular area that would benefit greatly from extension properties would be WPF. Every time you define an attached property, you usually create a static getter and a static setter for it. If you could package that up in an extension property, attached properties would be much nicer to use.</p>
+<p>
+	There have been some hints that the C# language team is considering extension properties for the future, so maybe we&#39;ll get them in C# 4.0. But if you don&#39;t want to wait until 2010, you can have extension properties right now if you use F#. Check out Matthew Podwysocki&#39;s <a href="http://weblogs.asp.net/podwysocki/archive/2008/09/09/object-oriented-f-extension-everything.aspx">Object Oriented F# - Extension Everything</a>.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -425,6 +464,10 @@ mixpanel.init("64e55268f1c289526e782c55fad33528");</script><!-- end Mixpanel -->
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/11/10/higher-order-list-operations-across-languages">Higher order list operations across languages</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/10/14/fsharp-for-screen-scraping">F# for Screen Scraping</a>
       </li>
     
@@ -438,10 +481,6 @@ mixpanel.init("64e55268f1c289526e782c55fad33528");</script><!-- end Mixpanel -->
     
       <li class="post">
         <a href="/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012">F#, Windows Phone 7 & Visual Studio 2012</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning">F# as a Octave/Matlab replacement for Machine Learning</a>
       </li>
     
   </ul>

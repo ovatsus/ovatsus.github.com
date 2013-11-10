@@ -117,12 +117,18 @@
         <lastmod>2013-10-26T17:30:32+01:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://blog.codebeside.org/blog/2013/11/10/higher-order-list-operations-across-languages
+        </loc>
+        <lastmod>2013-11-10T21:47:10+00:00</lastmod>
+    </url>
+    <url>
         <loc>http://blog.codebeside.org/blog/archives/</loc>
-        <lastmod>2013-10-26T17:30:32+01:00</lastmod>
+        <lastmod>2013-11-10T21:47:10+00:00</lastmod>
     </url>
     <url>
         <loc>http://blog.codebeside.org/</loc>
-        <lastmod>2013-10-26T17:30:32+01:00</lastmod>
+        <lastmod>2013-11-10T21:47:10+00:00</lastmod>
     </url>
     <url>
         <loc>http://blog.codebeside.org/robots.txt</loc>

@@ -9,7 +9,7 @@
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="One of the many things F# is great for is screen scraping. Here&#8217;s why: Downloading multiple pages asynchronously and in parallel is trivial &hellip;">
+  <meta name="description" content="Did this table out of curiosity, decided to share it &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,10 +28,6 @@
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<!-- start Mixpanel --><script type="text/javascript">(function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f);b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==
-typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");for(g=0;g<i.length;g++)f(c,i[g]);
-b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
-mixpanel.init("64e55268f1c289526e782c55fad33528");</script><!-- end Mixpanel -->
 
   
   <script type="text/javascript">
@@ -85,6 +81,64 @@ mixpanel.init("64e55268f1c289526e782c55fad33528");</script><!-- end Mixpanel -->
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/10/higher-order-list-operations-across-languages">Higher Order List Operations Across Languages</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-10T21:48:00+00:00" pubdate data-updated="true">Nov 10<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/11/10/higher-order-list-operations-across-languages#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Did this table out of curiosity, decided to share it:</p>
+
+<pre>
+----------------------------------------------------------------------------------------------
+| F#         | C#         | Scala       | Clojure | Python | Ruby     | Haskell   | SQL      |
+|------------|------------|-------------|---------|--------|----------|-----------|----------|
+| map        | Select     | map         | map     | map    | collect  | map       | Select   |
+| filter     | Where      | filter      | filter  | filter | select   | filter    | Where    |
+| fold       | Aggregate  | foldLeft    | reduce  | reduce | inject   | foldl     |          |
+| foldBack   |            | foldRight   |         |        |          | foldr     |          |
+| reduce     | Aggregate  | reduceLeft  | reduce  | reduce | inject   | foldl1    |          |
+| reduceBack |            | reduceRight |         |        |          | foldr1    |          |
+| collect    | SelectMany | flatMap     | mapcat  |        | flat_map | concatMap | From     |
+| exists     | Any        | exists      | some    | any    | any?     | any       | Exists   |
+| forall     | All        | forall      | every?  | all    | all?     | all       |          |
+| sortBy     | OrderBy    | sortBy      | sort-by | sorted | sort_by  | sortBy    | Order By |
+----------------------------------------------------------------------------------------------
+</pre>
+
+
+<p>PS: please correct me if I got something wrong</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -579,49 +633,6 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/12/18/agile-platform-5-1-1">Agile Platform 5.1.1</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-12-18T00:00:00+00:00" pubdate data-updated="true">Dec 18<span>th</span>, 2010</time>
-        
-         | <a href="/blog/2010/12/18/agile-platform-5-1-1#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-	We&rsquo;ve recently released version 5.1.1 of the Agile Platform. It&rsquo;s got a lot of great new features and an improved look &amp; feel. And better yet, it&rsquo;s compatible with 5.1.0, so you don&rsquo;t need to upgrade your server.</p>
-<p>
-	Check the post <a href="http://www.outsystems.com/NetworkForums/ViewTopic.aspx?Topic=New-in-the-Agile-Platform-v5.1.1">New-in-the-Agile-Platform-v5.1.1</a> for more info.</p>
-<p>
-	<img src="http://www.outsystems.com/CKEditor/Download.aspx?GUID=20101282jg5g1100gj4b27ajcgxdvtt304kynvodja1puurz6" /></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -650,6 +661,10 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/11/10/higher-order-list-operations-across-languages">Higher order list operations across languages</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/10/14/fsharp-for-screen-scraping">F# for Screen Scraping</a>
       </li>
     
@@ -663,10 +678,6 @@ shipped as part of the standalone F# redistribution. There were even some nice <
     
       <li class="post">
         <a href="/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012">F#, Windows Phone 7 & Visual Studio 2012</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning">F# as a Octave/Matlab replacement for Machine Learning</a>
       </li>
     
   </ul>
