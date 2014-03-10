@@ -9,7 +9,7 @@
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="We&rsquo;ve recently released version 5.1.1 of the Agile Platform. It&rsquo;s got a lot of great new features and an improved look &amp; feel. And &hellip;">
+  <meta name="description" content="I use Visual Studio 2010 on a daily basis, and I must say that the overall experience is far from good: The find dialog has some really weird and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,95 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1">Replacing Visual Studio 2010 With SharpDevelop 4.1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-04-19T00:00:00+01:00" pubdate data-updated="true">Apr 19<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>
+	I use Visual Studio 2010 on a daily basis, and I must say that the overall experience is far from good:</p>
+<ul>
+	<li>
+		The find dialog has some really weird and annoying resizing issues.</li>
+	<li>
+		Sometimes find text simply stops working, never returning any result. Even worst, sometimes it starts returning only the first hit on each file, which of course you only notice the next day because of the bug you introduced in the code base because of that.</li>
+	<li>
+		It has the habit of recompiling more projects than it really needs to.</li>
+	<li>
+		Sometimes the simple action of clicking on a text editor to change the caret position stops working, and we can only use the keyboard for that until you restart Visual Studio.</li>
+	<li>
+		It takes forever to open XAML files (even with the option to always open in full XAML view, not design mode).</li>
+	<li>
+		It has some serious file cache problems when using custom MSBuild build steps that generate files for compilation. If during a build a generated file is changed while it&rsquo;s opened, the result of the compilation will be as if the file hadn&rsquo;t been changed. If that file is not opened, or we use the MSBuild command line, it works correctly. Just imagine going through a huge list of steps to reproduce some problem only to find out that you&rsquo;re debugging outdated code. It&rsquo;s a real nightmare.</li>
+</ul>
+<p>
+	So I decided to give SharpDeveloper a try, and I was pleasantly surprised:</p>
+<ul>
+	<li>
+		It&rsquo;s pretty fast and responsive, even with big solutions, as long as you turn off source control integration.</li>
+	<li>
+		I can open .xaml files as fast as .cs files, and the xaml auto complete works sufficiently good.</li>
+	<li>
+		It builds the big solution I use daily in <strong>half</strong> the time (literally)</li>
+	<li>
+		It doesn&rsquo;t have the file cache problem</li>
+	<li>
+		It has an option for building modified projects only, ignoring the dependencies</li>
+	<li>
+		The latest 4.1 alpha builds allow to see the <a href="http://community.sharpdevelop.net/blogs/marcueusebiu/archive/2011/01/23/presenting-metadata-ctrl-enter-and-expand-references.aspx">metadata of referenced types</a> like Visual Studio does.</li>
+</ul>
+<p>
+	Of course, there are also a few downsides:</p>
+<ul>
+	<li>
+		The usability of the editor auto complete is noticeably lower than Visual Studio IntelliSense.</li>
+	<li>
+		The shortcut keys aren&rsquo;t customizable, which is a big no no considering that the basic ones like build and toggle breakpoint are different from the ones we&rsquo;re used to from Visual Studio.</li>
+	<li>
+		Custom debugger visualizers and other very useful add-ins&nbsp; for Visual Studio don&rsquo;t have a SharpDevelop version.</li>
+	<li>
+		It doesn&rsquo;t have Edit and Continue.</li>
+</ul>
+<p>
+	I had already tried SharpDevelop before in the past, but at the time it seemed to be too limited when compared to Visual Studio. I now think it&rsquo;s good enough to be usable, and as it&rsquo;s open source and the code base looks readable, I&rsquo;m going to try to fix a few quirks to be able to completely replace Visual Studio for my daily coding needs.</p>
+<p>
+	The first thing I did was to create a SharpDevelop add-in with equivalent functionality to the <a href="http://www.usysware.com/dpack/FileBrowser.aspx">DPack File Browser</a>, which is one of the Visual Studio add-ins that I use the most. I got a working prototype really fast, as the SharpDevelop add-in API is much cleaner that the Visual Studio EnvDTE mess:</p>
+<p>
+	<img border="0" height="190" src="/userfiles/Replacing-Visual-Studio_130FA/image_thumb.png" width="244" /></p>
+<p>
+	I&nbsp;posted the source code to <a href="https://github.com/ovatsus/CodeBeside.FileBrowser">https://github.com/ovatsus/CodeBeside.FileBrowser</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -640,79 +729,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2009/11/18/the-butterfly-was-released-into-the-wild">The Butterfly Was Released Into the Wild</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2009-11-18T00:00:00+00:00" pubdate data-updated="true">Nov 18<span>th</span>, 2009</time>
-        
-         | <a href="/blog/2009/11/18/the-butterfly-was-released-into-the-wild#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-	<a href="/userfiles/392b6651fa61_D7D2/150px-Blue_Morphos_2.jpg"><img align="left" alt="" border="0" height="136" src="/userfiles/150px-Blue_Morphos.jpg" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="150px-Blue_Morphos" width="150" /></a></p>
-<p>
-	A little more than two years ago, shortly after the Agile Platform version 4.1 was released, the engineering team at OutSystems joined together and did a self review on what we could do to improve our ability to deliver faster and with better quality. We already knew that the developers that used the OutSystems Platform were much more productive than the ones using .NET or J2EE, but we wanted to raise the bar even higher, taking their productivity to the next level. The current version of Service Studio had a few Achilles&rsquo; heels that were being hard to get rid of, in part due to some compromises that had to be done in the past to enable us to get the first version out as soon as possible. That legacy was starting to slow down our ability to deliver constant innovation in the agile software development field, so, after a series of brainstorming sessions, we decided that we would re-engineer some parts of the platform in order to enable us to be even more agile, and prepare ourselves to the great features we wanted to build in the future. And this was the start of what would later be called the Butterfly project.</p>
-<p align="justify">
-	While most of the R&amp;D began the work on the Antelope version (4.2), two teams were spawned to work on the Butterfly version (5.0). While the Blue Morphos team initiated a deep analysis on the features we would want to deliver on the long term, the Red Bull team started immediately the work on the platform re-engineering that would enable us to deliver those features. This team started off with just two developers (myself included), growing to four developers shortly after. A year later, while 4.2 was approaching completion, another team joined us to work on the 5.0 killer feature &ndash; Business Process Technology &ndash; already using the new codebase. At the end, most of the R&amp;D was involved, and with the hard work of 14 Developers (3 of them fully dedicated to Quality Assurance), 3 Product Managers, our <a href="http://kutuma.blogspot.com/">product delivery manager</a> and of course the support from all the other parts of the company, from marketing to support, this journey finally came to an end, and I think that the result is a great product. I&rsquo;m really proud of being involved in it since the start, and I feel like a mother that has just gave birth to its new-born child: it was though, but now that it&rsquo;s over all that matters is the marvelous new baby :)</p>
-<p align="justify">
-	So, what did version 5.0 of the Agile Platform brought us? Aside from the Business Process Technology which by itself is a groundbreaking step on the history of agile development, we were able to deliver a few other big improvements:</p>
-<ul>
-	<li>
-		<div align="justify">
-			Ridiculously faster load and save times. For example, a 5.2MB .oml file that took 75 seconds to open and 20 seconds to save in 4.2, now takes 8 seconds to open and 2,5 seconds to save in 5.0. That amounts to <strong><font color="#ff0000" size="4">89,3%</font></strong> and <strong><font color="#ff0000" size="4">87,5%</font></strong> speed improvements respectively!!! Find, Find Usages, Merge &amp; Clone are also now significantly faster.</div>
-	</li>
-</ul>
-<ul>
-	<li>
-		<div align="justify">
-			Most applications crash from time to time, making you loose your work. A few of them them save backups periodically and allow you to recover most of it, but many times you still loose a big chunk. Service Studio 5.0 is the only application that I know of that&nbsp;<strong>automatically heals itself</strong> in case of errors, rollbacking the tiny action that caused the error and allowing you to continue your work as if no crash has happened, without loosing any work at all.</div>
-	</li>
-</ul>
-<ul>
-	<li>
-		<div align="justify">
-			The new improved TrueChange&trade; engine is now omnipresent, immediately informing the developer of his typos &amp; mistakes by the form of toolips, visual cues for warnings and errors, drop-down suggestions for common operations and a message pane that refreshes in real-time. In addition to that, all the system is now much more strongly bound, and now you can really assemble the pieces of your application like a puzzle, without fear of things getting unbound and loosing the strong checking abilities. Refactoring is now so easy that your application will be truly built-to-change.</div>
-	</li>
-</ul>
-<ul>
-	<li>
-		<div align="justify">
-			There&rsquo;s a big focus on usability, and most pieces of the Service Studio workspace have been improved. There&rsquo;s an new web screen editor with improved WYSIWYG editing, better zoom support, a big number of new drag&amp;drop behaviors, support for copy/pasting everything, multi-level undo support, syntax highlighting in expressions, SQL, CSS &amp; JavaScript, more information shown in the tools tree, eSpace tree &amp; the add/remove references tree, etc&hellip;</div>
-	</li>
-</ul>
-<p align="justify">
-	There&rsquo;s a lot more, so go and try the <a href="http://www.outsystems.com/download">community edition</a>, and let yourself be pleasantly surprised.</p>
-<p align="justify">
-	This is just the tip of the iceberg, as much of the potential of the new system is still not being used, so stay tuned for the next chapters. The next versions will be even more groundbreaking.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -743,6 +759,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/10/fsharp-data-2-0-0-released">FSharp.Data 2.0.0 released</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/11/10/higher-order-list-operations-across-languages">Higher order list operations across languages</a>
       </li>
     
@@ -758,16 +778,12 @@
         <a href="/blog/2013/05/13/building-type-providers-part1">Building Type Providers - Part 1</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012">F#, Windows Phone 7 & Visual Studio 2012</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tags</h1>
   <span id="tag-cloud">
-    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 146.66666666666666%'>F#</a> <a href='/blog/tags/htmlagilitypack' style='font-size: 106.66666666666667%'>HtmlAgilityPack</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/screen-scraping' style='font-size: 106.66666666666667%'>Screen Scraping</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/type-providers' style='font-size: 113.33333333333333%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
+    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 153.33333333333334%'>F#</a> <a href='/blog/tags/htmlagilitypack' style='font-size: 106.66666666666667%'>HtmlAgilityPack</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/screen-scraping' style='font-size: 106.66666666666667%'>Screen Scraping</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/type-providers' style='font-size: 120.0%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
   </span>
 </section>
 <section>
@@ -782,7 +798,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - Gustavo Guerra -
+  Copyright &copy; 2014 - Gustavo Guerra -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
   <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>

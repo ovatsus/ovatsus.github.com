@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Tag: Screen Scraping - Code Beside</title>
+  <title>FSharp.Data 2.0.0 released - Code Beside</title>
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="Category: Screen Scraping">
+  <meta name="description" content="Version 2.0.0 of FSharp.Data was just released. You can get the full version history on the release notes, but here are the highlights: A new type &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.codebeside.orgblog/tags/screen-scraping/">
+  <link rel="canonical" href="http://blog.codebeside.org/blog/2014/03/10/fsharp-data-2-0-0-released">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -80,36 +80,124 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Tag: Screen Scraping</h1>
+    
+      <h1 class="entry-title">FSharp.Data 2.0.0 Released</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-10T02:00:00+00:00" pubdate data-updated="true">Mar 10<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>Version <a href="http://www.nuget.org/packages/FSharp.Data/2.0.0">2.0.0</a> of <a href="http://fsharp.github.io/FSharp.Data/">FSharp.Data</a> was just released. You can get the full version history on the <a href="https://github.com/fsharp/FSharp.Data/blob/master/RELEASE_NOTES.md">release notes</a>, but here are the highlights:</p>
 
-  
-  <h2>2013</h2>
-
-<article>
-  
-<h1><a href="/blog/2013/10/14/fsharp-for-screen-scraping">F# for Screen Scraping</a></h1>
-<time datetime="2013-10-14T23:58:00+01:00" pubdate><span class='month'>Oct</span> <span class='day'>14</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/tags/f-/'>F#</a>, <a class='category' href='/blog/tags/htmlagilitypack/'>HtmlAgilityPack</a>, <a class='category' href='/blog/tags/screen-scraping/'>Screen Scraping</a></span>
-</footer>
+<ul>
+<li>A new type inference algorithm that will generate better and more robust API&#8217;s in the presence of missing and heterogeneous types. This means that you&#8217;ll get much less errors when using JsonProvider and XmlProvider on real world messy files. The error messages are now also more descriptive when things go wrong.</li>
+<li>Much improved Freebase support for individuals.</li>
+<li>The functionality of the Http class was greatly extended. It now supports uploading and downloading binary files, and compression across all supported platforms, among many other tweaks.</li>
+<li>Improved the overall performance of the type provider itself when running inside the editor, and also of the generated code.</li>
+<li>The documentation was much improved, there&#8217;s now a Japanese translation of it, and comprehensive reference documentation.</li>
+<li>Mono is now fully supported, as well as F# 3.1, and the new Portable Class Library profile 7.</li>
+<li>Source link support. This means that you can step trough the source code while debugging if you enable that feature in Visual Studio.</li>
+</ul>
 
 
-</article>
+<p>We also took the opportunity of major version bump to do some house cleaning, so things that we weren&#8217;t previously very happy with were renamed, dropped or, shuffled around. Unfortunately this means breaking changes, but we think the overall outcome is positive. In this process we dropped support for:</p>
+
+<ul>
+<li>Silverlight and Windows Phone separate packages.</li>
+<li>Apiary provider (which has now moved to a <a href="https://github.com/fsprojects/ApiaryProvider">separate project</a>).</li>
+</ul>
+
+
+<p>Thanks to everyone which contributed directly to this release, <a href="http://github.com/tpetricek">Tomas Petricek</a>, <a href="http://github.com/dsyme">Don Syme</a>, <a href="http://github.com/forki">Steffen Forkmann</a>, <a href="http://github.com/enricosada">Enrico Sada</a>, <a href="http://github.com/ctaggart">Cameron Taggart</a>, <a href="http://github.com/remkoboschker">Remko Boschker</a>, <a href="http://github.com/vasily-kirichenko">Vasily Kirichenko</a>, <a href="http://github.com/diegofrata">Diego Frata</a>, <a href="http://github.com/yukitos">yukitos</a>, <a href="http://github.com/OkayX6">Denis Ok</a>, and <a href="http://github.com/jamesholwell">James Holwell</a>, and also to everyone who also contributed indirectly through yak-shaving needed in <a href="http://tpetricek.github.io/FSharp.Formatting">FSharp.Formatting</a>, <a href="http://fsharp.github.io/FSharp.Compiler.Service">FSharp.Compiler.Services</a>, and <a href="http://fsharp.github.io/FAKE">FAKE</a>, including <a href="http://github.com/7sharp9">Dave Thomas</a>, <a href="http://github.com/soloman817">Xiang Zhang</a>, <a href="http://github.com/dungpa">Anh-Dung Phan</a>, <a href="http://github.com/fbmnds">fbmnds</a>, and <a href="http://github.com/mexx">Max Malook</a>. And also thanks to everyone who contributed by just placing issues on github, but I couldn&#8217;t find a way to generate a list of all of you.</p>
+
+<p>There&#8217;s still a lot of room for improvement, and we love pull requests, so please contribute, even if it&#8217;s only fixing a typo in the docs. A getting started guide is available <a href="http://fsharp.github.io/FSharp.Data/contributing.html">here</a>.</p>
+
+<p>For the next versions, we want to add:</p>
+
+<ul>
+<li>Html type provider, currently being worked on by <a href="http://github.com/colinbull">Colin Bull</a>, <a href="http://github.com/mathias-brandewinder">Mathias Brandewinder</a> and me.</li>
+<li>Write API for Json, currently being worked on by <a href="http://github.com/pezipink">Ross McKinlay</a>.</li>
+<li>Authentication support, currently being worked on by <a href="http://github.com/veikkoeeva">Veikko Eeva</a>.</li>
+<li>XSD support, which I hope one of you reading this will pick up :).</li>
+</ul>
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Gustavo Guerra</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-10T02:00:00+00:00" pubdate data-updated="true">Mar 10<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/tags/f-/'>F#</a>, <a class='category' href='/blog/tags/type-providers/'>Type Providers</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/11/10/higher-order-list-operations-across-languages" title="Previous Post: Higher order list operations across languages">&laquo; Higher order list operations across languages</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -186,7 +274,10 @@
       var disqus_shortname = 'codebesideblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.codebeside.org/blog/2014/03/10/fsharp-data-2-0-0-released';
+        var disqus_url = 'http://blog.codebeside.org/blog/2014/03/10/fsharp-data-2-0-0-released';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

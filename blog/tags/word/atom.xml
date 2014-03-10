@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Word | Code Beside]]></title>
   <link href="http://blog.codebeside.org/blog/tags/word/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2013-11-10T21:52:34+00:00</updated>
+  <updated>2014-03-10T02:00:52+00:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -26,68 +26,119 @@
     In C:\Program Files\Microsoft Office\Office12\Bibliography\Style\Iso690Nmerical.xsl change the following lines:</p>
 
 
-<p>{% codeblock lang:xml %}
-&lt;xsl:template name="templ_prop_OpenBracket" ></p>
-
-<pre><code>&lt;xsl:param name="LCID" /&gt;
-&lt;xsl:variable name="_LCID"&gt;
-  &lt;xsl:call-template name="localLCID"&gt;
-    &lt;xsl:with-param name="LCID" select="$LCID"/&gt;
-  &lt;/xsl:call-template&gt;
-&lt;/xsl:variable&gt;
-&lt;xsl:value-of select="/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:OpenBracket"/&gt;
-&lt;xsl:text&gt;[&lt;/xsl:text&gt;
-</code></pre>
-
-<p>  &lt;/xsl:template></p>
-
-<p>  &lt;xsl:template name="templ_prop_CloseBracket" ></p>
-
-<pre><code>&lt;xsl:param name="LCID" /&gt;
-&lt;xsl:variable name="_LCID"&gt;
-  &lt;xsl:call-template name="localLCID"&gt;
-    &lt;xsl:with-param name="LCID" select="$LCID"/&gt;
-  &lt;/xsl:call-template&gt;
-&lt;/xsl:variable&gt;
-&lt;xsl:value-of select="/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:CloseBracket"/&gt;
-</code></pre>
-
-<p>  &lt;/xsl:template>
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="ni">&amp;lt;</span>xsl:template name=&quot;templ_prop_OpenBracket&quot; &gt;<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>xsl:param name=&quot;LCID&quot; /<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>xsl:variable name=&quot;_LCID&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>xsl:call-template name=&quot;localLCID&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>xsl:with-param name=&quot;LCID&quot; select=&quot;$LCID&quot;/<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>/xsl:call-template<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>/xsl:variable<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>xsl:value-of select=&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:OpenBracket&quot;/<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>xsl:text<span class="ni">&amp;gt;</span>[<span class="ni">&amp;lt;</span>/xsl:text<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  <span class="ni">&amp;lt;</span>/xsl:template&gt;<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  <span class="ni">&amp;lt;</span>xsl:template name=&quot;templ_prop_CloseBracket&quot; &gt;<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>xsl:param name=&quot;LCID&quot; /<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>xsl:variable name=&quot;_LCID&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>xsl:call-template name=&quot;localLCID&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>xsl:with-param name=&quot;LCID&quot; select=&quot;$LCID&quot;/<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>/xsl:call-template<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>/xsl:variable<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>xsl:value-of select=&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:CloseBracket&quot;/<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  <span class="ni">&amp;lt;</span>/xsl:template&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>
     to this:</p>
 
 
-<p>{% codeblock lang:xml %}
-  &lt;xsl:template name="templ_prop_OpenBracket" ></p>
-
-<pre><code>&lt;xsl:param name="LCID" /&gt;
-&lt;xsl:variable name="_LCID"&gt;
-  &lt;xsl:call-template name="localLCID"&gt;
-    &lt;xsl:with-param name="LCID" select="$LCID"/&gt;
-  &lt;/xsl:call-template&gt;
-&lt;/xsl:variable&gt;
-&lt;!--&lt;xsl:value-of select="/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:OpenBracket"/&gt;--&gt;
-&lt;xsl:text&gt;[&lt;/xsl:text&gt;
-</code></pre>
-
-<p>  &lt;/xsl:template></p>
-
-<p>  &lt;xsl:template name="templ_prop_CloseBracket" ></p>
-
-<pre><code>&lt;xsl:param name="LCID" /&gt;
-&lt;xsl:variable name="_LCID"&gt;
-  &lt;xsl:call-template name="localLCID"&gt;
-    &lt;xsl:with-param name="LCID" select="$LCID"/&gt;
-  &lt;/xsl:call-template&gt;
-&lt;/xsl:variable&gt;
-&lt;!--&lt;xsl:value-of select="/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:CloseBracket"/&gt;--&gt;
-&lt;xsl:text&gt;]&lt;/xsl:text&gt;
-</code></pre>
-
-<p>  &lt;/xsl:template>
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>  <span class="ni">&amp;lt;</span>xsl:template name=&quot;templ_prop_OpenBracket&quot; &gt;<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>xsl:param name=&quot;LCID&quot; /<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>xsl:variable name=&quot;_LCID&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>xsl:call-template name=&quot;localLCID&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>xsl:with-param name=&quot;LCID&quot; select=&quot;$LCID&quot;/<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>/xsl:call-template<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>/xsl:variable<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>!--<span class="ni">&amp;lt;</span>xsl:value-of select=&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:OpenBracket&quot;/<span class="ni">&amp;gt;</span>--<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>xsl:text<span class="ni">&amp;gt;</span>[<span class="ni">&amp;lt;</span>/xsl:text<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  <span class="ni">&amp;lt;</span>/xsl:template&gt;<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  <span class="ni">&amp;lt;</span>xsl:template name=&quot;templ_prop_CloseBracket&quot; &gt;<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>xsl:param name=&quot;LCID&quot; /<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>xsl:variable name=&quot;_LCID&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>xsl:call-template name=&quot;localLCID&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>xsl:with-param name=&quot;LCID&quot; select=&quot;$LCID&quot;/<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>/xsl:call-template<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>/xsl:variable<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>!--<span class="ni">&amp;lt;</span>xsl:value-of select=&quot;/*/b:Locals/b:Local[@LCID=$_LCID]/b:General/b:CloseBracket&quot;/<span class="ni">&amp;gt;</span>--<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>xsl:text<span class="ni">&amp;gt;</span>]<span class="ni">&amp;lt;</span>/xsl:text<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  <span class="ni">&amp;lt;</span>/xsl:template&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   
