@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: F# | Code Beside]]></title>
   <link href="http://blog.codebeside.org/blog/tags/f-/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2014-03-21T22:35:32+00:00</updated>
+  <updated>2014-03-21T22:37:17+00:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[F# named union fields]]></title>
     <link href="http://blog.codebeside.org/blog/2014/03/21/fsharp-named-union-fields"/>
-    <updated>2014-03-21T22:35:00+00:00</updated>
+    <updated>2014-03-21T22:37:00+00:00</updated>
     <id>http://blog.codebeside.org/blog/2014/03/21/fsharp-named-union-fields</id>
     <content type="html"><![CDATA[<p>One of the new features in F# 3.1, and one that I really like, is the possibility to name fields of discriminated unions. From the <a href="http://blogs.msdn.com/b/fsharpteam/archive/2013/06/27/announcing-a-pre-release-of-f-3-1-and-the-visual-f-tools-in-visual-studio-2013.aspx">F# 3.1 announcement blog post</a>:</p>
 
@@ -28,7 +28,7 @@
 
 <p>What wasn't originally mentioned on that post, I just found out today, is that pattern match by name is not limited to a single element of the case: we can match on multiple elements by separating them by <code>;</code>.</p>
 
-<p>When we pattern match by position, the several elements are separated by <code>,</code>, and as that didn't work with union field names, I assumed it wasn't possible to at all. But it turns out it is possible if you use <code>;</code> instead. Here's an example taken from F# Data:</p>
+<p>When we pattern match by position, the several elements are separated by <code>,</code>, and as that didn't work with union field names, I assumed it wasn't possible to do at all. But it turns out it is possible if you use <code>;</code> instead. Here's an example taken from F# Data:</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
