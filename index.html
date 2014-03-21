@@ -9,7 +9,7 @@
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="Version 2.0.0 of FSharp.Data was just released. You can get the full version history on the release notes, but here are the highlights: A new type &hellip;">
+  <meta name="description" content="One of the new features in F# 3.1, and one that I really like, is the possibility to name fields of discriminated unions. From the F# 3.1 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +81,85 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/21/fsharp-named-union-fields">F# Named Union Fields</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-21T22:35:00+00:00" pubdate data-updated="true">Mar 21<span>st</span>, 2014</time>
+        
+         | <a href="/blog/2014/03/21/fsharp-named-union-fields#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>One of the new features in F# 3.1, and one that I really like, is the possibility to name fields of discriminated unions. From the <a href="http://blogs.msdn.com/b/fsharpteam/archive/2013/06/27/announcing-a-pre-release-of-f-3-1-and-the-visual-f-tools-in-visual-studio-2013.aspx">F# 3.1 announcement blog post</a>:</p>
+
+<blockquote><p>Discriminated union types are a powerful feature of F# which make programming with shaped data simple, accurate and robust. They also greatly reduce the number of classes needed to represent data in many common circumstances.</p>
+
+<p>In F# 3.1, it is now possible to name union fields within each case of a union type. This is important for large-scale software engineering, particularly when union cases have a large number of fields or multiple fields with the same type.</p>
+
+<p><img src="http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-01-39-71-metablogapi/2021.31blog_5F00_1_5F00_0EEA8EAA.png" alt="" /></p></blockquote>
+
+<p>What wasn&#8217;t originally mentioned on that post, I just found out today, is that pattern match by name is not limited to a single element of the case: we can match on multiple elements by separating them by <code>;</code>.</p>
+
+<p>When we pattern match by position, the several elements are separated by <code>,</code>, and as that didn&#8217;t work with union field names, I assumed it wasn&#8217;t possible to at all. But it turns out it is possible if you use <code>;</code> instead. Here&#8217;s an example taken from F# Data:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">type</span> <span class="nc">InferedType</span> <span class="o">=</span>
+</span><span class='line'>  <span class="o">|</span> <span class="nc">Primitive</span> <span class="k">of</span> <span class="n">typ</span><span class="o">:</span><span class="nn">System</span><span class="p">.</span><span class="nc">Type</span> <span class="o">*</span> <span class="kt">unit</span><span class="o">:</span><span class="n">option</span><span class="o">&lt;</span><span class="nn">System</span><span class="p">.</span><span class="nc">Type</span><span class="o">&gt;</span> <span class="o">*</span> <span class="n">optional</span><span class="o">:</span><span class="kt">bool</span>
+</span><span class='line'>  <span class="o">|</span> <span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// positional pattern match:</span>
+</span><span class='line'><span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Primitive</span><span class="o">(</span><span class="n">typ</span><span class="o">,</span> <span class="o">_,</span> <span class="bp">false</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">...</span>
+</span><span class='line'><span class="o">|</span> <span class="o">...</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// pattern match by name </span>
+</span><span class='line'><span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Primitive</span><span class="o">(</span><span class="n">typ</span> <span class="o">=</span> <span class="n">typ</span><span class="o">;</span> <span class="n">optional</span> <span class="o">=</span> <span class="bp">false</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">...</span>
+</span><span class='line'><span class="o">|</span> <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -553,68 +632,6 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/09/25/migrating-from-subtext-to-blogenginenet">Migrating From SubText to BlogEngine.NET</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-09-25T00:00:00+01:00" pubdate data-updated="true">Sep 25<span>th</span>, 2011</time>
-        
-         | <a href="/blog/2011/09/25/migrating-from-subtext-to-blogenginenet#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-	My blog was running in <a href="http://subtextproject.com">SubText</a>, but I&rsquo;ve recently changed to <a href="http://www.dotnetblogengine.net/">BlogEngine.NET</a>. The main reason for the change was that BlogEngine.NET supports storing the data in plain XML files, without having any dependency to a database. This makes it really easy to customize, as I can develop everything in my local machine, and then just send the files to the server. With SubText this was harder to do, so I ended up doing fewer tweaks, and doing them directly in production, which I didn&rsquo;t like.</p>
-<p>
-	The migration wasn&rsquo;t as smooth as I though it would be, so here are the steps I took, in case someone needs to go through a similar process:</p>
-<ul>
-	<li>
-		Exporting to BlogML and then importing didn&rsquo;t work correctly. After exporting, I had to <a href="http://garfoot.com/blog/2010/08/importing-blogml-into-wordpress/">convert the content from Base64</a>, replace the &amp;amp;&rsquo;s in the titles with &amp;, and then manually set the author in all post. I also had to set the tags manually in all posts, as in SubText they weren&rsquo;t a separate field but instead were part of the content of the posts. Having the posts on xml files on disk rather than on a database eased this job a lot.</li>
-	<li>
-		The TinyMCE bundled in BlogEngine.NET doesn&rsquo;t support images, so I had to <a href="http://jerryhuang.net/post/Replace-TinyMCE-with-CKEditor-and-CKFinder-in-BlogEngine-20.aspx">replace it with CKEditor and CKFinder</a>.</li>
-	<li>
-		The SubText post URL&#39;s have the format /archive/year/month/day/name-of-the-post.aspx, while BlogEngine.NET post URL&#39;s have the format /server/post/year/month/day/name-of-the-post.aspx. I had to set up redirection so the old links would keep working. To do that I&rsquo;ve taken the source code from <a href="http://www.blogenginewall.com/post/2011/04/01/BlogEngine-SEO-Permanent-Redirection-From-Old-URL-To-New-URL.aspx">BlogEngine SEO Redirection extension</a> and changed the comparison to only check prefixes (source code <a href="https://github.com/ovatsus/Blog/commit/a8c8c3f0984507182b2a0139aa2fcbdcb5a51358">here</a>).</li>
-	<li>
-		Several of the extensions available out there don&rsquo;t work out of the box with the latest version of BlogEngine.NET (2.5):
-		<ul>
-			<li>
-				For the AddThis extension I had to <a href="http://www.mbaldinger.com/post/AddThisNET-Social-Bookmarking-Buttons-for-Blogengine-v5.aspx#id_7b41fd26-f300-4029-b606-60b0cc2f0e6d">add some missing using&rsquo;s to the code</a>, and disable the form validation of the settings page (source code <a href="https://github.com/ovatsus/Blog/commit/931e4f13c76f8505ea65cd6d154fd29354526fbb">here</a>).</li>
-			<li>
-				To be able to configure widgets in the AllTuts theme, I had to make a small bug fix (as described in Janier Davila comment <a href="http://www.pravesh.me/alltuts-theme-blogenginenet-updated-v25/">here</a>)</li>
-		</ul>
-	</li>
-</ul>
-<p>
-	After all that work, now I have a setup that allows me to tweak the blog very easily. I have it on GitHub, cloned into my local machine and into the server. I can play around locally, and when I&rsquo;m glad with the results I just need to do a git push locally and then remote desktop to the server to do a git pull and force a reload of the application by touching the web.config.</p>
-<p>
-	Of course, to protect my passwords and keys, I have to tell git to ignore users.xml, akismetfilter.xml and recaptcha.xml, using <a href="http://blog.pagebakers.nl/2009/01/29/git-ignoring-changes-in-tracked-files/">this procedure</a>. And I also must take care with the email settings that are stored on the global settings.xml file, which forces me to always have that file uncommitted at the server, but other than that, it&rsquo;s orders of magnitude better than editing directly on production.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -643,6 +660,10 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/21/fsharp-named-union-fields">F# named union fields</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/10/fsharp-data-2-0-0-released">FSharp.Data 2.0.0 released</a>
       </li>
     
@@ -658,16 +679,12 @@ shipped as part of the standalone F# redistribution. There were even some nice <
         <a href="/blog/2013/07/21/fsharp-data-1-1-9-released">FSharp.Data 1.1.9 released</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2013/05/13/building-type-providers-part1">Building Type Providers - Part 1</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tags</h1>
   <span id="tag-cloud">
-    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 153.33333333333334%'>F#</a> <a href='/blog/tags/htmlagilitypack' style='font-size: 106.66666666666667%'>HtmlAgilityPack</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/screen-scraping' style='font-size: 106.66666666666667%'>Screen Scraping</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/type-providers' style='font-size: 120.0%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
+    <a href='/blog/tags/ajax' style='font-size: 106.66666666666667%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.66666666666667%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.66666666666667%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.66666666666667%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 160.0%'>F#</a> <a href='/blog/tags/htmlagilitypack' style='font-size: 106.66666666666667%'>HtmlAgilityPack</a> <a href='/blog/tags/linq' style='font-size: 120.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.66666666666667%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.66666666666667%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 160.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.66666666666667%'>PreSharp</a> <a href='/blog/tags/screen-scraping' style='font-size: 106.66666666666667%'>Screen Scraping</a> <a href='/blog/tags/sharpdevelop' style='font-size: 106.66666666666667%'>SharpDevelop</a> <a href='/blog/tags/type-providers' style='font-size: 120.0%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 106.66666666666667%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.66666666666667%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 113.33333333333333%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.66666666666667%'>XML</a> 
   </span>
 </section>
 <section>

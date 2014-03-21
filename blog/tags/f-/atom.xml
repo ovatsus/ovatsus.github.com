@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: F# | Code Beside]]></title>
   <link href="http://blog.codebeside.org/blog/tags/f-/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2014-03-10T02:00:52+00:00</updated>
+  <updated>2014-03-21T22:35:32+00:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -12,6 +12,53 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[F# named union fields]]></title>
+    <link href="http://blog.codebeside.org/blog/2014/03/21/fsharp-named-union-fields"/>
+    <updated>2014-03-21T22:35:00+00:00</updated>
+    <id>http://blog.codebeside.org/blog/2014/03/21/fsharp-named-union-fields</id>
+    <content type="html"><![CDATA[<p>One of the new features in F# 3.1, and one that I really like, is the possibility to name fields of discriminated unions. From the <a href="http://blogs.msdn.com/b/fsharpteam/archive/2013/06/27/announcing-a-pre-release-of-f-3-1-and-the-visual-f-tools-in-visual-studio-2013.aspx">F# 3.1 announcement blog post</a>:</p>
+
+<blockquote><p>Discriminated union types are a powerful feature of F# which make programming with shaped data simple, accurate and robust. They also greatly reduce the number of classes needed to represent data in many common circumstances.</p>
+
+<p>In F# 3.1, it is now possible to name union fields within each case of a union type. This is important for large-scale software engineering, particularly when union cases have a large number of fields or multiple fields with the same type.</p>
+
+<p><img src="http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-01-39-71-metablogapi/2021.31blog_5F00_1_5F00_0EEA8EAA.png" alt="" /></p></blockquote>
+
+<p>What wasn't originally mentioned on that post, I just found out today, is that pattern match by name is not limited to a single element of the case: we can match on multiple elements by separating them by <code>;</code>.</p>
+
+<p>When we pattern match by position, the several elements are separated by <code>,</code>, and as that didn't work with union field names, I assumed it wasn't possible to at all. But it turns out it is possible if you use <code>;</code> instead. Here's an example taken from F# Data:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">type</span> <span class="nc">InferedType</span> <span class="o">=</span>
+</span><span class='line'>  <span class="o">|</span> <span class="nc">Primitive</span> <span class="k">of</span> <span class="n">typ</span><span class="o">:</span><span class="nn">System</span><span class="p">.</span><span class="nc">Type</span> <span class="o">*</span> <span class="kt">unit</span><span class="o">:</span><span class="n">option</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nn">System</span><span class="p">.</span><span class="nc">Type</span><span class="o">&gt;</span> <span class="o">*</span> <span class="n">optional</span><span class="o">:</span><span class="kt">bool</span>
+</span><span class='line'>  <span class="o">|</span> <span class="o">...&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// positional pattern match:</span>
+</span><span class='line'><span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Primitive</span><span class="o">(</span><span class="n">typ</span><span class="o">,</span> <span class="o">_,</span> <span class="bp">false</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">...</span>
+</span><span class='line'><span class="o">|</span> <span class="o">...&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// pattern match by name</span>
+</span><span class='line'><span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Primitive</span><span class="o">(</span><span class="n">typ</span> <span class="o">=</span> <span class="n">typ</span><span class="o">;</span> <span class="n">optional</span> <span class="o">=</span> <span class="bp">false</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">...</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="o">|</span> <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[FSharp.Data 2.0.0 released]]></title>
@@ -716,80 +763,6 @@
 
 
 <p>There's still a lot of room for improvement, and we love pull requests, so please contribute, even if it's only fixing a typo in the docs. A getting started guide is available <a href="http://fsharp.github.io/FSharp.Data/contributing.html">here</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Building Type Providers - Part 1]]></title>
-    <link href="http://blog.codebeside.org/blog/2013/05/13/building-type-providers-part1"/>
-    <updated>2013-05-13T00:17:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2013/05/13/building-type-providers-part1</id>
-    <content type="html"><![CDATA[<p>Type Providers are the biggest new feature of F# 3.0. They allow us to leverage the power of the static type system in areas that have typically been the territory of dynamic languages and stringly typing. A picture is worth a thousand words, so here's 12 pictures that show type providers in action:</p>
-
-<blockquote><p><a href="http://blogs.msdn.com/b/dsyme/archive/2013/01/30/twelve-type-providers-in-pictures.aspx">All your types are belong to us</a></p></blockquote>
-
-<p>There are already several good samples and articles about using type providers, but there still isn't a lot about creating type providers. Having worked recently on <a href="http://fsharp.github.com/FSharp.Data/">FSharp.Data</a> I decided to share some tips about building type providers.</p>
-
-<!-- More -->
-
-
-<h2>Getting Started</h2>
-
-<p>The basic steps to creating a type provider are:</p>
-
-<ul>
-<li><p>Get the <code>ProvidedTypes.fs</code> and <code>ProvidedTypes.fsi</code> files from the <a href="http://fsharp3sample.codeplex.com/">F# 3.0 Sample Pack</a> and add it to your project.</p></li>
-<li><p>Follow the instructions in <a href="http://msdn.microsoft.com/en-gb/library/hh361034.aspx">Tutorial: Creating a Type Provider</a> to create instances of <code>ProvidedTypeDefinition</code>, <code>ProvidedProperty</code>, <code>ProvidedMethod</code>, etc. in order to to define the API you want.</p></li>
-</ul>
-
-
-<p>After you've read that tutorial, let's carry on...</p>
-
-<h2>Hiding the underlying representation</h2>
-
-<p>In the simplest of cases, there's no underlying representation, so you just set the base class of your provided types to <code>obj</code>. You'll create some expressions by wrapping code in <code>&lt;@@ ... @@&gt;</code> to create quotations, and assign them to the <code>InvokeCode</code> and <code>GetterCode</code> properties of your provided methods and properties, completely ignoring the <code>this</code> argument that is passed to them. After compilation, there will be no mention whatsoever of your provided types, they will have been all erased, and the only thing left is that code you defined inside the quotations. Effectively, the type providers are only giving you syntactic sugar and IntelliSense over things you could already accomplish without using them.</p>
-
-<p>However, in most cases, there will be some underlying data representation, and you will probably want to create some types to hold that data. A big part of the logic will be in these types, and you'll specify them as the base classes of your provided types. In this case, the F# compiler will copy and embed those base types in the assembly that is consuming the type provider. This means that in addition to the syntactic sugar, the assembly that's referencing the type providers will also have some more additional code.</p>
-
-<p>As expected, all the members of the base types will appear on the IntelliSense of the provided types. In some situations, that's a good thing, and exactly what you wanted. On other cases (and I would guess most of the time), you intended those members to be just internal code to be used inside the implementation of the provided methods and properties, and you don't want them to show up, as after all Type Providers are mostly about providing a nice API to its users. You can see this effect on the current version of the <a href="http://www.tryfsharp.org/Learn/data-science#world-bank-type-provider">World Bank type provider on TryF#</a>. If you press the dot after <code>data</code>, you'll see that in addition to <code>Countries</code> and <code>Regions</code>, the IntelliSense pop-up will also include <code>_GetCountries</code>, <code>_GetRegions</code> and other members that aren't intended for direct use. The ideal would be for them not to show up. How can we do that?</p>
-
-<ul>
-<li>If you came from an OO background, the first thing you'd think would be to make those members protected, but there is no <code>protected</code> modifier in F#. Even if there was, you're not really creating a type and inheriting from the base type, it's all erased.</li>
-<li>You can't also make those members <code>internal</code>, because your runtime representation types are always considered to belong to the type provider assembly, and not to the assembly that is using the type provider, even when the F# compiler copies those types over.</li>
-<li>In C#, you can decorate methods and properties with <code>[System.ComponentModel.Browsable(false)]</code> to have them not show up on IntelliSense, but unfortunately that doesn't work in F#.</li>
-<li>You can create an interface with those members, and make your runtime representation types implement that interface. That way, they won't show up on IntelliSense because F# always does explicit interface implementation. This won't work for static members though.</li>
-<li>The constructors of the erased to types don't show up on the IntelliSense, so you can replace some static members like <code>Parse</code> and <code>Load</code> with constructors instead.</li>
-<li>If you define a <code>ProvidedMethod</code> with the same parameter types of one of the methods of the runtime representation type, just with a different return type, that method will effectively be hidden, and you won't need to do anything to hide it.</li>
-<li><code>ProvidedTypeDefinition</code> has a <code>HideObjectMethods</code> property that allows you to hide the <code>GetHashCode()</code>, <code>GetType()</code>, <code>ToString()</code> and <code>Equals</code> methods from IntelliSense, but if the base type overrides any of those methods, they will show up anyway. I still haven't found a workaround for this.</li>
-</ul>
-
-
-<p>The <a href="http://fsharp.github.com/FSharp.Data/">FSharp.Data</a> version of the World Bank type provider (and this also applies to the CSV, XML, JSON and Freebase type providers) uses interfaces and constructors to hide the unwanted members, so you don't see any <code>_Something</code> method.</p>
-
-<h2>Splitting into two assemblies</h2>
-
-<p>When the type provider starts to get bigger, you might want to separate the runtime and design-time components into two separate assemblies. You also need to do this when you want to support multiple .NET framework profiles (like Silverlight or Portable Class Libraries), where you can have a single design-time assembly, but a different runtime assembly for each profile.</p>
-
-<p>In this scenario, the design-time assembly can't just reference the runtime assembly, because there are multiple versions of them. And even if you're not supporting multiple profiles, the design-time assemblies of type providers are loaded inside the F# compiler process, which makes any assembly dependency for the design-time component to not work correctly. To work around this, usually there's no dependency between the design-time assembly and the runtime assembly, and instead we include all the files of the runtime assembly directly in the design-time assembly. This may increase the size of the design-time component, but it's not a big deal because that dll doesn't need to be included in the final application.</p>
-
-<p>But with this solution, comes a big problem: your quotations will stop working. Why? Because you're referencing the types of the wrong assembly. To overcome this, the <code>TypeProviderConfig</code> that is passed to your type provider has a <code>RuntimeAssembly</code> property which allows you to load the runtime component using <code>Assembly.LoadFrom</code>, get the types you need using <code>Assembly.GetType</code>, and construct your expressions manually from that. Most of the samples in the <a href="http://fsharp3sample.codeplex.com/">F# 3.0 Sample Pack</a> use this. Great, problem solved, right?</p>
-
-<p>Back in January, I started adding support for portable class libraries in <a href="http://fsharp.github.com/FSharp.Data/">FSharp.Data</a> because I wanted to use it on some Windows Phone and Windows 8 apps. After changing a couple of places from quotations to manually creating expression and using the reflection API, I though to myself:</p>
-
-<blockquote><p>"No! The code was nice and clean with type safe quotations, and now I'm turning it to this mess with error prone reflection calls using a stringly typed api. It's a huge step back. There has to be a better way."</p></blockquote>
-
-<p>And eventually after a couple of failed attempts and a lot of discussion on the github issue, I finally arrived at a solution: process the quotations to fix the type references to the right assembly. This is done by <code>AssemblyReplacer</code>, which you can find <a href="https://github.com/fsharp/FSharp.Data/blob/master/src/Providers/AssemblyReplacer.fs">here</a>. It's pretty much independent of the rest of <a href="http://fsharp.github.com/FSharp.Data/">FSharp.Data</a>, so you can just copy it over to your type provider project if you need it.</p>
-
-<p>There are places where even without splitting the type provider into a design-time and runtime assembly, it isn't possible to use quotations, and you still need to keep creating expressions manually. That only happens when you use generics parameterized by a type generated by the type provider. For those, cases <a href="http://tomasp.net/">Tomas</a> has created a nice dynamic operator (?) implementation in <code>QuotationBuilder</code> which is available <a href="https://github.com/fsharp/FSharp.Data/blob/master/src/Providers/QuotationBuilder.fs">here</a>.</p>
-
-<h2>Coming Next</h2>
-
-<ul>
-<li>Debugging type providers</li>
-<li>Supporting multiple .NET framework profiles</li>
-<li>Common errors found during type provider development</li>
-</ul>
-
 ]]></content>
   </entry>
   
