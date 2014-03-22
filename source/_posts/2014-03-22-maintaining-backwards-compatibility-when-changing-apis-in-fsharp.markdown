@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Maintaining backwards compatibility when changing APIs in F#"
-date: 2014-03-22 18:19
+date: 2014-03-22 18:37
 comments: true
 categories: [F#]
 ---
@@ -118,8 +118,8 @@ type Rectangle =
 
 // for backwards compatibility:
 let (|Rectangle|) x =
-    match x with 
-    | Rectangle2(topLeft, size) -> Some(topLeft, Point(topLeft.X + size.Width, topLeft.Y + size.Height))
+    match x with
+    | Rectangle2(topLeft, size) -> Rectangle(topLeft, Point(topLeft.X + size.Width, topLeft.Y + size.Height))
 
 // for backwards compatibility:
 let Rectangle(topLeft:Point, bottomRight:Point) = 
