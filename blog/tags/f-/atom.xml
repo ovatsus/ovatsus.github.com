@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: F# | Code Beside]]></title>
   <link href="http://blog.codebeside.org/blog/tags/f-/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2014-03-22T18:38:00+00:00</updated>
+  <updated>2014-03-22T18:41:34+00:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Maintaining backwards compatibility when changing APIs in F#]]></title>
     <link href="http://blog.codebeside.org/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp"/>
-    <updated>2014-03-22T18:37:00+00:00</updated>
+    <updated>2014-03-22T18:41:00+00:00</updated>
     <id>http://blog.codebeside.org/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp</id>
     <content type="html"><![CDATA[<h3>Classes</h3>
 
@@ -264,7 +264,7 @@
 </span><span class='line'><span class="k">let</span> <span class="o">(|</span><span class="nc">Rectangle</span><span class="o">|)</span> <span class="n">x</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
-</span><span class='line'><span class="o">|</span> <span class="nc">Rectangle2</span><span class="o">(</span><span class="n">topLeft</span><span class="o">,</span> <span class="n">size</span><span class="o">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nc">Rectangle</span><span class="o">(</span><span class="n">topLeft</span><span class="o">,</span> <span class="nc">Point</span><span class="o">(</span><span class="n">topLeft</span><span class="o">.</span><span class="nc">X</span> <span class="o">+</span> <span class="n">size</span><span class="o">.</span><span class="nc">Width</span><span class="o">,</span> <span class="n">topLeft</span><span class="o">.</span><span class="nc">Y</span> <span class="o">+</span> <span class="n">size</span><span class="o">.</span><span class="nc">Height</span><span class="o">))</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Rectangle2</span><span class="o">(</span><span class="n">topLeft</span><span class="o">,</span> <span class="n">size</span><span class="o">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">topLeft</span><span class="o">,</span> <span class="nc">Point</span><span class="o">(</span><span class="n">topLeft</span><span class="o">.</span><span class="nc">X</span> <span class="o">+</span> <span class="n">size</span><span class="o">.</span><span class="nc">Width</span><span class="o">,</span> <span class="n">topLeft</span><span class="o">.</span><span class="nc">Y</span> <span class="o">+</span> <span class="n">size</span><span class="o">.</span><span class="nc">Height</span><span class="o">)</span>
 </span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// for backwards compatibility:</span>
