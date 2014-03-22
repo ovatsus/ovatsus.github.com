@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: F# | Code Beside]]></title>
   <link href="http://blog.codebeside.org/blog/tags/f-/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2014-03-21T22:37:17+00:00</updated>
+  <updated>2014-03-22T18:19:29+00:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -12,6 +12,431 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Maintaining backwards compatibility when changing APIs in F#]]></title>
+    <link href="http://blog.codebeside.org/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp"/>
+    <updated>2014-03-22T18:19:00+00:00</updated>
+    <id>http://blog.codebeside.org/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp</id>
+    <content type="html"><![CDATA[<h3>Classes</h3>
+
+<p>By now, mostly everyone already knows how to change the internal representation of a class without breaking compatibility. In C#:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="c1">// Before</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Rectangle</span> <span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="k">public</span> <span class="n">Point</span> <span class="n">TopLeft</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="k">public</span> <span class="n">Point</span> <span class="n">BottomRight</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="nf">Rectangle</span><span class="p">(</span><span class="n">Point</span> <span class="n">topLeft</span><span class="p">,</span> <span class="n">Point</span> <span class="n">bottomRight</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">TopLeft</span> <span class="p">=</span> <span class="n">topLeft</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">BottomRight</span> <span class="p">=</span> <span class="n">bottomRight</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;</span><span class="c1">// After</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Rectangle</span> <span class="p">{&lt;/</span><span class="n">p</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;&lt;</span><span class="n">code</span><span class="p">&gt;</span><span class="k">public</span> <span class="n">Point</span> <span class="n">TopLeft</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'><span class="k">public</span> <span class="n">Point</span> <span class="n">Size</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="nf">Rectangle</span><span class="p">(</span><span class="n">Point</span> <span class="n">topLeft</span><span class="p">,</span> <span class="n">Size</span> <span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">TopLeft</span> <span class="p">=</span> <span class="n">topLeft</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">Size</span> <span class="p">=</span> <span class="n">size</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// for backwards compatibility:</span>
+</span><span class='line'><span class="k">public</span> <span class="nf">Rectangle</span><span class="p">(</span><span class="n">Point</span> <span class="n">topLeft</span><span class="p">,</span> <span class="n">Point</span> <span class="n">bottomRight</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">TopLeft</span> <span class="p">=</span> <span class="n">topLeft</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">Size</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Size</span><span class="p">(</span><span class="n">bottomRight</span><span class="p">.</span><span class="n">X</span> <span class="p">-</span> <span class="n">topLeft</span><span class="p">.</span><span class="n">X</span><span class="p">,</span> <span class="n">bottomRight</span><span class="p">.</span><span class="n">Y</span> <span class="p">-</span> <span class="n">topLeft</span><span class="p">.</span><span class="n">Y</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// for backwards compatibility:</span>
+</span><span class='line'><span class="k">public</span> <span class="n">Point</span> <span class="n">BottomRight</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="k">new</span> <span class="n">Point</span><span class="p">(</span><span class="n">TopLeft</span><span class="p">.</span><span class="n">X</span> <span class="p">+</span> <span class="n">Size</span><span class="p">.</span><span class="n">Width</span><span class="p">,</span> <span class="n">TopLeft</span><span class="p">.</span><span class="n">Y</span> <span class="p">+</span> <span class="n">Size</span><span class="p">.</span><span class="n">Height</span><span class="p">);</span> <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="p">&lt;/</span><span class="n">code</span><span class="p">&gt;&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">&lt;</span><span class="n">p</span><span class="p">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>and in F#:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="c1">// Before</span>
+</span><span class='line'><span class="k">type</span> <span class="nc">Rectangle</span><span class="o">(</span><span class="n">topLeft</span><span class="o">:</span><span class="nc">Point</span><span class="o">,</span> <span class="n">bottomRight</span><span class="o">:</span><span class="nc">Point</span><span class="o">)</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">member</span> <span class="o">__.</span><span class="nc">TopLeft</span> <span class="o">=</span> <span class="n">topLeft</span>
+</span><span class='line'><span class="k">member</span> <span class="o">__.</span><span class="nc">BottomRight</span> <span class="o">=</span> <span class="n">bottomRight</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// After</span>
+</span><span class='line'><span class="k">type</span> <span class="nc">Rectangle</span><span class="o">(</span><span class="n">topLeft</span><span class="o">:</span><span class="nc">Point</span><span class="o">,</span> <span class="n">size</span><span class="o">:</span><span class="nc">Size</span><span class="o">)</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">member</span> <span class="o">__.</span><span class="nc">TopLeft</span> <span class="o">=</span> <span class="n">topLeft</span>
+</span><span class='line'><span class="k">member</span> <span class="o">__.</span><span class="nc">Size</span> <span class="o">=</span> <span class="n">size</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// for backwards compatibility:</span>
+</span><span class='line'><span class="k">new</span> <span class="o">(</span><span class="n">topLeft</span><span class="o">:</span><span class="nc">Point</span><span class="o">,</span> <span class="n">bottomRight</span><span class="o">:</span><span class="nc">Point</span><span class="o">)</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nc">Rectangle</span><span class="o">(</span><span class="n">topLeft</span><span class="o">,</span> <span class="nc">Point</span><span class="o">(</span><span class="n">bottomRight</span><span class="o">.</span><span class="nc">X</span> <span class="o">-</span> <span class="n">topLeft</span><span class="o">.</span><span class="nc">X</span><span class="o">,</span> <span class="n">bottomRight</span><span class="o">.</span><span class="nc">Y</span> <span class="o">-</span> <span class="n">topLeft</span><span class="o">.</span><span class="nc">Y</span><span class="o">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// for backwards compatibility:</span>
+</span><span class='line'><span class="k">member</span> <span class="o">__.</span><span class="nc">BottomRight</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nc">Point</span><span class="o">(</span><span class="n">topLeft</span><span class="o">.</span><span class="nc">X</span> <span class="o">+</span> <span class="n">size</span><span class="o">.</span><span class="nc">Width</span><span class="o">,</span> <span class="n">topLeft</span><span class="o">.</span><span class="nc">Y</span> <span class="o">+</span> <span class="n">size</span><span class="o">.</span><span class="nc">Height</span><span class="o">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h3>Records</h3>
+
+<p>When using record types, things are a little bit more tricky, though:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="c1">// Before</span>
+</span><span class='line'><span class="k">type</span> <span class="nc">Rectangle</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;{</span> <span class="nc">TopLeft</span> <span class="o">:</span> <span class="nc">Point</span>
+</span><span class='line'>  <span class="nc">BottomRight</span> <span class="o">:</span> <span class="nc">Point</span> <span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// After</span>
+</span><span class='line'><span class="k">type</span> <span class="nc">Rectangle</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;{</span> <span class="nc">TopLeft</span> <span class="o">:</span> <span class="nc">Point</span>
+</span><span class='line'>  <span class="nc">Size</span> <span class="o">:</span> <span class="nc">Size</span> <span class="o">}</span>
+</span><span class='line'><span class="k">member</span> <span class="n">x</span><span class="o">.</span><span class="nc">BottomRight</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nc">Point</span><span class="o">(</span><span class="n">x</span><span class="o">.</span><span class="nn">TopLeft</span><span class="p">.</span><span class="nc">X</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="nn">Size</span><span class="p">.</span><span class="nc">Width</span><span class="o">,</span> <span class="n">x</span><span class="o">.</span><span class="nn">TopLeft</span><span class="p">.</span><span class="nc">Y</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="nn">Size</span><span class="p">.</span><span class="nc">Height</span><span class="o">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This change will keep working at the usages of Rectangle, but not at creation, as there isn't a way (at least that I know of) to make something like <code>{ TopLeft = Point(2.5, 3.0); BottomRight = Point(4.0, 7.5) }</code> keep working. This can be avoided if we originally had hidden the fact that Rectangle was representation as a record, like this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">type</span> <span class="nc">Rectangle</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">private</span> <span class="o">{</span> <span class="nc">TL</span> <span class="o">:</span> <span class="nc">Point</span>
+</span><span class='line'>          <span class="nc">BR</span> <span class="o">:</span> <span class="nc">Point</span> <span class="o">}</span>
+</span><span class='line'><span class="k">member</span> <span class="n">x</span><span class="o">.</span><span class="nc">TopLeft</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="nc">TL</span>
+</span><span class='line'><span class="k">member</span> <span class="n">x</span><span class="o">.</span><span class="nc">BottomRight</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="nc">BR</span>
+</span><span class='line'><span class="k">static</span> <span class="k">member</span> <span class="nc">Create</span><span class="o">(</span><span class="n">topLeft</span><span class="o">,</span> <span class="n">bottomRight</span><span class="o">)</span> <span class="o">=</span>
+</span><span class='line'>    <span class="o">{</span> <span class="nc">TL</span> <span class="o">=</span> <span class="n">topLeft</span><span class="o">;</span> <span class="nc">BR</span> <span class="o">=</span> <span class="n">bottomRight</span> <span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>But for me this seems to defeat some of the advantages of using a record in the first place. You still get structural equality and pretty printing for free, which classes don't have, but you lose the nice pattern matching and type inference capabilities that usually come with records.</p>
+
+<h3>Single case discriminated unions</h3>
+
+<p>The situation for discriminated unions is better, though. For each changed case, you can use one active pattern and a function to maintain backward compatibility:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="c1">// Before</span>
+</span><span class='line'><span class="k">type</span> <span class="nc">Rectangle</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;|</span> <span class="nc">Rectange</span> <span class="k">of</span> <span class="n">topLeft</span><span class="o">:</span><span class="nc">Point</span> <span class="o">*</span> <span class="n">bottomRight</span><span class="o">:</span><span class="nc">Point</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// After</span>
+</span><span class='line'><span class="k">type</span> <span class="nc">Rectangle</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;|</span> <span class="nc">Rectangle2</span> <span class="k">of</span> <span class="n">topLeft</span><span class="o">:</span><span class="nc">Point</span> <span class="o">*</span> <span class="n">size</span><span class="o">:</span><span class="nc">Size</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// for backwards compatibility:</span>
+</span><span class='line'><span class="k">let</span> <span class="o">(|</span><span class="nc">Rectangle</span><span class="o">|)</span> <span class="n">x</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Rectangle2</span><span class="o">(</span><span class="n">topLeft</span><span class="o">,</span> <span class="n">size</span><span class="o">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nc">Some</span><span class="o">(</span><span class="n">topLeft</span><span class="o">,</span> <span class="nc">Point</span><span class="o">(</span><span class="n">topLeft</span><span class="o">.</span><span class="nc">X</span> <span class="o">+</span> <span class="n">size</span><span class="o">.</span><span class="nc">Width</span><span class="o">,</span> <span class="n">topLeft</span><span class="o">.</span><span class="nc">Y</span> <span class="o">+</span> <span class="n">size</span><span class="o">.</span><span class="nc">Height</span><span class="o">))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// for backwards compatibility:</span>
+</span><span class='line'><span class="k">let</span> <span class="nc">Rectangle</span><span class="o">(</span><span class="n">topLeft</span><span class="o">:</span><span class="nc">Point</span><span class="o">,</span> <span class="n">bottomRight</span><span class="o">:</span><span class="nc">Point</span><span class="o">)</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nc">Rectangle2</span><span class="o">(</span><span class="n">topLeft</span><span class="o">,</span> <span class="nc">Size</span><span class="o">(</span><span class="n">bottomRight</span><span class="o">.</span><span class="nc">X</span> <span class="o">-</span> <span class="n">topLeft</span><span class="o">.</span><span class="nc">X</span><span class="o">,</span> <span class="n">bottomRight</span><span class="o">.</span><span class="nc">Y</span> <span class="o">-</span> <span class="n">topLeft</span><span class="o">.</span><span class="nc">Y</span><span class="o">))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The downside is that the new discriminated union case has to have a new name, otherwise the function for backward compatibility will shadow the case constructor. This might not necessarily be a bad thing, though.</p>
+
+<p>We could also make the discriminated union representation private, like we did for the record:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">type</span> <span class="nc">Rectangle</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">private</span> <span class="o">|</span> <span class="nc">Rectangle</span> <span class="k">of</span> <span class="n">topLeft</span><span class="o">:</span><span class="nc">Point</span> <span class="o">*</span> <span class="n">bottomRight</span><span class="o">:</span><span class="nc">Point</span>
+</span><span class='line'><span class="k">member</span> <span class="n">x</span><span class="o">.</span><span class="nc">TopLeft</span> <span class="o">=</span>
+</span><span class='line'>    <span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+</span><span class='line'>    <span class="o">|</span> <span class="nc">Rectangle</span><span class="o">(</span><span class="n">topLeft</span><span class="o">,</span> <span class="o">_)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">topLeft</span>
+</span><span class='line'><span class="k">member</span> <span class="n">x</span><span class="o">.</span><span class="nc">BottomRight</span> <span class="o">=</span>
+</span><span class='line'>    <span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+</span><span class='line'>    <span class="o">|</span> <span class="nc">Rectangle</span><span class="o">(_,</span> <span class="n">bottomRight</span><span class="o">)</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">bottomRight</span>
+</span><span class='line'><span class="k">static</span> <span class="k">member</span> <span class="nc">Create</span><span class="o">(</span><span class="n">topLeft</span><span class="o">,</span> <span class="n">bottomRight</span><span class="o">)</span> <span class="o">=</span>
+</span><span class='line'>    <span class="nc">Rectangle</span><span class="o">(</span><span class="n">topLeft</span><span class="o">,</span> <span class="n">bottomRight</span><span class="o">)</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>When we're deciding between using a record or a single case discriminated union, these considerations might help decide.</p>
+
+<h3>Multiple case discriminated unions</h3>
+
+<p>When we have discriminated unions with multiple cases, the same technique also applies, but now we need to use partial active patterns instead (<code>(|Pattern|_|)</code> returning an option instead of <code>(|Pattern|)</code> returning the type directly). Here's an example:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="c1">// Before</span>
+</span><span class='line'><span class="o">[&lt;</span><span class="nc">RequireQualifiedAccess</span><span class="o">&gt;]</span>
+</span><span class='line'><span class="k">type</span> <span class="nc">JsonValue</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;|</span> <span class="nc">String</span> <span class="k">of</span> <span class="kt">string</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Number</span> <span class="k">of</span> <span class="kt">decimal</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Float</span> <span class="k">of</span> <span class="kt">float</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Object</span> <span class="k">of</span> <span class="nc">Map</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="kt">string</span><span class="o">,</span> <span class="nc">JsonValue</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Array</span> <span class="k">of</span> <span class="nc">JsonValue</span><span class="bp">[]</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Boolean</span> <span class="k">of</span> <span class="kt">bool</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Null</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// After</span>
+</span><span class='line'><span class="o">[&lt;</span><span class="nc">RequireQualifiedAccess</span><span class="o">&gt;]</span>
+</span><span class='line'><span class="k">type</span> <span class="nc">JsonValue</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;|</span> <span class="nc">String</span> <span class="k">of</span> <span class="kt">string</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Number</span> <span class="k">of</span> <span class="kt">decimal</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Float</span> <span class="k">of</span> <span class="kt">float</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Record</span> <span class="k">of</span> <span class="n">properties</span><span class="o">:(</span><span class="kt">string</span><span class="o">*</span><span class="nc">JsonValue</span><span class="o">)</span><span class="bp">[]</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Array</span> <span class="k">of</span> <span class="n">elements</span><span class="o">:</span><span class="nc">JsonValue</span><span class="bp">[]</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Boolean</span> <span class="k">of</span> <span class="kt">bool</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Null</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;[&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nc">CompilationRepresentation</span><span class="o">(</span><span class="nn">CompilationRepresentationFlags</span><span class="p">.</span><span class="nc">ModuleSuffix</span><span class="o">)&gt;]</span>
+</span><span class='line'><span class="k">module</span> <span class="nc">JsonValue</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;[&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nc">Obsolete</span><span class="o">(</span><span class="s2">&quot;Please use JsonValue.Record instead&quot;</span><span class="o">)&amp;</span><span class="n">gt</span><span class="o">;]</span>
+</span><span class='line'><span class="k">let</span> <span class="o">(|</span><span class="nc">Object</span><span class="o">|_|)</span> <span class="n">x</span> <span class="o">=</span>
+</span><span class='line'>    <span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+</span><span class='line'>    <span class="o">|</span> <span class="nn">JsonValue</span><span class="p">.</span><span class="nc">Record</span> <span class="n">properties</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">Map</span><span class="p">.</span><span class="n">ofArray</span> <span class="n">properties</span> <span class="o">|&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nc">Some</span>
+</span><span class='line'>    <span class="o">|</span> <span class="o">_</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nc">None</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">[&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nc">Obsolete</span><span class="o">(</span><span class="s2">&quot;Please use JsonValue.Record instead&quot;</span><span class="o">)&amp;</span><span class="n">gt</span><span class="o">;]</span>
+</span><span class='line'><span class="k">let</span> <span class="nc">Object</span> <span class="o">=</span> <span class="nn">Map</span><span class="p">.</span><span class="n">toArray</span> <span class="o">&amp;</span><span class="n">gt</span><span class="o">;&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nn">JsonValue</span><span class="p">.</span><span class="nc">Record</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>In this example, because <code>[&lt;RequireQualifiedAccess&gt;]</code> was being used, we have to include the active pattern and the compatibility function in a module, and use <code>[&lt;CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)&gt;]</code> to be able to maintain the exact same syntax. We also marked the backward compatibility constructs with the <code>Obsolete</code> attribute because we don't want new users to be using the old discriminated union case. This attribute will make sure the old case doesn't show up in IntelliSense, and will also issue a warning to old users.</p>
+
+<p>There's one extra caveat, though. Consider the following code:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">let</span> <span class="n">f</span> <span class="n">x</span> <span class="o">=&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">String</span> <span class="n">s</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">...</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Number</span> <span class="n">n</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">...</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Float</span> <span class="n">f</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">...</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Object</span> <span class="n">properties</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">...</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Array</span> <span class="n">a</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">...</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Boolean</span> <span class="n">b</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">...</span>
+</span><span class='line'><span class="o">|</span> <span class="nc">Null</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">...</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Even though we're handling all the cases, we get a warning stating <strong>this pattern-matching is not exhaustive</strong>. This is because the compiler doesn't know what <code>Object</code> will match on: it's a custom defined partial active pattern, so the implementation could match on multiple cases or even none at all.</p>
+
+<h3>Final thoughts</h3>
+
+<p>In all of the above we were only concerned with source compatibility. Binary compatibility has other concerns that would require further exploration.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[F# named union fields]]></title>
@@ -741,28 +1166,6 @@
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FSharp.Data 1.1.9 released]]></title>
-    <link href="http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released"/>
-    <updated>2013-07-21T22:14:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released</id>
-    <content type="html"><![CDATA[<p>We've just released version <a href="http://www.nuget.org/packages/FSharp.Data/1.1.9">1.1.9</a> of <a href="http://fsharp.github.io/FSharp.Data/">FSharp.Data</a>, and I realized we've not been announcing new releases since version 1.1.1 when Tomas <a href="http://tomasp.net/blog/fsharp-data.aspx">first announced it</a>, so I though I'd rectify that. In addition to bug fixes, here what's has been added to FSharp.Data since then:</p>
-
-<ul>
-<li>The behaviour of CsvProvider can be fine tuned by using the HasHeaders, Schema, IgnoreErrors, SafeMode, and PreferOptionals parameters. See the CsvProvider documentation <a href="http://fsharp.github.io/FSharp.Data/library/CsvProvider.html">here</a>.</li>
-<li>The CSV Parser and Reader can now be used standalone. See the CsvFile documentation <a href="http://fsharp.github.io/FSharp.Data/library/CsvFile.html">here</a>.</li>
-<li>Guid types are now supported in CsvProvider, JsonProvider, and XmlProvider.</li>
-<li>Support to disable caching for CSV files too big to fit in memory.</li>
-<li>Support for cookies, binary files and client certificates in FSharp.Net.Http.</li>
-<li>Save, Filter, Take, TakeWhile, Skip, SkipWhile, and Truncate operations for CsvProvider and CsvFile.</li>
-<li>Support for Windows Phone 7.</li>
-</ul>
-
-
-<p>There's still a lot of room for improvement, and we love pull requests, so please contribute, even if it's only fixing a typo in the docs. A getting started guide is available <a href="http://fsharp.github.io/FSharp.Data/contributing.html">here</a>.</p>
 ]]></content>
   </entry>
   
