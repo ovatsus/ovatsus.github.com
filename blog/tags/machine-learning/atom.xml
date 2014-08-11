@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: Machine Learning | Functional Flow]]></title>
-  <link href="http://blog.codebeside.org/blog/tags/machine-learning/atom.xml" rel="self"/>
-  <link href="http://blog.codebeside.org/"/>
-  <updated>2014-08-11T10:02:39+01:00</updated>
-  <id>http://blog.codebeside.org/</id>
+  <link href="http://functionalflow.co.uk/blog/tags/machine-learning/atom.xml" rel="self"/>
+  <link href="http://functionalflow.co.uk/"/>
+  <updated>2014-08-11T10:23:04+01:00</updated>
+  <id>http://functionalflow.co.uk/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[F# as a Octave/Matlab replacement for Machine Learning]]></title>
-    <link href="http://blog.codebeside.org/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning"/>
+    <link href="http://functionalflow.co.uk/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning"/>
     <updated>2011-10-27T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning</id>
+    <id>http://functionalflow.co.uk/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning</id>
     <content type="html"><![CDATA[<p>
     <strong>EDIT</strong>: As another version of the ml-class course has started, I&#39;ve made the repository private</p>
 
@@ -144,7 +144,7 @@
 
 
 <p>
-    <a href="http://blog.codebeside.org/images/image.png"><img alt="image" border="0" height="217" src="http://blog.codebeside.org/images/image_thumb.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_1.png"><img alt="image" border="0" height="217" src="http://blog.codebeside.org/images/image_thumb_1.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_2.png"><img alt="image" border="0" height="217" src="http://blog.codebeside.org/images/image_thumb_2.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_3.png"><img alt="image" border="0" height="217" src="http://blog.codebeside.org/images/image_thumb_3.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
+    <a href="http://functionalflow.co.uk/images/image.png"><img alt="image" border="0" height="217" src="http://functionalflow.co.uk/images/image_thumb.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://functionalflow.co.uk/images/image_1.png"><img alt="image" border="0" height="217" src="http://functionalflow.co.uk/images/image_thumb_1.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://functionalflow.co.uk/images/image_2.png"><img alt="image" border="0" height="217" src="http://functionalflow.co.uk/images/image_thumb_2.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://functionalflow.co.uk/images/image_3.png"><img alt="image" border="0" height="217" src="http://functionalflow.co.uk/images/image_thumb_3.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
 
 
 <p>
@@ -152,7 +152,7 @@
 
 
 <p>
-    <a href="http://blog.codebeside.org/images/image_4.png"><img alt="image" border="0" height="244" src="http://blog.codebeside.org/images/image_thumb_4.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_5.png"><img alt="image" border="0" height="244" src="http://blog.codebeside.org/images/image_thumb_5.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_6.png"><img alt="image" border="0" height="244" src="http://blog.codebeside.org/images/image_thumb_6.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_7.png"><img alt="image" border="0" height="244" src="http://blog.codebeside.org/images/image_thumb_7.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
+    <a href="http://functionalflow.co.uk/images/image_4.png"><img alt="image" border="0" height="244" src="http://functionalflow.co.uk/images/image_thumb_4.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://functionalflow.co.uk/images/image_5.png"><img alt="image" border="0" height="244" src="http://functionalflow.co.uk/images/image_thumb_5.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://functionalflow.co.uk/images/image_6.png"><img alt="image" border="0" height="244" src="http://functionalflow.co.uk/images/image_thumb_6.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://functionalflow.co.uk/images/image_7.png"><img alt="image" border="0" height="244" src="http://functionalflow.co.uk/images/image_thumb_7.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
 
 
 <p>

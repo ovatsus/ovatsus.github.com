@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: Windows Phone | Functional Flow]]></title>
-  <link href="http://blog.codebeside.org/blog/tags/windows-phone/atom.xml" rel="self"/>
-  <link href="http://blog.codebeside.org/"/>
-  <updated>2014-08-11T10:02:39+01:00</updated>
-  <id>http://blog.codebeside.org/</id>
+  <link href="http://functionalflow.co.uk/blog/tags/windows-phone/atom.xml" rel="self"/>
+  <link href="http://functionalflow.co.uk/"/>
+  <updated>2014-08-11T10:23:04+01:00</updated>
+  <id>http://functionalflow.co.uk/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[F#, Windows Phone 7 & Visual Studio 2012]]></title>
-    <link href="http://blog.codebeside.org/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012"/>
+    <link href="http://functionalflow.co.uk/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012"/>
     <updated>2013-02-24T00:00:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012</id>
+    <id>http://functionalflow.co.uk/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012</id>
     <content type="html"><![CDATA[<p>F# 2.0 supported Silverlight 4, Silverlight 5, and Windows Phone 7.1, as several versions of FSharp.Core.dll were
 shipped as part of the standalone F# redistribution. There were even some nice <a href="http://blogs.msdn.com/b/dsyme/archive/2010/08/20/f-windows-phone-7-silverlight-templates-now-on-visual-studio-gallery.aspx">Visual Studio 2010 templates</a> made by <a href="http://bloggemdano.blogspot.co.uk/">Daniel Mohl</a>.</p>
 

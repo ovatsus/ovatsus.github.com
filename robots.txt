@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://blog.codebeside.org/sitemap.xml 
+Sitemap: http://functionalflow.co.uk/sitemap.xml 

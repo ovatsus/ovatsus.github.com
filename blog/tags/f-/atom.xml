@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: F# | Functional Flow]]></title>
-  <link href="http://blog.codebeside.org/blog/tags/f-/atom.xml" rel="self"/>
-  <link href="http://blog.codebeside.org/"/>
-  <updated>2014-08-11T10:02:39+01:00</updated>
-  <id>http://blog.codebeside.org/</id>
+  <link href="http://functionalflow.co.uk/blog/tags/f-/atom.xml" rel="self"/>
+  <link href="http://functionalflow.co.uk/"/>
+  <updated>2014-08-11T10:23:04+01:00</updated>
+  <id>http://functionalflow.co.uk/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Maintaining backwards compatibility when changing APIs in F#]]></title>
-    <link href="http://blog.codebeside.org/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp"/>
+    <link href="http://functionalflow.co.uk/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp"/>
     <updated>2014-03-22T18:41:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp</id>
+    <id>http://functionalflow.co.uk/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp</id>
     <content type="html"><![CDATA[<h3>Classes</h3>
 
 <p>By now, mostly everyone already knows how to change the internal representation of a class without breaking compatibility. In C#:</p>
@@ -440,9 +440,9 @@
   
   <entry>
     <title type="html"><![CDATA[F# named union fields]]></title>
-    <link href="http://blog.codebeside.org/blog/2014/03/21/fsharp-named-union-fields"/>
+    <link href="http://functionalflow.co.uk/blog/2014/03/21/fsharp-named-union-fields"/>
     <updated>2014-03-21T22:37:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2014/03/21/fsharp-named-union-fields</id>
+    <id>http://functionalflow.co.uk/blog/2014/03/21/fsharp-named-union-fields</id>
     <content type="html"><![CDATA[<p>One of the new features in F# 3.1, and one that I really like, is the possibility to name fields of discriminated unions. From the <a href="http://blogs.msdn.com/b/fsharpteam/archive/2013/06/27/announcing-a-pre-release-of-f-3-1-and-the-visual-f-tools-in-visual-studio-2013.aspx">F# 3.1 announcement blog post</a>:</p>
 
 <blockquote><p>Discriminated union types are a powerful feature of F# which make programming with shaped data simple, accurate and robust. They also greatly reduce the number of classes needed to represent data in many common circumstances.</p>
@@ -487,9 +487,9 @@
   
   <entry>
     <title type="html"><![CDATA[FSharp.Data 2.0.0 released]]></title>
-    <link href="http://blog.codebeside.org/blog/2014/03/10/fsharp-data-2-0-0-released"/>
+    <link href="http://functionalflow.co.uk/blog/2014/03/10/fsharp-data-2-0-0-released"/>
     <updated>2014-03-10T02:00:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2014/03/10/fsharp-data-2-0-0-released</id>
+    <id>http://functionalflow.co.uk/blog/2014/03/10/fsharp-data-2-0-0-released</id>
     <content type="html"><![CDATA[<p>Version <a href="http://www.nuget.org/packages/FSharp.Data/2.0.0">2.0.0</a> of <a href="http://fsharp.github.io/FSharp.Data/">FSharp.Data</a> was just released. You can get the full version history on the <a href="https://github.com/fsharp/FSharp.Data/blob/master/RELEASE_NOTES.md">release notes</a>, but here are the highlights:</p>
 
 <ul>
@@ -529,9 +529,9 @@
   
   <entry>
     <title type="html"><![CDATA[Higher order list operations across languages]]></title>
-    <link href="http://blog.codebeside.org/blog/2013/11/10/higher-order-list-operations-across-languages"/>
+    <link href="http://functionalflow.co.uk/blog/2013/11/10/higher-order-list-operations-across-languages"/>
     <updated>2013-11-10T21:55:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2013/11/10/higher-order-list-operations-across-languages</id>
+    <id>http://functionalflow.co.uk/blog/2013/11/10/higher-order-list-operations-across-languages</id>
     <content type="html"><![CDATA[<p>Did this table out of curiosity, decided to share it:</p>
 
 <pre>
@@ -558,9 +558,9 @@
   
   <entry>
     <title type="html"><![CDATA[F# for Screen Scraping]]></title>
-    <link href="http://blog.codebeside.org/blog/2013/10/14/fsharp-for-screen-scraping"/>
+    <link href="http://functionalflow.co.uk/blog/2013/10/14/fsharp-for-screen-scraping"/>
     <updated>2013-10-14T23:58:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2013/10/14/fsharp-for-screen-scraping</id>
+    <id>http://functionalflow.co.uk/blog/2013/10/14/fsharp-for-screen-scraping</id>
     <content type="html"><![CDATA[<p>One of the many things F# is great for is screen scraping. Here's why:</p>
 
 <ul>

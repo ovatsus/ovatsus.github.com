@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: OutSystems | Functional Flow]]></title>
-  <link href="http://blog.codebeside.org/blog/tags/outsystems/atom.xml" rel="self"/>
-  <link href="http://blog.codebeside.org/"/>
-  <updated>2014-08-11T10:02:39+01:00</updated>
-  <id>http://blog.codebeside.org/</id>
+  <link href="http://functionalflow.co.uk/blog/tags/outsystems/atom.xml" rel="self"/>
+  <link href="http://functionalflow.co.uk/"/>
+  <updated>2014-08-11T10:23:04+01:00</updated>
+  <id>http://functionalflow.co.uk/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Agile Platform 5.1.1]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/12/18/agile-platform-5-1-1"/>
+    <link href="http://functionalflow.co.uk/blog/2010/12/18/agile-platform-5-1-1"/>
     <updated>2010-12-18T00:00:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/12/18/agile-platform-5-1-1</id>
+    <id>http://functionalflow.co.uk/blog/2010/12/18/agile-platform-5-1-1</id>
     <content type="html"><![CDATA[<p>
     We&rsquo;ve recently released version 5.1.1 of the Agile Platform. It&rsquo;s got a lot of great new features and an improved look &amp; feel. And better yet, it&rsquo;s compatible with 5.1.0, so you don&rsquo;t need to upgrade your server.</p>
 
@@ -34,9 +34,9 @@
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #7]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/08/23/agile-platform-tips-amp-tricks-7"/>
+    <link href="http://functionalflow.co.uk/blog/2010/08/23/agile-platform-tips-amp-tricks-7"/>
     <updated>2010-08-23T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/08/23/agile-platform-tips-amp-tricks-7</id>
+    <id>http://functionalflow.co.uk/blog/2010/08/23/agile-platform-tips-amp-tricks-7</id>
     <content type="html"><![CDATA[<h4>
     How to change the page styles dynamically at runtime</h4>
 
@@ -68,7 +68,7 @@
 
 
 <p>
-    &nbsp;<a href="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
+    &nbsp;<a href="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
 
 
 <p>
@@ -92,16 +92,16 @@
 
 
 <p>
-    <a href="http://blog.codebeside.org/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>
+    <a href="http://functionalflow.co.uk/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #6]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-6"/>
+    <link href="http://functionalflow.co.uk/blog/2010/08/18/agile-platform-tips-amp-tricks-6"/>
     <updated>2010-08-18T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-6</id>
+    <id>http://functionalflow.co.uk/blog/2010/08/18/agile-platform-tips-amp-tricks-6</id>
     <content type="html"><![CDATA[<h4>
     Calling Screen Actions from custom JavaScript events</h4>
 
@@ -119,22 +119,22 @@
 
 
 <p>
-    <a href="http://blog.codebeside.org/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>
+    <a href="http://functionalflow.co.uk/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #5]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-5"/>
+    <link href="http://functionalflow.co.uk/blog/2010/08/18/agile-platform-tips-amp-tricks-5"/>
     <updated>2010-08-18T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-5</id>
+    <id>http://functionalflow.co.uk/blog/2010/08/18/agile-platform-tips-amp-tricks-5</id>
     <content type="html"><![CDATA[<p>
     When you need to change a public element of an eSpace, such as an Action or a Web Block, it&rsquo;s good to know before-hand where that element is being used, so you can anticipate possible problems. To do that, you can go to Service Center and check the References tab in the page relative to your eSpace. There you will find listed all the consumers of your eSpace, and if you click on the Details links next to each consumer eSpace, you can check which specific elements are being used:</p>
 
 
 <p>
-    <a href="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks5_BFEF/image_2.png"><img alt="image" border="0" height="332" src="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+    <a href="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks5_BFEF/image_2.png"><img alt="image" border="0" height="332" src="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
 
 
 <p>
@@ -143,16 +143,16 @@
 
 
 <p>
-    <a href="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks5_BFEF/image_4.png"><img alt="image" border="0" height="285" src="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+    <a href="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks5_BFEF/image_4.png"><img alt="image" border="0" height="285" src="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #4]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/03/29/service-studio-tips-amp-tricks-4"/>
+    <link href="http://functionalflow.co.uk/blog/2010/03/29/service-studio-tips-amp-tricks-4"/>
     <updated>2010-03-29T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/03/29/service-studio-tips-amp-tricks-4</id>
+    <id>http://functionalflow.co.uk/blog/2010/03/29/service-studio-tips-amp-tricks-4</id>
     <content type="html"><![CDATA[<p>
     <br />
     If you seen this post on the Agile Network Forums - <a href="http://www.outsystems.com/NetworkForums/ViewTopic.aspx?Topic=Usability-Tip-(Ctrl%2Bshift%2Bclick)">Usability Tip (Ctrl+shift+click)</a> - you already know a quick way to get some extra space between two elements in a flow.</p>

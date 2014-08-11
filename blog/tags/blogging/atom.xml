@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: Blogging | Functional Flow]]></title>
-  <link href="http://blog.codebeside.org/blog/tags/blogging/atom.xml" rel="self"/>
-  <link href="http://blog.codebeside.org/"/>
-  <updated>2014-08-11T10:02:39+01:00</updated>
-  <id>http://blog.codebeside.org/</id>
+  <link href="http://functionalflow.co.uk/blog/tags/blogging/atom.xml" rel="self"/>
+  <link href="http://functionalflow.co.uk/"/>
+  <updated>2014-08-11T10:23:04+01:00</updated>
+  <id>http://functionalflow.co.uk/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Migrating from SubText to BlogEngine.NET]]></title>
-    <link href="http://blog.codebeside.org/blog/2011/09/25/migrating-from-subtext-to-blogenginenet"/>
+    <link href="http://functionalflow.co.uk/blog/2011/09/25/migrating-from-subtext-to-blogenginenet"/>
     <updated>2011-09-25T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2011/09/25/migrating-from-subtext-to-blogenginenet</id>
+    <id>http://functionalflow.co.uk/blog/2011/09/25/migrating-from-subtext-to-blogenginenet</id>
     <content type="html"><![CDATA[<p>
     My blog was running in <a href="http://subtextproject.com">SubText</a>, but I&rsquo;ve recently changed to <a href="http://www.dotnetblogengine.net/">BlogEngine.NET</a>. The main reason for the change was that BlogEngine.NET supports storing the data in plain XML files, without having any dependency to a database. This makes it really easy to customize, as I can develop everything in my local machine, and then just send the files to the server. With SubText this was harder to do, so I ended up doing fewer tweaks, and doing them directly in production, which I didn&rsquo;t like.</p>
 

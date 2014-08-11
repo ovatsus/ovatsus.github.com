@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Functional Flow]]></title>
-  <link href="http://blog.codebeside.org/atom.xml" rel="self"/>
-  <link href="http://blog.codebeside.org/"/>
-  <updated>2014-08-11T10:02:39+01:00</updated>
-  <id>http://blog.codebeside.org/</id>
+  <link href="http://functionalflow.co.uk/atom.xml" rel="self"/>
+  <link href="http://functionalflow.co.uk/"/>
+  <updated>2014-08-11T10:23:04+01:00</updated>
+  <id>http://functionalflow.co.uk/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Maintaining backwards compatibility when changing APIs in F#]]></title>
-    <link href="http://blog.codebeside.org/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp"/>
+    <link href="http://functionalflow.co.uk/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp"/>
     <updated>2014-03-22T18:41:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp</id>
+    <id>http://functionalflow.co.uk/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp</id>
     <content type="html"><![CDATA[<h3>Classes</h3>
 
 <p>By now, mostly everyone already knows how to change the internal representation of a class without breaking compatibility. In C#:</p>
@@ -362,9 +362,9 @@
   
   <entry>
     <title type="html"><![CDATA[F# named union fields]]></title>
-    <link href="http://blog.codebeside.org/blog/2014/03/21/fsharp-named-union-fields"/>
+    <link href="http://functionalflow.co.uk/blog/2014/03/21/fsharp-named-union-fields"/>
     <updated>2014-03-21T22:37:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2014/03/21/fsharp-named-union-fields</id>
+    <id>http://functionalflow.co.uk/blog/2014/03/21/fsharp-named-union-fields</id>
     <content type="html"><![CDATA[<p>One of the new features in F# 3.1, and one that I really like, is the possibility to name fields of discriminated unions. From the <a href="http://blogs.msdn.com/b/fsharpteam/archive/2013/06/27/announcing-a-pre-release-of-f-3-1-and-the-visual-f-tools-in-visual-studio-2013.aspx">F# 3.1 announcement blog post</a>:</p>
 
 <blockquote><p>Discriminated union types are a powerful feature of F# which make programming with shaped data simple, accurate and robust. They also greatly reduce the number of classes needed to represent data in many common circumstances.</p>
@@ -412,9 +412,9 @@
   
   <entry>
     <title type="html"><![CDATA[FSharp.Data 2.0.0 released]]></title>
-    <link href="http://blog.codebeside.org/blog/2014/03/10/fsharp-data-2-0-0-released"/>
+    <link href="http://functionalflow.co.uk/blog/2014/03/10/fsharp-data-2-0-0-released"/>
     <updated>2014-03-10T02:00:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2014/03/10/fsharp-data-2-0-0-released</id>
+    <id>http://functionalflow.co.uk/blog/2014/03/10/fsharp-data-2-0-0-released</id>
     <content type="html"><![CDATA[<p>Version <a href="http://www.nuget.org/packages/FSharp.Data/2.0.0">2.0.0</a> of <a href="http://fsharp.github.io/FSharp.Data/">FSharp.Data</a> was just released. You can get the full version history on the <a href="https://github.com/fsharp/FSharp.Data/blob/master/RELEASE_NOTES.md">release notes</a>, but here are the highlights:</p>
 
 <ul>
@@ -454,9 +454,9 @@
   
   <entry>
     <title type="html"><![CDATA[Higher order list operations across languages]]></title>
-    <link href="http://blog.codebeside.org/blog/2013/11/10/higher-order-list-operations-across-languages"/>
+    <link href="http://functionalflow.co.uk/blog/2013/11/10/higher-order-list-operations-across-languages"/>
     <updated>2013-11-10T21:55:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2013/11/10/higher-order-list-operations-across-languages</id>
+    <id>http://functionalflow.co.uk/blog/2013/11/10/higher-order-list-operations-across-languages</id>
     <content type="html"><![CDATA[<p>Did this table out of curiosity, decided to share it:</p>
 
 <pre>
@@ -483,9 +483,9 @@
   
   <entry>
     <title type="html"><![CDATA[F# for Screen Scraping]]></title>
-    <link href="http://blog.codebeside.org/blog/2013/10/14/fsharp-for-screen-scraping"/>
+    <link href="http://functionalflow.co.uk/blog/2013/10/14/fsharp-for-screen-scraping"/>
     <updated>2013-10-14T23:58:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2013/10/14/fsharp-for-screen-scraping</id>
+    <id>http://functionalflow.co.uk/blog/2013/10/14/fsharp-for-screen-scraping</id>
     <content type="html"><![CDATA[<p>One of the many things F# is great for is screen scraping. Here&#8217;s why:</p>
 
 <ul>
@@ -978,9 +978,9 @@
   
   <entry>
     <title type="html"><![CDATA[FSharp.Data 1.1.9 released]]></title>
-    <link href="http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released"/>
+    <link href="http://functionalflow.co.uk/blog/2013/07/21/fsharp-data-1-1-9-released"/>
     <updated>2013-07-21T22:14:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2013/07/21/fsharp-data-1-1-9-released</id>
+    <id>http://functionalflow.co.uk/blog/2013/07/21/fsharp-data-1-1-9-released</id>
     <content type="html"><![CDATA[<p>We&#8217;ve just released version <a href="http://www.nuget.org/packages/FSharp.Data/1.1.9">1.1.9</a> of <a href="http://fsharp.github.io/FSharp.Data/">FSharp.Data</a>, and I realized we&#8217;ve not been announcing new releases since version 1.1.1 when Tomas <a href="http://tomasp.net/blog/fsharp-data.aspx">first announced it</a>, so I though I&#8217;d rectify that. In addition to bug fixes, here what&#8217;s has been added to FSharp.Data since then:</p>
 
 <ul>
@@ -1000,9 +1000,9 @@
   
   <entry>
     <title type="html"><![CDATA[Building Type Providers - Part 1]]></title>
-    <link href="http://blog.codebeside.org/blog/2013/05/13/building-type-providers-part1"/>
+    <link href="http://functionalflow.co.uk/blog/2013/05/13/building-type-providers-part1"/>
     <updated>2013-05-13T00:17:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2013/05/13/building-type-providers-part1</id>
+    <id>http://functionalflow.co.uk/blog/2013/05/13/building-type-providers-part1</id>
     <content type="html"><![CDATA[<p>Type Providers are the biggest new feature of F# 3.0. They allow us to leverage the power of the static type system in areas that have typically been the territory of dynamic languages and stringly typing. A picture is worth a thousand words, so here&#8217;s 12 pictures that show type providers in action:</p>
 
 <blockquote><p><a href="http://blogs.msdn.com/b/dsyme/archive/2013/01/30/twelve-type-providers-in-pictures.aspx">All your types are belong to us</a></p></blockquote>
@@ -1074,9 +1074,9 @@
   
   <entry>
     <title type="html"><![CDATA[F#, Windows Phone 7 & Visual Studio 2012]]></title>
-    <link href="http://blog.codebeside.org/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012"/>
+    <link href="http://functionalflow.co.uk/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012"/>
     <updated>2013-02-24T00:00:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012</id>
+    <id>http://functionalflow.co.uk/blog/2013/02/24/fsharp-windows-phone-7-visual-studio-2012</id>
     <content type="html"><![CDATA[<p>F# 2.0 supported Silverlight 4, Silverlight 5, and Windows Phone 7.1, as several versions of FSharp.Core.dll were
 shipped as part of the standalone F# redistribution. There were even some nice <a href="http://blogs.msdn.com/b/dsyme/archive/2010/08/20/f-windows-phone-7-silverlight-templates-now-on-visual-studio-gallery.aspx">Visual Studio 2010 templates</a> made by <a href="http://bloggemdano.blogspot.co.uk/">Daniel Mohl</a>.</p>
 
@@ -1250,9 +1250,9 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   
   <entry>
     <title type="html"><![CDATA[F# as a Octave/Matlab replacement for Machine Learning]]></title>
-    <link href="http://blog.codebeside.org/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning"/>
+    <link href="http://functionalflow.co.uk/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning"/>
     <updated>2011-10-27T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning</id>
+    <id>http://functionalflow.co.uk/blog/2011/10/27/f-as-a-octavematlab-replacement-for-machine-learning</id>
     <content type="html"><![CDATA[<p>
 	<strong>EDIT</strong>: As another version of the ml-class course has started, I&#39;ve made the repository private</p>
 <p>
@@ -1341,11 +1341,11 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 <p>
 	Mimicking Matlab charting capabilities was a bit more tricky. For the majority of charting I&rsquo;m using <a href="http://code.msdn.microsoft.com/FSharpChart-b59073f5">FSharpChart</a>, but the Microsoft Chart Controls that it wraps don&rsquo;t support contour nor surface plots. For contour plots I ended up using <a href="http://dynamicdatadisplay.codeplex.com/">WPF Dynamic Data Display</a>, and for surface plots I adapted a <a href="http://www.codeproject.com/KB/WPF/WPFChart3D.aspx">sample from CodeProject</a>. I&rsquo;m not really happy with the surface plot, as it&rsquo;s really very basic, so I&rsquo;ll definitely try to improve it in the future. Here&rsquo;s a sample of charts from Matlab:</p>
 <p>
-	<a href="http://blog.codebeside.org/images/image.png"><img alt="image" border="0" height="217" src="http://blog.codebeside.org/images/image_thumb.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_1.png"><img alt="image" border="0" height="217" src="http://blog.codebeside.org/images/image_thumb_1.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_2.png"><img alt="image" border="0" height="217" src="http://blog.codebeside.org/images/image_thumb_2.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_3.png"><img alt="image" border="0" height="217" src="http://blog.codebeside.org/images/image_thumb_3.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
+	<a href="http://functionalflow.co.uk/images/image.png"><img alt="image" border="0" height="217" src="http://functionalflow.co.uk/images/image_thumb.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://functionalflow.co.uk/images/image_1.png"><img alt="image" border="0" height="217" src="http://functionalflow.co.uk/images/image_thumb_1.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://functionalflow.co.uk/images/image_2.png"><img alt="image" border="0" height="217" src="http://functionalflow.co.uk/images/image_thumb_2.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://functionalflow.co.uk/images/image_3.png"><img alt="image" border="0" height="217" src="http://functionalflow.co.uk/images/image_thumb_3.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
 <p>
 	And here are the equivalent ones I was able to produce in F#:</p>
 <p>
-	<a href="http://blog.codebeside.org/images/image_4.png"><img alt="image" border="0" height="244" src="http://blog.codebeside.org/images/image_thumb_4.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_5.png"><img alt="image" border="0" height="244" src="http://blog.codebeside.org/images/image_thumb_5.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_6.png"><img alt="image" border="0" height="244" src="http://blog.codebeside.org/images/image_thumb_6.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://blog.codebeside.org/images/image_7.png"><img alt="image" border="0" height="244" src="http://blog.codebeside.org/images/image_thumb_7.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
+	<a href="http://functionalflow.co.uk/images/image_4.png"><img alt="image" border="0" height="244" src="http://functionalflow.co.uk/images/image_thumb_4.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://functionalflow.co.uk/images/image_5.png"><img alt="image" border="0" height="244" src="http://functionalflow.co.uk/images/image_thumb_5.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://functionalflow.co.uk/images/image_6.png"><img alt="image" border="0" height="244" src="http://functionalflow.co.uk/images/image_thumb_6.png" style="background-image: none; border-right-width: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a><a href="http://functionalflow.co.uk/images/image_7.png"><img alt="image" border="0" height="244" src="http://functionalflow.co.uk/images/image_thumb_7.png" style="background-image: none; border-right-width: 0px; margin: 0px; padding-left: 0px; padding-right: 0px; display: inline; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; padding-top: 0px" title="image" width="244" /></a></p>
 <p>
 	I&rsquo;m putting this available at <a href="https://github.com/ovatsus/MLClass">https://github.com/ovatsus/MLClass</a>. I&rsquo;m only going to push the commits weekly after the class exercise deadlines expire, so at the time of this post only the implementation of the Linear Regression exercises is available.</p>
 <p>
@@ -1415,9 +1415,9 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   
   <entry>
     <title type="html"><![CDATA[Introducing PreSharp]]></title>
-    <link href="http://blog.codebeside.org/blog/2011/10/02/introducing-presharp"/>
+    <link href="http://functionalflow.co.uk/blog/2011/10/02/introducing-presharp"/>
     <updated>2011-10-02T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2011/10/02/introducing-presharp</id>
+    <id>http://functionalflow.co.uk/blog/2011/10/02/introducing-presharp</id>
     <content type="html"><![CDATA[<h3>Background</h3>  <p>Back in 2004, I was doing some code-generation work as part of the <a href="http://www.gsd.inesc-id.pt/project-pages/past-projects/obiwan">OBIWAN</a> project. When I started, CodeDom was being used to do the work, but I really didn’t like it because it made the generator code very hard to read and modify. Realistically, I would not need to support any other language than C#, so I started looking for alternatives. <a href="http://www.codesmithtools.com/product/generator">CodeSmith</a> was very popular at the time for generating type-safe collections (.NET 2.0 generics didn’t exist yet), but it was targeted at one-shot generations, and not at creating code generation code. Then I found a very simple tool named <a href="http://web.archive.org/web/20060726075638/http://www.inmetrix.com/">CodeGen</a> that appealed to me. I had been playing around with the <a href="http://www.boost.org/doc/libs/?view=category_Preprocessor">Boost Preprocessor library</a> recently, so I really liked the idea of using the preprocessor. I did a few tweaks to it and was able to use it for my needs at the time. Later on, around mid-2007, I needed to do code-generation again, so I took this tool and added a good amount of more power to it. At this time, it was very far apart from the original code, so I re-baptized it as PreSharp and published it to CodePlex. I never got around to do any documentation for it, so I’m making this post to try to compensate for that. I also moved the project recently from CodePlex to <a href="https://github.com/ovatsus/PreSharp">GitHub</a>.</p>
 <!-- more -->
 <h3>PreSharp as a C# Preprocessor</h3>  <p>Let’s say we’re using .NET 2.0 which doesn’t have the Func&lt;&gt; delegates and we want to define our own: </p>
@@ -1847,9 +1847,9 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   
   <entry>
     <title type="html"><![CDATA[Microsoft: please eat some more of your WPF-flavored dog food]]></title>
-    <link href="http://blog.codebeside.org/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food"/>
+    <link href="http://functionalflow.co.uk/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food"/>
     <updated>2011-09-27T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food</id>
+    <id>http://functionalflow.co.uk/blog/2011/09/27/microsoft-please-eat-some-more-of-your-wpf-flavored-dog-food</id>
     <content type="html"><![CDATA[<p>
 	I have&nbsp; a love-hate relationship with WPF.</p>
 <p>
@@ -1871,9 +1871,9 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   
   <entry>
     <title type="html"><![CDATA[Migrating from SubText to BlogEngine.NET]]></title>
-    <link href="http://blog.codebeside.org/blog/2011/09/25/migrating-from-subtext-to-blogenginenet"/>
+    <link href="http://functionalflow.co.uk/blog/2011/09/25/migrating-from-subtext-to-blogenginenet"/>
     <updated>2011-09-25T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2011/09/25/migrating-from-subtext-to-blogenginenet</id>
+    <id>http://functionalflow.co.uk/blog/2011/09/25/migrating-from-subtext-to-blogenginenet</id>
     <content type="html"><![CDATA[<p>
 	My blog was running in <a href="http://subtextproject.com">SubText</a>, but I&rsquo;ve recently changed to <a href="http://www.dotnetblogengine.net/">BlogEngine.NET</a>. The main reason for the change was that BlogEngine.NET supports storing the data in plain XML files, without having any dependency to a database. This makes it really easy to customize, as I can develop everything in my local machine, and then just send the files to the server. With SubText this was harder to do, so I ended up doing fewer tweaks, and doing them directly in production, which I didn&rsquo;t like.</p>
 <p>
@@ -1904,9 +1904,9 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   
   <entry>
     <title type="html"><![CDATA[Agile Platform 5.1.1]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/12/18/agile-platform-5-1-1"/>
+    <link href="http://functionalflow.co.uk/blog/2010/12/18/agile-platform-5-1-1"/>
     <updated>2010-12-18T00:00:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/12/18/agile-platform-5-1-1</id>
+    <id>http://functionalflow.co.uk/blog/2010/12/18/agile-platform-5-1-1</id>
     <content type="html"><![CDATA[<p>
 	We&rsquo;ve recently released version 5.1.1 of the Agile Platform. It&rsquo;s got a lot of great new features and an improved look &amp; feel. And better yet, it&rsquo;s compatible with 5.1.0, so you don&rsquo;t need to upgrade your server.</p>
 <p>
@@ -1918,9 +1918,9 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   
   <entry>
     <title type="html"><![CDATA[How to change Word 2007 citation style to use square brackets]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square"/>
+    <link href="http://functionalflow.co.uk/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square"/>
     <updated>2010-09-27T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square</id>
+    <id>http://functionalflow.co.uk/blog/2010/09/27/how-to-change-word-2007-citation-style-to-use-square</id>
     <content type="html"><![CDATA[<p>
 	This one was not easy to discover, so I&rsquo;m going to post it here for future reference.</p>
 <p>
@@ -2020,9 +2020,9 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #7]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/08/23/agile-platform-tips-amp-tricks-7"/>
+    <link href="http://functionalflow.co.uk/blog/2010/08/23/agile-platform-tips-amp-tricks-7"/>
     <updated>2010-08-23T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/08/23/agile-platform-tips-amp-tricks-7</id>
+    <id>http://functionalflow.co.uk/blog/2010/08/23/agile-platform-tips-amp-tricks-7</id>
     <content type="html"><![CDATA[<h4>
 	How to change the page styles dynamically at runtime</h4>
 <p>
@@ -2042,7 +2042,7 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 <p>
 	All these style sheets are statically defined at design time and can&rsquo;t be dynamically changed at runtime, but it&rsquo;s possible to include more style sheets at runtime that override the static ones. That allows us to do cool things like giving a specific user a different style sheet, changing the color scheme to red when some critical situation is happening, or even letting the user choose the style sheet of his preference, like this:</p>
 <p>
-	&nbsp;<a href="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
+	&nbsp;<a href="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
 <p>
 	To accomplish this, we need to do two things:</p>
 <ol>
@@ -2056,15 +2056,15 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 <p>
 	For #2, the AddStyleSheetTag action from the HTTPRequestHandler extension seems an obvious choice, but that will put the &lt;link&gt; tag at the beginning of the &lt;head&gt; section. As we want our dynamic style sheets to override the static style sheets, we must include them at the end, so this option doesn&rsquo;t work for us. Fortunately, we can also do this easily by using a little bit of JavaScript. For a complete example, take a look at this eSpace:</p>
 <p>
-	<a href="http://blog.codebeside.org/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>
+	<a href="http://functionalflow.co.uk/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #6]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-6"/>
+    <link href="http://functionalflow.co.uk/blog/2010/08/18/agile-platform-tips-amp-tricks-6"/>
     <updated>2010-08-18T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-6</id>
+    <id>http://functionalflow.co.uk/blog/2010/08/18/agile-platform-tips-amp-tricks-6</id>
     <content type="html"><![CDATA[<h4>
 	Calling Screen Actions from custom JavaScript events</h4>
 <p>
@@ -2074,32 +2074,32 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 <p>
 	Fortunately, there&rsquo;s a simpler way to do this. It involves using the OnNotify property of a Web Block widget, call it by using OsNotifyWidget JavaScript function,&nbsp; and in the associated Screen Action using the NotifyWidgetGetMessage built-in action to get the tab that was activated. Instead of explaining it in detail, I&rsquo;ve made a sample eSpace that exemplifies this scenario. Here it is:</p>
 <p>
-	<a href="http://blog.codebeside.org/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>
+	<a href="http://functionalflow.co.uk/userfiles/FruitsAndVegetables.oml">FruitsAndVegetables.oml</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #5]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-5"/>
+    <link href="http://functionalflow.co.uk/blog/2010/08/18/agile-platform-tips-amp-tricks-5"/>
     <updated>2010-08-18T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/08/18/agile-platform-tips-amp-tricks-5</id>
+    <id>http://functionalflow.co.uk/blog/2010/08/18/agile-platform-tips-amp-tricks-5</id>
     <content type="html"><![CDATA[<p>
 	When you need to change a public element of an eSpace, such as an Action or a Web Block, it&rsquo;s good to know before-hand where that element is being used, so you can anticipate possible problems. To do that, you can go to Service Center and check the References tab in the page relative to your eSpace. There you will find listed all the consumers of your eSpace, and if you click on the Details links next to each consumer eSpace, you can check which specific elements are being used:</p>
 <p>
-	<a href="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks5_BFEF/image_2.png"><img alt="image" border="0" height="332" src="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+	<a href="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks5_BFEF/image_2.png"><img alt="image" border="0" height="332" src="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
 <p>
 	<br />
 	To help to improve this process, I&rsquo;ve recently published the <a href="http://www.outsystems.com/forge/Component_Detail.aspx?ProjectId=161" title="References Dashboard">References Dashboard</a> component on the OutSystems Network. It has similar functionality to this tab of Service Center, but the consumers are grouped by element instead of by consumer eSpace, allowing for faster search:</p>
 <p>
-	<a href="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks5_BFEF/image_4.png"><img alt="image" border="0" height="285" src="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
+	<a href="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks5_BFEF/image_4.png"><img alt="image" border="0" height="285" src="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks5_BFEF/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="562" /></a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #4]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/03/29/service-studio-tips-amp-tricks-4"/>
+    <link href="http://functionalflow.co.uk/blog/2010/03/29/service-studio-tips-amp-tricks-4"/>
     <updated>2010-03-29T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/03/29/service-studio-tips-amp-tricks-4</id>
+    <id>http://functionalflow.co.uk/blog/2010/03/29/service-studio-tips-amp-tricks-4</id>
     <content type="html"><![CDATA[<p>
 	<br />
 	If you seen this post on the Agile Network Forums - <a href="http://www.outsystems.com/NetworkForums/ViewTopic.aspx?Topic=Usability-Tip-(Ctrl%2Bshift%2Bclick)">Usability Tip (Ctrl+shift+click)</a> - you already know a quick way to get some extra space between two elements in a flow.</p>
@@ -2112,9 +2112,9 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #3]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/03/20/agile-platform-tips-amp-tricks-3"/>
+    <link href="http://functionalflow.co.uk/blog/2010/03/20/agile-platform-tips-amp-tricks-3"/>
     <updated>2010-03-20T00:00:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/03/20/agile-platform-tips-amp-tricks-3</id>
+    <id>http://functionalflow.co.uk/blog/2010/03/20/agile-platform-tips-amp-tricks-3</id>
     <content type="html"><![CDATA[<p>
 	<br />
 	In the previous post, I showed an accelerator to easily create a Query for an edit or show screen by dragging an Input Parameter of an Entity Identifier type to the Preparation. In 5.0.2, there&rsquo;s an even easier way to do this.</p>
@@ -2127,9 +2127,9 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #2]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/03/15/agile-platform-tips-amp-tricks-2"/>
+    <link href="http://functionalflow.co.uk/blog/2010/03/15/agile-platform-tips-amp-tricks-2"/>
     <updated>2010-03-15T00:00:00+00:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/03/15/agile-platform-tips-amp-tricks-2</id>
+    <id>http://functionalflow.co.uk/blog/2010/03/15/agile-platform-tips-amp-tricks-2</id>
     <content type="html"><![CDATA[<p>
 	&nbsp;</p>
 <p>

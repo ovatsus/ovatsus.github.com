@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: CSS | Functional Flow]]></title>
-  <link href="http://blog.codebeside.org/blog/tags/css/atom.xml" rel="self"/>
-  <link href="http://blog.codebeside.org/"/>
-  <updated>2014-08-11T10:02:39+01:00</updated>
-  <id>http://blog.codebeside.org/</id>
+  <link href="http://functionalflow.co.uk/blog/tags/css/atom.xml" rel="self"/>
+  <link href="http://functionalflow.co.uk/"/>
+  <updated>2014-08-11T10:23:04+01:00</updated>
+  <id>http://functionalflow.co.uk/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Agile Platform Tips & Tricks #7]]></title>
-    <link href="http://blog.codebeside.org/blog/2010/08/23/agile-platform-tips-amp-tricks-7"/>
+    <link href="http://functionalflow.co.uk/blog/2010/08/23/agile-platform-tips-amp-tricks-7"/>
     <updated>2010-08-23T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2010/08/23/agile-platform-tips-amp-tricks-7</id>
+    <id>http://functionalflow.co.uk/blog/2010/08/23/agile-platform-tips-amp-tricks-7</id>
     <content type="html"><![CDATA[<h4>
     How to change the page styles dynamically at runtime</h4>
 
@@ -49,7 +49,7 @@
 
 
 <p>
-    &nbsp;<a href="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="http://blog.codebeside.org/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
+    &nbsp;<a href="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks7_B794/image_4.png"><img alt="image" border="0" height="281" src="http://functionalflow.co.uk/userfiles/AgilePlatformTipsTricks7_B794/image_thumb_1.png" style="BORDER-RIGHT-WIDTH: 0px; DISPLAY: inline; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px" title="image" width="531" /></a></p>
 
 
 <p>
@@ -73,7 +73,7 @@
 
 
 <p>
-    <a href="http://blog.codebeside.org/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>
+    <a href="http://functionalflow.co.uk/userfiles/DynamicStyleSheet.oml">DynamicStyleSheet.oml</a></p>
 
 ]]></content>
   </entry>

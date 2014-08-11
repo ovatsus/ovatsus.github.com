@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: MSMQ | Functional Flow]]></title>
-  <link href="http://blog.codebeside.org/blog/tags/msmq/atom.xml" rel="self"/>
-  <link href="http://blog.codebeside.org/"/>
-  <updated>2014-08-11T10:02:39+01:00</updated>
-  <id>http://blog.codebeside.org/</id>
+  <link href="http://functionalflow.co.uk/blog/tags/msmq/atom.xml" rel="self"/>
+  <link href="http://functionalflow.co.uk/"/>
+  <updated>2014-08-11T10:23:04+01:00</updated>
+  <id>http://functionalflow.co.uk/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Counting the number of messages in a Message Queue in .NET]]></title>
-    <link href="http://blog.codebeside.org/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in"/>
+    <link href="http://functionalflow.co.uk/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in"/>
     <updated>2008-08-27T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in</id>
+    <id>http://functionalflow.co.uk/blog/2008/08/27/counting-the-number-of-messages-in-a-message-queue-in</id>
     <content type="html"><![CDATA[<p>
     .NET includes a managed MSMQ API (System.Messaging) to send and receive messages, but unfortunately there&#39;s a key functionality missing: obtaining the number of messages currently in the queue. Yoel Arnon talks about this problem with more detail <a href="http://msmq.spaces.live.com/Blog/cns!1pGjsZEQBluYM9y4YjJoNkTg!113.entry" title="Counting the number of messages in a queue">here</a> and <a href="http://msmq.spaces.live.com/blog/cns!393534E869CE55B7!121.entry" title="Counting messages in Queue - the .NET version">here</a>. After reading that, we learn that there are three ways to overcome this limitation: using the MSMQ performance counters (with the .NET Performance Counter API or via WMI), using the MSMQ COM wrapper, or using the MSMQ Admin API directly. The first option is not very reliable and the second one is not available on all versions of MSMQ, so the third one is the preferable way. It&#39;s also the most complex. Jared Evans has explained how to do it using a C++ Managed wrapper <a href="http://www.jaredlog.com/?p=101">here</a>, but that approach adds some complexity to the deployment of your application. It forces you to redistribute the Microsoft Visual C++ Redistributable Package, and if you want to support the x64 versions of Windows, you have to build the C++ wrapper for both x86 and x64 and have additional logic in the application installer to know which version of your assembly to install (and the same for the Visual C++ Redistributable which also has two versions). Some months ago, I upgraded my home PC to Windows Vista x64, so at the time I decided to develop a C# only solution for this, as there wasn&#39;t any publicly available on the net.</p>
 
