@@ -4,7 +4,7 @@
   <title><![CDATA[Functional Flow]]></title>
   <link href="http://blog.codebeside.org/atom.xml" rel="self"/>
   <link href="http://blog.codebeside.org/"/>
-  <updated>2014-08-11T09:57:49+01:00</updated>
+  <updated>2014-08-11T10:02:39+01:00</updated>
   <id>http://blog.codebeside.org/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -1903,66 +1903,6 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Replacing Visual Studio 2010 with SharpDevelop 4.1]]></title>
-    <link href="http://blog.codebeside.org/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1"/>
-    <updated>2011-04-19T00:00:00+01:00</updated>
-    <id>http://blog.codebeside.org/blog/2011/04/19/replacing-visual-studio-2010-with-sharpdevelop-4-1</id>
-    <content type="html"><![CDATA[<p>
-	I use Visual Studio 2010 on a daily basis, and I must say that the overall experience is far from good:</p>
-<ul>
-	<li>
-		The find dialog has some really weird and annoying resizing issues.</li>
-	<li>
-		Sometimes find text simply stops working, never returning any result. Even worst, sometimes it starts returning only the first hit on each file, which of course you only notice the next day because of the bug you introduced in the code base because of that.</li>
-	<li>
-		It has the habit of recompiling more projects than it really needs to.</li>
-	<li>
-		Sometimes the simple action of clicking on a text editor to change the caret position stops working, and we can only use the keyboard for that until you restart Visual Studio.</li>
-	<li>
-		It takes forever to open XAML files (even with the option to always open in full XAML view, not design mode).</li>
-	<li>
-		It has some serious file cache problems when using custom MSBuild build steps that generate files for compilation. If during a build a generated file is changed while it&rsquo;s opened, the result of the compilation will be as if the file hadn&rsquo;t been changed. If that file is not opened, or we use the MSBuild command line, it works correctly. Just imagine going through a huge list of steps to reproduce some problem only to find out that you&rsquo;re debugging outdated code. It&rsquo;s a real nightmare.</li>
-</ul>
-<p>
-	So I decided to give SharpDeveloper a try, and I was pleasantly surprised:</p>
-<ul>
-	<li>
-		It&rsquo;s pretty fast and responsive, even with big solutions, as long as you turn off source control integration.</li>
-	<li>
-		I can open .xaml files as fast as .cs files, and the xaml auto complete works sufficiently good.</li>
-	<li>
-		It builds the big solution I use daily in <strong>half</strong> the time (literally)</li>
-	<li>
-		It doesn&rsquo;t have the file cache problem</li>
-	<li>
-		It has an option for building modified projects only, ignoring the dependencies</li>
-	<li>
-		The latest 4.1 alpha builds allow to see the <a href="http://community.sharpdevelop.net/blogs/marcueusebiu/archive/2011/01/23/presenting-metadata-ctrl-enter-and-expand-references.aspx">metadata of referenced types</a> like Visual Studio does.</li>
-</ul>
-<p>
-	Of course, there are also a few downsides:</p>
-<ul>
-	<li>
-		The usability of the editor auto complete is noticeably lower than Visual Studio IntelliSense.</li>
-	<li>
-		The shortcut keys aren&rsquo;t customizable, which is a big no no considering that the basic ones like build and toggle breakpoint are different from the ones we&rsquo;re used to from Visual Studio.</li>
-	<li>
-		Custom debugger visualizers and other very useful add-ins&nbsp; for Visual Studio don&rsquo;t have a SharpDevelop version.</li>
-	<li>
-		It doesn&rsquo;t have Edit and Continue.</li>
-</ul>
-<p>
-	I had already tried SharpDevelop before in the past, but at the time it seemed to be too limited when compared to Visual Studio. I now think it&rsquo;s good enough to be usable, and as it&rsquo;s open source and the code base looks readable, I&rsquo;m going to try to fix a few quirks to be able to completely replace Visual Studio for my daily coding needs.</p>
-<p>
-	The first thing I did was to create a SharpDevelop add-in with equivalent functionality to the <a href="http://www.usysware.com/dpack/FileBrowser.aspx">DPack File Browser</a>, which is one of the Visual Studio add-ins that I use the most. I got a working prototype really fast, as the SharpDevelop add-in API is much cleaner that the Visual Studio EnvDTE mess:</p>
-<p>
-	<img border="0" height="190" src="http://blog.codebeside.org/userfiles/Replacing-Visual-Studio_130FA/image_thumb.png" width="244" /></p>
-<p>
-	I&nbsp;posted the source code to <a href="https://github.com/ovatsus/CodeBeside.FileBrowser">https://github.com/ovatsus/CodeBeside.FileBrowser</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[Agile Platform 5.1.1]]></title>
     <link href="http://blog.codebeside.org/blog/2010/12/18/agile-platform-5-1-1"/>
     <updated>2010-12-18T00:00:00+00:00</updated>
@@ -2182,6 +2122,38 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 	Create the EditRecord or the ShowRecord and drag the Entity on top of it. Then, if there&rsquo;s an Input Parameter of the correspondent Entity Identifier type, a suggestion will appear in the Source Record property:</p>
 <p>
 	<object height="285" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/e3565709-1573-4752-9b3b-852eab095d1e/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/e3565709-1573-4752-9b3b-852eab095d1e/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=285&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/e3565709-1573-4752-9b3b-852eab095d1e/2010-03-20_1142.swf" height="285" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/e3565709-1573-4752-9b3b-852eab095d1e/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Agile Platform Tips & Tricks #2]]></title>
+    <link href="http://blog.codebeside.org/blog/2010/03/15/agile-platform-tips-amp-tricks-2"/>
+    <updated>2010-03-15T00:00:00+00:00</updated>
+    <id>http://blog.codebeside.org/blog/2010/03/15/agile-platform-tips-amp-tricks-2</id>
+    <content type="html"><![CDATA[<p>
+	&nbsp;</p>
+<p>
+	Service Studio 5.0 had a lot of improvements in the drag &amp; drop department. Some of them are listed in this great video from Rodrigo Coutinho - <a href="http://www.outsystems.com/NetworkForums/ViewTopic.aspx?Topic=What%27s-new-in-the-Agile-Platform-5.0#Post5" title="New in 5.0- Drag &amp; Drop">New in 5.0 - Drag &amp; Drop</a> &ndash; but there are a lot more. Here are 3 of my favorites that aren&rsquo;t included in that video:</p>
+<ul>
+	<li>
+		If you drag an input parameter with an Entity Identifier type from the eSpace tree to a preparation or any other kind of action flow, a query to get the respective Entity will be created. This is very handy when creating edit or show screens<br />
+		<br />
+		<object height="374" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/a386ef9e-1c10-4f31-a575-cde8fe1a06c0/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/a386ef9e-1c10-4f31-a575-cde8fe1a06c0/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=374&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/a386ef9e-1c10-4f31-a575-cde8fe1a06c0/2010-03-15_0014.swf" height="374" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/a386ef9e-1c10-4f31-a575-cde8fe1a06c0/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object><br />
+		&nbsp;</li>
+	<li>
+		[New in 5.0.2] You can replace any terminal element with any other terminal element by dropping on top of it. This is especially useful when you want to replace the default end element of preparations or screen actions with a destination or a download element. What used to take three steps (remove the old element, drag the new one, and recreate the connector) can now be done with only one step!<br />
+		<br />
+		<object height="352" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/0f4bc1ff-1972-4f04-9a7d-d1381d6f9a95/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/0f4bc1ff-1972-4f04-9a7d-d1381d6f9a95/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=352&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/0f4bc1ff-1972-4f04-9a7d-d1381d6f9a95/2010-03-15_0018.swf" height="352" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/0f4bc1ff-1972-4f04-9a7d-d1381d6f9a95/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object><br />
+		&nbsp;</li>
+	<li>
+		[New in 5.0.2] You can drag variables on top of widgets to change their binding:<br />
+		<br />
+		<object height="156" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/7acf8d7d-f799-44a5-922f-33de2860d112/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/7acf8d7d-f799-44a5-922f-33de2860d112/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=156&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/7acf8d7d-f799-44a5-922f-33de2860d112/2010-03-15_0047.swf" height="156" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/7acf8d7d-f799-44a5-922f-33de2860d112/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object></li>
+</ul>
+<p>
+	Remember, there are lot more behaviors like these ones, just try to drag things around to find them.</p>
+<p>
+	Happy drag &amp; dropping!</p>
 ]]></content>
   </entry>
   
