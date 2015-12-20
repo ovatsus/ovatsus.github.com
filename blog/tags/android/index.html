@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>F# named union fields - Functional Flow</title>
+  <title>Tag: Android - Functional Flow</title>
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="One of the new features in F# 3.1, and one that I really like, is the possibility to name fields of discriminated unions. From the F# 3.1 &hellip;">
+  <meta name="description" content="Category: Android">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://functionalflow.co.uk/blog/2014/03/21/fsharp-named-union-fields">
+  <link rel="canonical" href="http://functionalflow.co.ukblog/tags/android/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -77,134 +77,36 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">F# Named Union Fields</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-21T22:37:00+00:00" pubdate data-updated="true">Mar 21<span>st</span>, 2014</time>
-        
-         | <a href="#disqus_thread">Comments</a>
-        
-      </p>
+    <h1 class="entry-title">Tag: Android</h1>
     
   </header>
-
-
-<div class="entry-content"><p>One of the new features in F# 3.1, and one that I really like, is the possibility to name fields of discriminated unions. From the <a href="http://blogs.msdn.com/b/fsharpteam/archive/2013/06/27/announcing-a-pre-release-of-f-3-1-and-the-visual-f-tools-in-visual-studio-2013.aspx">F# 3.1 announcement blog post</a>:</p>
-
-<blockquote><p>Discriminated union types are a powerful feature of F# which make programming with shaped data simple, accurate and robust. They also greatly reduce the number of classes needed to represent data in many common circumstances.</p>
-
-<p>In F# 3.1, it is now possible to name union fields within each case of a union type. This is important for large-scale software engineering, particularly when union cases have a large number of fields or multiple fields with the same type.</p>
-
-<p><img src="http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-01-39-71-metablogapi/2021.31blog_5F00_1_5F00_0EEA8EAA.png" alt="" /></p></blockquote>
-
-<p>What wasn&#8217;t originally mentioned on that post, I just found out today, is that pattern match by name is not limited to a single element of the case: we can match on multiple elements by separating them by <code>;</code>.</p>
-
-<p>When we pattern match by position, the several elements are separated by <code>,</code>, and as that didn&#8217;t work with union field names, I assumed it wasn&#8217;t possible to do at all. But it turns out it is possible if you use <code>;</code> instead. Here&#8217;s an example taken from F# Data:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='fsharp'><span class='line'><span class="k">type</span> <span class="nc">InferedType</span> <span class="o">=</span>
-</span><span class='line'>  <span class="o">|</span> <span class="nc">Primitive</span> <span class="k">of</span> <span class="n">typ</span><span class="o">:</span><span class="nn">System</span><span class="p">.</span><span class="nc">Type</span> <span class="o">*</span> <span class="kt">unit</span><span class="o">:</span><span class="n">option</span><span class="o">&lt;</span><span class="nn">System</span><span class="p">.</span><span class="nc">Type</span><span class="o">&gt;</span> <span class="o">*</span> <span class="n">optional</span><span class="o">:</span><span class="kt">bool</span>
-</span><span class='line'>  <span class="o">|</span> <span class="o">...</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// positional pattern match:</span>
-</span><span class='line'><span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
-</span><span class='line'><span class="o">|</span> <span class="nc">Primitive</span><span class="o">(</span><span class="n">typ</span><span class="o">,</span> <span class="o">_,</span> <span class="bp">false</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">...</span>
-</span><span class='line'><span class="o">|</span> <span class="o">...</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// pattern match by name </span>
-</span><span class='line'><span class="k">match</span> <span class="n">x</span> <span class="k">with</span>
-</span><span class='line'><span class="o">|</span> <span class="nc">Primitive</span><span class="o">(</span><span class="n">typ</span> <span class="o">=</span> <span class="n">typ</span><span class="o">;</span> <span class="n">optional</span> <span class="o">=</span> <span class="bp">false</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">...</span>
-</span><span class='line'><span class="o">|</span> <span class="o">...</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Gustavo Guerra</span></span>
-
-      
-
-
-
-
-
+  <div id="blog-archives" class="category">
 
 
 
   
+  <h2>2015</h2>
 
-
-<time datetime="2014-03-21T22:37:00+00:00" pubdate data-updated="true">Mar 21<span>st</span>, 2014</time>
-      
-
-<span class="categories">
+<article>
   
-    <a class='category' href='/blog/tags/f-/'>F#</a>
-  
-</span>
+<h1><a href="/blog/2015/12/20/importing-messages-from-windows-phone-to-android">Importing Messages from Windows Phone to Android</a></h1>
+<time datetime="2015-12-20T01:05:00+00:00" pubdate><span class='month'>Dec</span> <span class='day'>20</span> <span class='year'>2015</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/tags/android/'>Android</a>, <a class='category' href='/blog/tags/f-/'>F#</a>, <a class='category' href='/blog/tags/type-providers/'>Type Providers</a>, <a class='category' href='/blog/tags/windows-phone/'>Windows Phone</a></span>
+</footer>
 
 
-    </p>
-    
-      <div class="sharing">
-  
-  
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2014/03/10/fsharp-data-2-0-0-released" title="Previous Post: FSharp.Data 2.0.0 released">&laquo; FSharp.Data 2.0.0 released</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp" title="Next Post: Maintaining backwards compatibility when changing APIs in F#">Maintaining backwards compatibility when changing APIs in F# &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-  </section>
+
+  
+</article>
 
 </div>
 
@@ -276,10 +178,7 @@
       var disqus_shortname = 'codebesideblog';
       
         
-        // var disqus_developer = 1;
-        var disqus_identifier = 'http://functionalflow.co.uk/blog/2014/03/21/fsharp-named-union-fields';
-        var disqus_url = 'http://functionalflow.co.uk/blog/2014/03/21/fsharp-named-union-fields';
-        var disqus_script = 'embed.js';
+        var disqus_script = 'count.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

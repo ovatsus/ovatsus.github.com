@@ -4,7 +4,7 @@
   <title><![CDATA[Functional Flow]]></title>
   <link href="http://functionalflow.co.uk/atom.xml" rel="self"/>
   <link href="http://functionalflow.co.uk/"/>
-  <updated>2014-08-16T21:28:38+01:00</updated>
+  <updated>2015-12-20T01:09:03+00:00</updated>
   <id>http://functionalflow.co.uk/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -12,6 +12,30 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Importing Messages from Windows Phone to Android]]></title>
+    <link href="http://functionalflow.co.uk/blog/2015/12/20/importing-messages-from-windows-phone-to-android"/>
+    <updated>2015-12-20T01:05:00+00:00</updated>
+    <id>http://functionalflow.co.uk/blog/2015/12/20/importing-messages-from-windows-phone-to-android</id>
+    <content type="html"><![CDATA[<p>Searching around the web I couldn&#8217;t find any way to to transfer messages from Windows Phone to Android that actually worked.</p>
+
+<p>I could export all the data from Windows Phone using the <a href="https://www.microsoft.com/en-gb/store/apps/contacts-message-backup/9nblgggz57gm">contacts+message backup app</a>, but there was no Android app that understood that .msg format.</p>
+
+<p>However, I found the <a href="https://play.google.com/store/apps/details?id=com.riteshsahu.SMSBackupRestore&amp;hl=en">SMS Backup &amp; Restore app</a> that seemed to work well for exporting/importing messages between Android devices.</p>
+
+<p>So with a bit of trial and error and the help of the <a href="http://fsharp.github.io/FSharp.Data/library/XmlProvider.html">XML Type Provider</a> I managed to create an F# script to convert from one format to another.</p>
+
+<p>The trickier part was trying to figure out what DateTime format was being used in both cases (thanks <a href="https://twitter.com/LincolnAtkinson/status/678314345508433921">Lincoln</a>), all the rest was pretty straightforward. The .msg format has a lot less fields than the .xml format used by the Android app, but it ended up still working ok with those missing fields.</p>
+
+<p>It converts both SMS and MMS, though it only retains the text and photos from the MMS&#8217;s, vCards, embedded location maps and other items are skipped. but it should be fairly easy to add that support if needed.</p>
+
+<p>Here is the code:</p>
+
+<script src="https://gist.github.com/ovatsus/2dd82172dcd8308d559c.js"></script>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Maintaining backwards compatibility when changing APIs in F#]]></title>
@@ -2122,38 +2146,6 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 	Create the EditRecord or the ShowRecord and drag the Entity on top of it. Then, if there&rsquo;s an Input Parameter of the correspondent Entity Identifier type, a suggestion will appear in the Source Record property:</p>
 <p>
 	<object height="285" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/e3565709-1573-4752-9b3b-852eab095d1e/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/e3565709-1573-4752-9b3b-852eab095d1e/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=285&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/e3565709-1573-4752-9b3b-852eab095d1e/2010-03-20_1142.swf" height="285" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/e3565709-1573-4752-9b3b-852eab095d1e/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Agile Platform Tips & Tricks #2]]></title>
-    <link href="http://functionalflow.co.uk/blog/2010/03/15/agile-platform-tips-amp-tricks-2"/>
-    <updated>2010-03-15T00:00:00+00:00</updated>
-    <id>http://functionalflow.co.uk/blog/2010/03/15/agile-platform-tips-amp-tricks-2</id>
-    <content type="html"><![CDATA[<p>
-	&nbsp;</p>
-<p>
-	Service Studio 5.0 had a lot of improvements in the drag &amp; drop department. Some of them are listed in this great video from Rodrigo Coutinho - <a href="http://www.outsystems.com/NetworkForums/ViewTopic.aspx?Topic=What%27s-new-in-the-Agile-Platform-5.0#Post5" title="New in 5.0- Drag &amp; Drop">New in 5.0 - Drag &amp; Drop</a> &ndash; but there are a lot more. Here are 3 of my favorites that aren&rsquo;t included in that video:</p>
-<ul>
-	<li>
-		If you drag an input parameter with an Entity Identifier type from the eSpace tree to a preparation or any other kind of action flow, a query to get the respective Entity will be created. This is very handy when creating edit or show screens<br />
-		<br />
-		<object height="374" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/a386ef9e-1c10-4f31-a575-cde8fe1a06c0/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/a386ef9e-1c10-4f31-a575-cde8fe1a06c0/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=374&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/a386ef9e-1c10-4f31-a575-cde8fe1a06c0/2010-03-15_0014.swf" height="374" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/a386ef9e-1c10-4f31-a575-cde8fe1a06c0/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object><br />
-		&nbsp;</li>
-	<li>
-		[New in 5.0.2] You can replace any terminal element with any other terminal element by dropping on top of it. This is especially useful when you want to replace the default end element of preparations or screen actions with a destination or a download element. What used to take three steps (remove the old element, drag the new one, and recreate the connector) can now be done with only one step!<br />
-		<br />
-		<object height="352" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/0f4bc1ff-1972-4f04-9a7d-d1381d6f9a95/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/0f4bc1ff-1972-4f04-9a7d-d1381d6f9a95/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=352&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/0f4bc1ff-1972-4f04-9a7d-d1381d6f9a95/2010-03-15_0018.swf" height="352" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/0f4bc1ff-1972-4f04-9a7d-d1381d6f9a95/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object><br />
-		&nbsp;</li>
-	<li>
-		[New in 5.0.2] You can drag variables on top of widgets to change their binding:<br />
-		<br />
-		<object height="156" id="scPlayer" width="580"><embed allowfullscreen="true" allowscriptaccess="always" base="http://content.screencast.com/users/ovatsus/folders/Jing/media/7acf8d7d-f799-44a5-922f-33de2860d112/" bgcolor="#FFFFFF" flashvars="thumb=http://content.screencast.com/users/ovatsus/folders/Jing/media/7acf8d7d-f799-44a5-922f-33de2860d112/FirstFrame.jpg&amp;containerwidth=580&amp;containerheight=156&amp;content=http://content.screencast.com/users/ovatsus/folders/Jing/media/7acf8d7d-f799-44a5-922f-33de2860d112/2010-03-15_0047.swf" height="156" loop="loop" menu="menu" quality="high" scale="showall" src="http://content.screencast.com/users/ovatsus/folders/Jing/media/7acf8d7d-f799-44a5-922f-33de2860d112/jingswfplayer.swf" type="application/x-shockwave-flash" width="580" wmode="Window"></embed></object></li>
-</ul>
-<p>
-	Remember, there are lot more behaviors like these ones, just try to drag things around to find them.</p>
-<p>
-	Happy drag &amp; dropping!</p>
 ]]></content>
   </entry>
   

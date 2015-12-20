@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Windows Phone | Functional Flow]]></title>
   <link href="http://functionalflow.co.uk/blog/tags/windows-phone/atom.xml" rel="self"/>
   <link href="http://functionalflow.co.uk/"/>
-  <updated>2014-08-16T21:28:38+01:00</updated>
+  <updated>2015-12-20T01:09:03+00:00</updated>
   <id>http://functionalflow.co.uk/</id>
   <author>
     <name><![CDATA[Gustavo Guerra]]></name>
@@ -12,6 +12,30 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Importing Messages from Windows Phone to Android]]></title>
+    <link href="http://functionalflow.co.uk/blog/2015/12/20/importing-messages-from-windows-phone-to-android"/>
+    <updated>2015-12-20T01:05:00+00:00</updated>
+    <id>http://functionalflow.co.uk/blog/2015/12/20/importing-messages-from-windows-phone-to-android</id>
+    <content type="html"><![CDATA[<p>Searching around the web I couldn't find any way to to transfer messages from Windows Phone to Android that actually worked.</p>
+
+<p>I could export all the data from Windows Phone using the <a href="https://www.microsoft.com/en-gb/store/apps/contacts-message-backup/9nblgggz57gm">contacts+message backup app</a>, but there was no Android app that understood that .msg format.</p>
+
+<p>However, I found the <a href="https://play.google.com/store/apps/details?id=com.riteshsahu.SMSBackupRestore&amp;hl=en">SMS Backup &amp; Restore app</a> that seemed to work well for exporting/importing messages between Android devices.</p>
+
+<p>So with a bit of trial and error and the help of the <a href="http://fsharp.github.io/FSharp.Data/library/XmlProvider.html">XML Type Provider</a> I managed to create an F# script to convert from one format to another.</p>
+
+<p>The trickier part was trying to figure out what DateTime format was being used in both cases (thanks <a href="https://twitter.com/LincolnAtkinson/status/678314345508433921">Lincoln</a>), all the rest was pretty straightforward. The .msg format has a lot less fields than the .xml format used by the Android app, but it ended up still working ok with those missing fields.</p>
+
+<p>It converts both SMS and MMS, though it only retains the text and photos from the MMS's, vCards, embedded location maps and other items are skipped. but it should be fairly easy to add that support if needed.</p>
+
+<p>Here is the code:</p>
+
+<script src="https://gist.github.com/ovatsus/2dd82172dcd8308d559c.js"></script>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[F#, Windows Phone 7 & Visual Studio 2012]]></title>

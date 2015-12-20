@@ -9,12 +9,7 @@
   <meta name="author" content="Gustavo Guerra">
 
   
-  <meta name="description" content="Classes By now, mostly everyone already knows how to change the internal representation of a class without breaking compatibility. In C#: 1
-2
-3
-4
-5
-6 &hellip;">
+  <meta name="description" content="Searching around the web I couldn&#8217;t find any way to to transfer messages from Windows Phone to Android that actually worked. I could export all &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -83,6 +78,59 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/12/20/importing-messages-from-windows-phone-to-android">Importing Messages From Windows Phone to Android</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-12-20T01:05:00+00:00" pubdate data-updated="true">Dec 20<span>th</span>, 2015</time>
+        
+         | <a href="/blog/2015/12/20/importing-messages-from-windows-phone-to-android#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Searching around the web I couldn&#8217;t find any way to to transfer messages from Windows Phone to Android that actually worked.</p>
+
+<p>I could export all the data from Windows Phone using the <a href="https://www.microsoft.com/en-gb/store/apps/contacts-message-backup/9nblgggz57gm">contacts+message backup app</a>, but there was no Android app that understood that .msg format.</p>
+
+<p>However, I found the <a href="https://play.google.com/store/apps/details?id=com.riteshsahu.SMSBackupRestore&amp;hl=en">SMS Backup &amp; Restore app</a> that seemed to work well for exporting/importing messages between Android devices.</p>
+
+<p>So with a bit of trial and error and the help of the <a href="http://fsharp.github.io/FSharp.Data/library/XmlProvider.html">XML Type Provider</a> I managed to create an F# script to convert from one format to another.</p>
+
+<p>The trickier part was trying to figure out what DateTime format was being used in both cases (thanks <a href="https://twitter.com/LincolnAtkinson/status/678314345508433921">Lincoln</a>), all the rest was pretty straightforward. The .msg format has a lot less fields than the .xml format used by the Android app, but it ended up still working ok with those missing fields.</p>
+
+<p>It converts both SMS and MMS, though it only retains the text and photos from the MMS&#8217;s, vCards, embedded location maps and other items are skipped. but it should be fairly easy to add that support if needed.</p>
+
+<p>Here is the code:</p>
+
+<script src="https://gist.github.com/ovatsus/2dd82172dcd8308d559c.js"></script>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -915,48 +963,6 @@ shipped as part of the standalone F# redistribution. There were even some nice <
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/10/02/introducing-presharp">Introducing PreSharp</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-10-02T00:00:00+01:00" pubdate data-updated="true">Oct 2<span>nd</span>, 2011</time>
-        
-         | <a href="/blog/2011/10/02/introducing-presharp#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>Background</h3>  <p>Back in 2004, I was doing some code-generation work as part of the <a href="http://www.gsd.inesc-id.pt/project-pages/past-projects/obiwan">OBIWAN</a> project. When I started, CodeDom was being used to do the work, but I really didn’t like it because it made the generator code very hard to read and modify. Realistically, I would not need to support any other language than C#, so I started looking for alternatives. <a href="http://www.codesmithtools.com/product/generator">CodeSmith</a> was very popular at the time for generating type-safe collections (.NET 2.0 generics didn’t exist yet), but it was targeted at one-shot generations, and not at creating code generation code. Then I found a very simple tool named <a href="http://web.archive.org/web/20060726075638/http://www.inmetrix.com/">CodeGen</a> that appealed to me. I had been playing around with the <a href="http://www.boost.org/doc/libs/?view=category_Preprocessor">Boost Preprocessor library</a> recently, so I really liked the idea of using the preprocessor. I did a few tweaks to it and was able to use it for my needs at the time. Later on, around mid-2007, I needed to do code-generation again, so I took this tool and added a good amount of more power to it. At this time, it was very far apart from the original code, so I re-baptized it as PreSharp and published it to CodePlex. I never got around to do any documentation for it, so I’m making this post to try to compensate for that. I also moved the project recently from CodePlex to <a href="https://github.com/ovatsus/PreSharp">GitHub</a>.</p>
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2011/10/02/introducing-presharp">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -985,6 +991,10 @@ shipped as part of the standalone F# redistribution. There were even some nice <
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/12/20/importing-messages-from-windows-phone-to-android">Importing Messages from Windows Phone to Android</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/22/maintaining-backwards-compatibility-when-changing-apis-in-fsharp">Maintaining backwards compatibility when changing APIs in F#</a>
       </li>
     
@@ -1000,16 +1010,12 @@ shipped as part of the standalone F# redistribution. There were even some nice <
         <a href="/blog/2013/11/10/higher-order-list-operations-across-languages">Higher order list operations across languages</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2013/10/14/fsharp-for-screen-scraping">F# for Screen Scraping</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tags</h1>
   <span id="tag-cloud">
-    <a href='/blog/tags/ajax' style='font-size: 106.0%'>AJAX</a> <a href='/blog/tags/blogging' style='font-size: 106.0%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 106.0%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 106.0%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 160.0%'>F#</a> <a href='/blog/tags/htmlagilitypack' style='font-size: 106.0%'>HtmlAgilityPack</a> <a href='/blog/tags/linq' style='font-size: 118.0%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 106.0%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 106.0%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 154.0%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 106.0%'>PreSharp</a> <a href='/blog/tags/screen-scraping' style='font-size: 106.0%'>Screen Scraping</a> <a href='/blog/tags/type-providers' style='font-size: 118.0%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 106.0%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 106.0%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 112.0%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 106.0%'>XML</a> 
+    <a href='/blog/tags/ajax' style='font-size: 105.45454545454545%'>AJAX</a> <a href='/blog/tags/android' style='font-size: 105.45454545454545%'>Android</a> <a href='/blog/tags/blogging' style='font-size: 105.45454545454545%'>Blogging</a> <a href='/blog/tags/code-generation' style='font-size: 105.45454545454545%'>Code Generation</a> <a href='/blog/tags/css' style='font-size: 105.45454545454545%'>CSS</a> <a href='/blog/tags/f-' style='font-size: 160.0%'>F#</a> <a href='/blog/tags/htmlagilitypack' style='font-size: 105.45454545454545%'>HtmlAgilityPack</a> <a href='/blog/tags/linq' style='font-size: 116.36363636363636%'>LINQ</a> <a href='/blog/tags/machine-learning' style='font-size: 105.45454545454545%'>Machine Learning</a> <a href='/blog/tags/msmq' style='font-size: 105.45454545454545%'>MSMQ</a> <a href='/blog/tags/outsystems' style='font-size: 149.0909090909091%'>OutSystems</a> <a href='/blog/tags/presharp' style='font-size: 105.45454545454545%'>PreSharp</a> <a href='/blog/tags/screen-scraping' style='font-size: 105.45454545454545%'>Screen Scraping</a> <a href='/blog/tags/type-providers' style='font-size: 121.81818181818181%'>Type Providers</a> <a href='/blog/tags/windows-phone' style='font-size: 110.9090909090909%'>Windows Phone</a> <a href='/blog/tags/word' style='font-size: 105.45454545454545%'>Word</a> <a href='/blog/tags/wpf' style='font-size: 110.9090909090909%'>WPF</a> <a href='/blog/tags/xml' style='font-size: 105.45454545454545%'>XML</a> 
   </span>
 </section>
 
@@ -1019,7 +1025,7 @@ shipped as part of the standalone F# redistribution. There were even some nice <
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Gustavo Guerra -
+  Copyright &copy; 2015 - Gustavo Guerra -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   - <span class="credit">Theme by <a href="http://www.gehaxelt.in">Gehaxelt</a></span>
   <span class="credit">and <a href="http://www.it-solutions-neef.de">IT Solutions Neef</a></span>
